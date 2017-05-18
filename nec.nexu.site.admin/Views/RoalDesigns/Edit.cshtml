@@ -1,0 +1,129 @@
+﻿@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+
+    bool isSearchPostBack = ViewBag.SearchPostBack != null ? (bool)ViewBag.SearchPostBack : false;
+    string tapeNumber = isSearchPostBack ? (string)ViewBag.TapeNumber : string.Empty;
+    var roalDesign = isSearchPostBack ? (Nec.Infrastructure.Messages.IllustrationMessage)ViewBag.RoalDesign : null;
+    var roalColorway = isSearchPostBack ? (Nec.Infrastructure.Messages.ColorwayMessage)ViewBag.RoalColorway : null;
+    var nexuDesign = isSearchPostBack ? (nec.nexu.Models.Design)ViewBag.NexuDesign : null;
+    var nexuColorway = isSearchPostBack ? (nec.nexu.Models.DesignColorway)ViewBag.NexuColorway : null;
+    var mapping = isSearchPostBack ? (Dictionary<int, string>)ViewBag.Mapping : null;
+    var original = isSearchPostBack ? (DesignToRoal)ViewBag.Original : null;
+}
+<link href="/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+<div>@Html.ActionLink("Back","Index")</div>
+<h2>Edit Design Map</h2>
+
+@Html.ValidationSummary(true)
+
+<div class="container">
+
+    
+        @using (Html.BeginForm("Edit", "RoalDesigns", FormMethod.Post, new { id = "dataForm" }))
+        {
+
+
+            if (isSearchPostBack)
+            {
+                
+            <div class="row"> 
+            
+            <div class="col-xs-6">
+                <div class="row">
+                    <h4 class="col-xs-12">NEXU Design</h4>
+                    <div class="col-xs-3">ID: <br />@nexuDesign.Id <input type="hidden" value="@nexuDesign.Id" name="nexuId" /></div>
+                    <div class="col-xs-3">Tape Number: <br />@nexuDesign.TapeNumber</div>
+                    <div class="col-xs-6">Description: <br />@nexuDesign.DisplayName</div>
+                </div>
+            </div>
+                
+            <div class="col-xs-6">
+                <div class="row">
+                    <h4 class="col-xs-12">ROAL Design</h4>
+                    <div class="col-xs-3">ID: <br />@roalDesign.Id <input type="hidden" value="@roalDesign.Id" name="roalId" /></div>
+                    <div class="col-xs-3">Tape Number: <br />@roalDesign.ManualIllustrationNumber</div>
+                    <div class="col-xs-6">Description: <br />@roalDesign.IllustrationDescription</div>
+                </div>
+            </div>
+
+            
+            </div>
+
+            <div class="row" style="margin-top:15px;">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h4>NEXU LAYERS</h4>
+                            @foreach (var layer in nexuColorway.Layers.Where(x => x.Recolorable))
+                            {
+                                
+                                @{
+                                    string setting = mapping[layer.Id];   
+                                }
+                                
+                                <div class="row layer-map">
+                                    <div class="col-xs-3">
+                                        <img style="max-height:200px;"
+                                            src="@string.Format("{0}/assets/nexu/a.nexuimage?l={1}&b={1}&a=100&t=1&c=000000&m=0&r=96&it=d", "//nexudev.neweracap.com", layer.ImageDataId)" />
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <input type="hidden" value="@layer.Id" class="input-nexulayer" />
+                                        NExU Description:<br />@layer.DisplayName
+                                    </div>
+                                    <div class="col-xs-6">
+                                        ROAL Sequences (comma sep):<br /><input type="text" value="@setting" class="input-roalsequences" style="width:100%;" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top:15px;">
+                <div style="text-align:center; font-size:150%;" class="col-xs-12">
+                    <input type="hidden" id="hdnMapping" value="@original._SerializedDictionary" name="mapping" />
+                    <input type="hidden" value="create" name="command" />
+                    <a id="btnSubmit" class="k-button">Submit</a>
+                </div>
+            </div>
+            
+            }
+            
+        }
+
+
+
+
+
+</div>
+
+
+@section scripts{
+    <script type="text/javascript">
+
+        function parseRoal(val) {
+            return val.replace(' ', '').split(',');
+        }
+
+        $('#btnSubmit').click(function(e){
+            var vals = [];
+            $('.layer-map').each(function () {
+                var el = $(this);
+                var roalRaw = $('.input-roalsequences', el).val();
+                var nexu = $('.input-nexulayer', el).val();
+                $.each(parseRoal(roalRaw), function (index, obj) {
+                    vals.push(obj + '&' + nexu);
+                });
+            });
+            $('#hdnMapping').val(vals.join('|'));
+            $('#dataForm').submit();
+            return false;
+        });
+
+    </script>
+}

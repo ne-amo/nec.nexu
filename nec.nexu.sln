@@ -1,0 +1,199 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nexuservice", "nec.nexu.service\nexuservice.csproj", "{8C7A8D16-EC1E-47FD-B471-497F771536CA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nec.module.bitmap", "nec.module.bitmap\nec.module.bitmap\nec.module.bitmap.csproj", "{D394F80F-073B-40FD-B9B1-9E31FE6AC71C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nec.nexu.rendering", "nec.nexu.rendering\nec.nexu.rendering.csproj", "{1C29B272-C8E1-49D0-A713-C0819D40F80F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nec.nexu.data.model", "nec.nexu.model\nec.nexu.data.model.csproj", "{955BC7D7-E42C-472E-A6CE-7B2E529E6BFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nec.nexu.data.access", "nec.nexu.data.access\nec.nexu.data.access.csproj", "{4B8A9BD8-53CC-45F0-8151-9AA6631746E7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nec.nexu.data.view", "nec.nexu.data.view\nec.nexu.data.view.csproj", "{9E0E38A1-AB70-4EEB-B480-EB211AFB79BB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nec.nexu.data.security", "nec.nexu.data.security\nec.nexu.data.security.csproj", "{B97B1D82-5DDA-4F3F-B6CC-B1E96D7EDD93}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nec.nexu.site.admin", "nec.nexu.site.admin\nec.nexu.site.admin.csproj", "{FC578EF6-15DA-4A0C-B10A-121087C271F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaunchSitecore7", "..\nec.com\Website\LaunchSitecore7.csproj", "{5958492C-34E4-4CD1-91A5-40D1E37406E4}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{A5A7E1B8-2E19-44C7-9965-3E480019B972}"
+	ProjectSection(SolutionItems) = preProject
+		NuGet.Config = NuGet.Config
+		NuGet.exe = NuGet.exe
+		NuGet.targets = NuGet.targets
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{BBA3BA9E-5976-45FC-8EBA-D79E48BC9664}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\NuGet.Config = .nuget\NuGet.Config
+		.nuget\NuGet.exe = .nuget\NuGet.exe
+		.nuget\NuGet.targets = .nuget\NuGet.targets
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nec.nexu.testing", "nec.nexu.testing\nec.nexu.testing.csproj", "{5D95A644-BBAD-4A55-8016-D5F16BE218E9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nec.nexu.data.rules", "nec.nexu.data.rules\nec.nexu.data.rules.csproj", "{2AAFBD51-FE2A-4F7E-A7CB-89690D608A44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nec.nexu.configurator", "nec.nexu.configurator\nec.nexu.configurator.csproj", "{2F56B51C-E1D6-4AB0-88E7-8CD856EBEE12}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nec.nexu.data.roal", "nec.nexu.data.roal\nec.nexu.data.roal.csproj", "{DFC29428-5EBC-4A29-8B75-EBA452195920}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "nec.nexu.bridge", "nec.nexu.bridge\nec.nexu.bridge.csproj", "{B9CE28DC-BC4D-4FBC-9E33-21D5E84E832D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Assemblies", "Assemblies", "{8837A7C0-63D1-496C-8257-915F4E8B93E9}"
+	ProjectSection(SolutionItems) = preProject
+		Assemblies\Altsoft.Xml2PDF.Server.dll = Assemblies\Altsoft.Xml2PDF.Server.dll
+		Assemblies\log4net.dll = Assemblies\log4net.dll
+		Assemblies\nec.rendering.dll = Assemblies\nec.rendering.dll
+		Assemblies\RoalService.dll = Assemblies\RoalService.dll
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+		Sitecore Update Packages|Any CPU = Sitecore Update Packages|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8C7A8D16-EC1E-47FD-B471-497F771536CA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C7A8D16-EC1E-47FD-B471-497F771536CA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C7A8D16-EC1E-47FD-B471-497F771536CA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C7A8D16-EC1E-47FD-B471-497F771536CA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C7A8D16-EC1E-47FD-B471-497F771536CA}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{8C7A8D16-EC1E-47FD-B471-497F771536CA}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+		{D394F80F-073B-40FD-B9B1-9E31FE6AC71C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D394F80F-073B-40FD-B9B1-9E31FE6AC71C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D394F80F-073B-40FD-B9B1-9E31FE6AC71C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D394F80F-073B-40FD-B9B1-9E31FE6AC71C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D394F80F-073B-40FD-B9B1-9E31FE6AC71C}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{D394F80F-073B-40FD-B9B1-9E31FE6AC71C}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+		{1C29B272-C8E1-49D0-A713-C0819D40F80F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C29B272-C8E1-49D0-A713-C0819D40F80F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C29B272-C8E1-49D0-A713-C0819D40F80F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C29B272-C8E1-49D0-A713-C0819D40F80F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C29B272-C8E1-49D0-A713-C0819D40F80F}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{1C29B272-C8E1-49D0-A713-C0819D40F80F}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+		{955BC7D7-E42C-472E-A6CE-7B2E529E6BFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{955BC7D7-E42C-472E-A6CE-7B2E529E6BFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{955BC7D7-E42C-472E-A6CE-7B2E529E6BFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{955BC7D7-E42C-472E-A6CE-7B2E529E6BFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{955BC7D7-E42C-472E-A6CE-7B2E529E6BFA}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{955BC7D7-E42C-472E-A6CE-7B2E529E6BFA}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+		{4B8A9BD8-53CC-45F0-8151-9AA6631746E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B8A9BD8-53CC-45F0-8151-9AA6631746E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B8A9BD8-53CC-45F0-8151-9AA6631746E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B8A9BD8-53CC-45F0-8151-9AA6631746E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B8A9BD8-53CC-45F0-8151-9AA6631746E7}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{4B8A9BD8-53CC-45F0-8151-9AA6631746E7}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+		{9E0E38A1-AB70-4EEB-B480-EB211AFB79BB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E0E38A1-AB70-4EEB-B480-EB211AFB79BB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E0E38A1-AB70-4EEB-B480-EB211AFB79BB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E0E38A1-AB70-4EEB-B480-EB211AFB79BB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E0E38A1-AB70-4EEB-B480-EB211AFB79BB}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{9E0E38A1-AB70-4EEB-B480-EB211AFB79BB}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+		{B97B1D82-5DDA-4F3F-B6CC-B1E96D7EDD93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B97B1D82-5DDA-4F3F-B6CC-B1E96D7EDD93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B97B1D82-5DDA-4F3F-B6CC-B1E96D7EDD93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B97B1D82-5DDA-4F3F-B6CC-B1E96D7EDD93}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B97B1D82-5DDA-4F3F-B6CC-B1E96D7EDD93}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{B97B1D82-5DDA-4F3F-B6CC-B1E96D7EDD93}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+		{FC578EF6-15DA-4A0C-B10A-121087C271F4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FC578EF6-15DA-4A0C-B10A-121087C271F4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FC578EF6-15DA-4A0C-B10A-121087C271F4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FC578EF6-15DA-4A0C-B10A-121087C271F4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FC578EF6-15DA-4A0C-B10A-121087C271F4}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{FC578EF6-15DA-4A0C-B10A-121087C271F4}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+		{5958492C-34E4-4CD1-91A5-40D1E37406E4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5958492C-34E4-4CD1-91A5-40D1E37406E4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5958492C-34E4-4CD1-91A5-40D1E37406E4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5958492C-34E4-4CD1-91A5-40D1E37406E4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5958492C-34E4-4CD1-91A5-40D1E37406E4}.Sitecore Update Packages|Any CPU.ActiveCfg = Sitecore Update Packages|Any CPU
+		{5958492C-34E4-4CD1-91A5-40D1E37406E4}.Sitecore Update Packages|Any CPU.Build.0 = Sitecore Update Packages|Any CPU
+		{5D95A644-BBAD-4A55-8016-D5F16BE218E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D95A644-BBAD-4A55-8016-D5F16BE218E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D95A644-BBAD-4A55-8016-D5F16BE218E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D95A644-BBAD-4A55-8016-D5F16BE218E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D95A644-BBAD-4A55-8016-D5F16BE218E9}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{5D95A644-BBAD-4A55-8016-D5F16BE218E9}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+		{2AAFBD51-FE2A-4F7E-A7CB-89690D608A44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AAFBD51-FE2A-4F7E-A7CB-89690D608A44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AAFBD51-FE2A-4F7E-A7CB-89690D608A44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AAFBD51-FE2A-4F7E-A7CB-89690D608A44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AAFBD51-FE2A-4F7E-A7CB-89690D608A44}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{2AAFBD51-FE2A-4F7E-A7CB-89690D608A44}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+		{2F56B51C-E1D6-4AB0-88E7-8CD856EBEE12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2F56B51C-E1D6-4AB0-88E7-8CD856EBEE12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2F56B51C-E1D6-4AB0-88E7-8CD856EBEE12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2F56B51C-E1D6-4AB0-88E7-8CD856EBEE12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2F56B51C-E1D6-4AB0-88E7-8CD856EBEE12}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{2F56B51C-E1D6-4AB0-88E7-8CD856EBEE12}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+		{DFC29428-5EBC-4A29-8B75-EBA452195920}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFC29428-5EBC-4A29-8B75-EBA452195920}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFC29428-5EBC-4A29-8B75-EBA452195920}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFC29428-5EBC-4A29-8B75-EBA452195920}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFC29428-5EBC-4A29-8B75-EBA452195920}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{DFC29428-5EBC-4A29-8B75-EBA452195920}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+		{B9CE28DC-BC4D-4FBC-9E33-21D5E84E832D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B9CE28DC-BC4D-4FBC-9E33-21D5E84E832D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B9CE28DC-BC4D-4FBC-9E33-21D5E84E832D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B9CE28DC-BC4D-4FBC-9E33-21D5E84E832D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B9CE28DC-BC4D-4FBC-9E33-21D5E84E832D}.Sitecore Update Packages|Any CPU.ActiveCfg = Release|Any CPU
+		{B9CE28DC-BC4D-4FBC-9E33-21D5E84E832D}.Sitecore Update Packages|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 15
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://nectfs:8080/tfs/nec_project_collection
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = ..\\nec.com\\Website\\LaunchSitecore7.csproj
+		SccProjectName1 = ../nec.com/Website
+		SccLocalPath1 = ..\\nec.com\\Website
+		SccProjectUniqueName2 = nec.module.bitmap\\nec.module.bitmap\\nec.module.bitmap.csproj
+		SccProjectName2 = nec.module.bitmap/nec.module.bitmap
+		SccLocalPath2 = nec.module.bitmap\\nec.module.bitmap
+		SccProjectUniqueName3 = nec.nexu.data.access\\nec.nexu.data.access.csproj
+		SccProjectName3 = nec.nexu.data.access
+		SccLocalPath3 = nec.nexu.data.access
+		SccProjectUniqueName4 = nec.nexu.data.security\\nec.nexu.data.security.csproj
+		SccProjectName4 = nec.nexu.data.security
+		SccLocalPath4 = nec.nexu.data.security
+		SccProjectUniqueName5 = nec.nexu.data.view\\nec.nexu.data.view.csproj
+		SccProjectName5 = nec.nexu.data.view
+		SccLocalPath5 = nec.nexu.data.view
+		SccProjectUniqueName6 = nec.nexu.model\\nec.nexu.data.model.csproj
+		SccProjectName6 = nec.nexu.model
+		SccLocalPath6 = nec.nexu.model
+		SccProjectUniqueName7 = nec.nexu.rendering\\nec.nexu.rendering.csproj
+		SccProjectName7 = nec.nexu.rendering
+		SccLocalPath7 = nec.nexu.rendering
+		SccProjectUniqueName8 = nec.nexu.service\\nexuservice.csproj
+		SccProjectName8 = nec.nexu.service
+		SccLocalPath8 = nec.nexu.service
+		SccProjectUniqueName9 = nec.nexu.site.admin\\nec.nexu.site.admin.csproj
+		SccProjectName9 = nec.nexu.site.admin
+		SccLocalPath9 = nec.nexu.site.admin
+		SccProjectUniqueName10 = nec.nexu.testing\\nec.nexu.testing.csproj
+		SccProjectName10 = nec.nexu.testing
+		SccLocalPath10 = nec.nexu.testing
+		SccProjectUniqueName11 = nec.nexu.data.rules\\nec.nexu.data.rules.csproj
+		SccProjectName11 = nec.nexu.data.rules
+		SccLocalPath11 = nec.nexu.data.rules
+		SccProjectUniqueName12 = nec.nexu.configurator\\nec.nexu.configurator.csproj
+		SccProjectName12 = nec.nexu.configurator
+		SccLocalPath12 = nec.nexu.configurator
+		SccProjectUniqueName13 = nec.nexu.data.roal\\nec.nexu.data.roal.csproj
+		SccProjectName13 = nec.nexu.data.roal
+		SccLocalPath13 = nec.nexu.data.roal
+		SccProjectUniqueName14 = nec.nexu.bridge\\nec.nexu.bridge.csproj
+		SccProjectName14 = nec.nexu.bridge
+		SccLocalPath14 = nec.nexu.bridge
+	EndGlobalSection
+EndGlobal

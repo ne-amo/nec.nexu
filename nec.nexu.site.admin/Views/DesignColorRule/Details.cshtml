@@ -1,0 +1,73 @@
+﻿@model nec.nexu.Models.rules.DesignColorRule
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>DesignColorRule</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DisplayName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DisplayName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserMessage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserMessage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DesignId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DesignId)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LayerId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.LayerId)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Combination)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Combination)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Values)
+        </dt>
+        <dd>
+            @*@Html.DisplayFor(model => model.Values)*@
+            <ul>
+                @foreach (var item in Model.Values)
+                {
+                    <li>@item.DesignColorId : @item.Operator</li>
+                }
+            </ul>
+
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

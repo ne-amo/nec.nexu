@@ -1,0 +1,50 @@
+﻿@model nec.nexu.site.admin.Models.ColorListAdminViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>Color List</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ColorList.DisplayName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ColorList.DisplayName)
+            @Html.ValidationMessageFor(model => model.ColorList.DisplayName)
+        </div>
+
+
+
+        <div class="editor-label">
+            Materials To Include in List
+        </div>
+        <div class="editor-field">
+            <ul>
+            @if(Model.AllMaterials != null){
+                foreach (var item in Model.AllMaterials) {
+                    <li><input type="checkbox" name="SelectedMaterialIds" value="@item.Id" /> @item.DisplayName - @item.FabricContent.DisplayName</li>
+                }
+            }
+            </ul>
+        </div>
+
+
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

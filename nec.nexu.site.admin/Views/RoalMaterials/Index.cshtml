@@ -1,0 +1,62 @@
+﻿@model List<nec.nexu.site.admin.Models.RoalMapViewModel<nec.nexu.Models.roal.MaterialToRoal>>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table" id="kendoGrid" data-role="grid" data-sortable="true">
+    <tr>
+        <th>
+            NExU Material
+        </th>
+        <th>
+            ROAL Fabric Id
+        </th>
+        <th>
+            ROAL Fabric Name
+        </th>
+        <th>
+            ROAL Stitch Id
+        </th>
+        <th>
+            ROAL Stitch Name
+        </th>
+        <th>Options</th>
+    </tr>
+    
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.NexuDisplayName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Map.FabricMaterialId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RoalDisplayName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Map.StitchMaterialId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RoalDisplayName2)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { item.Map.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { item.Map.Id })
+        </td>
+    </tr>
+}
+</table>
+
+@section scripts{
+    <script type="text/javascript">kendo.init('body');</script>
+    
+
+}

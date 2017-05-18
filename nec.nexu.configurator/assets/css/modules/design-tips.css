@@ -1,0 +1,28 @@
+﻿#DesignTips {
+    text-align: left;
+    font-size: .75em;
+}
+
+.big-tip, .little-tip {
+    padding-right: 20px;
+    padding-bottom: 20px;
+}
+
+.little-tip {
+    text-align: center;
+}
+
+.little-tip div {
+    background-color: yellow;
+    padding: 3px;
+}
+
+    .little-tip div a {
+        color: black;
+        text-decoration: none;
+        padding: 2px;
+    }
+
+.design-tip-scroll {
+    overflow-y: auto;
+}

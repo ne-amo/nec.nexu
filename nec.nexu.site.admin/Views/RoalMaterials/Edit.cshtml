@@ -1,0 +1,126 @@
+﻿@model nec.nexu.site.admin.Models.RoalMapViewModel<nec.nexu.Models.roal.MaterialToRoal>
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>@Html.ActionLink("Back","Index")</div>
+
+<h2>Edit</h2>
+
+<div>
+    New Era by You Material: <select id="dd_nexu" style="width:400px;"></select>
+</div>
+<div>
+    ROAL Fabric: <select id="dd_roal" style="width:400px;"></select>
+</div>
+<div>
+    ROAL Stitch: <select id="dd_stitch" style="width:400px;"></select>
+</div>
+
+<div>
+    <a href="#" id="btn_submit" class="k-button">Submit</a>
+</div>
+
+@section scripts{
+<script type="text/javascript">
+
+    var SVCURL = window.SERVICE + "/api/";
+
+    var nexuId = '@Model.Map.NexuMaterialId';
+    var roalId = '@Model.Map.FabricMaterialId';
+    var stitchId = '@Model.Map.StitchMaterialId';
+    var recordId = '@Model.Map.Id';
+
+    var nexu = $('#dd_nexu').kendoDropDownList({
+        dataSource:new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: SVCURL + 'masterdata/materials/',
+                    type: 'GET',
+                    contentType: "application/json",
+                    dataType: "json"
+                }
+            },
+            sort: {
+                field: 'DisplayName', dir:'asc'
+            }
+        }),
+        value: nexuId,
+        optionLabel: '-- Select --',
+        dataValueField: 'Id',
+        dataTextField: 'DisplayName'
+    }).data('kendoDropDownList');
+
+    var roal = $('#dd_roal').kendoDropDownList({
+        dataSource: new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: '@Url.Action("RoalColors")',
+                    type: 'GET',
+                    contentType: "application/json",
+                    dataType: "json"
+                }
+            },
+            sort: {
+                field: 'Description', dir: 'asc'
+            }
+        }),
+        value: roalId,
+        optionLabel:'-- Select --',
+        dataValueField: 'Code',
+        dataTextField: 'Description'
+    }).data('kendoDropDownList');
+
+    var stitch = $('#dd_stitch').kendoDropDownList({
+        dataSource: new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: '@Url.Action("RoalStitches")',
+                    type: 'GET',
+                    contentType: "application/json",
+                    dataType: "json"
+                }
+            },
+            sort: {
+                field: 'Description', dir: 'asc'
+            }
+        }),
+        value: stitchId,
+        optionLabel: '-- Select --',
+        dataValueField: 'Code',
+        dataTextField: 'Description'
+    }).data('kendoDropDownList');
+
+    function submit() {
+        var n = nexu.value(), r = roal.value(), s = stitch.value();
+        if (!n || !n.trim() || !r || !r.trim() || !s || !s.trim()) {
+            alert('You must choose colors');
+            return;
+        }
+        var obj = { NexuMaterialId: parseInt(n), FabricMaterialId: r, StitchMaterialId: s},
+            dto = kendo.stringify(obj);
+        $.ajax({
+            url: SVCURL + 'roal/material/' + recordId,
+            type: 'PUT',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: dto,
+            success: function () {
+                window.location.href = '@Url.Action("Index")'
+            },
+            error: function (a,b,c) {
+                alert("There was an error: " + a.responseJSON.Message);
+                $('#btn_submit').show();
+            }
+        });
+    }
+    $('#btn_submit').on('click', function (e) {
+        $(this).hide();
+        submit();
+        return false;
+    });
+
+</script>
+    }

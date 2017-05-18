@@ -1,0 +1,87 @@
+﻿@model nec.nexu.site.admin.Models.CustomBackgroundAdminViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h2>Create</h2>
+
+
+@using (Html.BeginForm("Create", "CustomBackgrounds", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>CustomBackground</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-10">
+            @Html.LabelFor(model => model.CustomBackground.DisplayName, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.EditorFor(model => model.CustomBackground.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            <div class="col-md-10">
+            @Html.LabelFor(model => model.CustomBackground.SortOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.EditorFor(model => model.CustomBackground.SortOrder, new { htmlAttributes = new { @class = "form-control" } })
+            </div>
+            @Html.LabelFor(model => model.CustomBackground.FilePath, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.CustomBackground.FilePath, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.CustomBackground.FilePath, "", new { @class = "text-danger" })
+            </div>
+            <input type="file" name="FilePath" />
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomBackground.ThumbnailPath, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.CustomBackground.ThumbnailPath, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.CustomBackground.ThumbnailPath, "", new { @class = "text-danger" })
+            </div>
+            <input type="file" name="ThumbnailPath" />
+        </div>
+        <div class="editor-label">
+            Product Templates
+        </div>
+        <div class="editor-field">
+            <select name="ProductTemplateId">
+                <option value="-1">-- Select Template --</option>
+                @if (Model.AllProductTemplates != null)
+                {
+                    foreach (var item in Model.AllProductTemplates)
+                    {
+                        <option value="@item.Id">@item.Id - @item.DisplayName</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="editor-label">
+            Hierarchy
+        </div>
+        <div class="editor-field">
+            <select name="HierarchyId">
+                <option value="-1">-- Select Hierarchy --</option>
+                @if (Model.AllHierarchies != null)
+                {
+                    foreach (var item in Model.AllHierarchies)
+                    {
+                        <option value="@item.Id">@item.Id - @item.DisplayName</option>
+                    }
+                }
+            </select>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

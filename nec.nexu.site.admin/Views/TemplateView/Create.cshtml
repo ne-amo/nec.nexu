@@ -1,0 +1,479 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style type="text/css">
+
+</style>
+<div id="notifications">
+</div>
+<h2>Create A New Cap View</h2>
+<div id="contentFadeIn" style="display:none;">
+<h3>Pick Template First</h3>
+<p><select id="ddlTemplate"></select></p>
+
+<h3>Upload SVG Template</h3>
+<div><input type="file"name="files" id="upload" /></div>
+</div>
+<div class="summary">
+    <h3>Configurator Display Name:</h3><input class="bindable" data-bind="value: DisplayName" type="text" />
+
+    <p>
+        <a href="#" class="k-button xLarge" id="btnSave">Save View</a>
+    </p>
+</div>
+
+<div>
+    <div class="float-left summary">
+        <p>Found Regions:</p>
+        <ul id="RegionSummary" ></ul>
+    </div>
+
+    <div class="float-left summary">
+        <p>Found Logo Placeholders:</p>
+        <ul id="LogoSummary"></ul>
+    </div>
+</div>
+
+<div style="clear:both;">
+
+    <a href="#" class="k-button xLarge" id="btnRendersetting">Save Render</a>
+</div>
+<div>
+
+    <select id="ddlViews"></select>
+    <a href="#" class="k-button xLarge" id="btnUpdateSvg">Update SVG</a>
+</div>
+
+<style type="text/css">
+    .float-left
+    {
+        float: left;
+    }
+    .summary
+    {
+        margin:10px;
+    }
+    .xLarge
+    {
+        font-size: 160%;
+    }
+</style>
+
+@section scripts {
+<script src="~/Scripts/snap.svg-min.js"></script>
+<script type="text/javascript">
+    window.notifier = null;
+    var TemplateImage = function () {
+        this.Code = null;
+        this.xPos = 0;
+        this.yPos = 0;
+        this.Width = 0;
+        this.Height = 0;
+        this.FilePath = "";
+    },
+    TemplateObj = kendo.observable({
+        DisplayName: '',
+        SvgContent: '',
+        SortOrder:3,
+        Images: []
+    }),
+    ns = "http://www.w3.org/2000/svg",
+    LogoPlaceholders = new kendo.data.DataSource({ data: [] }),
+    RenderSettings = [],
+
+    getMatrix = function (node) {
+        return node.attributes.transform.value.replace("matrix(", '').replace(")", "").split(' ');
+    },
+    getId = function (node) {
+        return node.id.split('_')[0];
+    },
+    svgWidth = 0,
+    svgHeight = 0,
+    snap;
+
+    function sendRenderSetting(locationIndex, viewid) {
+        var setting = RenderSettings[locationIndex];
+        $.ajax({
+            type: "POST",
+            url: "CreateDesignRenderSetting",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: kendo.stringify({
+                width: svgWidth,
+                height: svgHeight,
+                locationId: setting.LocationId,
+                viewId: viewid,
+                matrix: setting.Matrix,
+                clipSvgB64: btoa(setting.Svg)
+            })
+        }).done(function () {
+            alert("Done");
+        });
+        return false;
+    }
+    function getLocation(c) {
+        var template = $('#ddlTemplate').data('kendoDropDownList').dataItem();
+        var loc = $.map(template.DesignLocations, function (o) {
+            if (o.Code == c)
+                return o;
+        })[0];
+        return loc;
+    }
+    function checkHitRegion(code, array) {
+        return array.indexOf(code) > -1;
+    }
+
+    function parse(path) {
+        window.notifier.info("Parsing SVG template...");
+        var svg = document.createElementNS(ns, 'svg');
+        $('body').append(svg);
+        var snap = Snap(svg);
+        Snap.load(path, function (template) {
+            var regionsImages = template.selectAll('#Regions > image'),
+                baseImage = template.select('#Base > image'),
+                hitRegions = template.selectAll('#HitRegion > *'),
+                logosUse = template.selectAll('#Logos > use'),
+                layers = snap.g().attr('id', 'Layers'),
+                patterns = snap.g().attr('id', 'Patterns'),
+                logos = snap.g().attr('id', 'Logos'),
+                hits = snap.g().attr('id', 'HitRegions');
+            var regionCodes = [];
+            // Send Root SVG to Server
+            // On Complete, add Root image to #Layers group
+            $.ajax({
+                type: "POST",
+                url: "SaveImage",
+                data: kendo.stringify(
+                    {
+                        data: baseImage.attr('xlink:href').replace('data:image/png;base64,', ''),
+                        path: '',
+                        w: 0,
+                        h: 0,
+                        x: 0,
+                        y: 0
+                    }
+                    ),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    var i = snap.image(msg),
+                    iW = baseImage.attr('width') ,//* ratio,
+                    iH = baseImage.attr('height') ;//* ratio;
+                    i.appendTo(layers).attr(
+                        {
+                            id: 'root'
+                        });
+                    i.node.addEventListener('load', function (e) {
+                        this.width.baseVal.value = iW;
+                        this.height.baseVal.value = iH;
+                    })
+                    var di = new TemplateImage();
+                    di.Code = "root";
+                    di.Width = baseImage.attr('width');
+                    di.Height = baseImage.attr('height');
+                    di.FilePath = msg;
+                    TemplateObj.Images.push(di);
+                }
+            }).done(function () {
+                // Once Root is added
+                // Loop over regionsImages
+                // Send each to Server
+                // On Complete, add to #Layers group and add to template observable
+                regionsImages.forEach(function (o) {
+                    var code = o.node.getAttribute('id').split('_')[0],
+                        data = o.attr('xlink:href').replace('data:image/png;base64,', ''),
+                        w = o.attr('width'),
+                        h = o.attr('height'),
+                        matrix = getMatrix(o.node),
+                        x = matrix[4],
+                        y = matrix[5],
+                        dto = {
+                            data: data,
+                            path: '',
+                            w: 0,
+                            h: 0,
+                            x: x,
+                            y: y
+                        };
+                    regionCodes.push(code);
+                    $.ajax({
+                        type: "POST",
+                        url: "SaveImage",
+                        data: kendo.stringify(dto),
+                        contentType: "application/json; charset=utf-8",
+                        dataType: "json",
+                        success: function (msg) {
+                            var i = snap.image(msg)
+                                .attr({
+                                    id: code,
+                                    x: x,
+                                    y: y
+                                });
+                            i.node.addEventListener('load', function (e) {
+                                e.target.width.baseVal.value = w;// * ratio;
+                                e.target.height.baseVal.value = h;// * ratio;
+                            })
+                            i.appendTo(layers);
+                            var di = new TemplateImage();
+                            di.Code = code;
+                            di.Width = w;
+                            di.Height = h;
+                            di.xPos = x;
+                            di.yPos = y;
+                            di.Active = true;
+                            di.FilePath = msg;
+                            TemplateObj.Images.push(di);
+                        }
+                    });
+                });
+            });
+
+
+            var hitCodes = [];
+            // Add HitRegions and Patterns to SVG Markup
+            hitRegions.forEach(function (o) {
+                patterns.add(o.clone().attr({
+                    id: o.node.id.split('_')[0],
+                    visibility: 'hidden'
+                }));
+                hits.add(o.clone().attr({
+                    id: o.node.id.split('_')[0],
+                    visibility: 'hidden'
+                }));
+
+            });
+
+            for (var i = 0; i < regionCodes.length; i++) {
+                if (hitCodes.indexOf(regionCodes[i]) == -1) {
+                    window.notifier.error("No hit region found for " + regionCodes[i]);
+                }
+            }
+
+            if(logosUse)
+            {
+                // Add Logo Placeholders to SVG Markup
+                logosUse.forEach(function (o) {
+                    if (!o.node.id)
+                        return;
+                    else {
+                        var id = getId(o.node),
+                            maskNode = template.select('#maskFor' + id),
+                            mask = (maskNode) ? maskNode.clone() : null,
+                            _matrix = getMatrix(o.node),
+                            key = id,
+                            matrix = $.map(_matrix, function (o, i) {
+                                return parseFloat(o);
+                            }),
+                            sM = new Snap.Matrix(matrix[0], matrix[1], matrix[2], matrix[3], matrix[4], matrix[5]),
+                            symbol = snap.el('symbol'),
+                            gray = snap.image(),
+                            use_gray = gray.use(),
+                            att = {
+                                x: 0,
+                                y: 0
+                            };
+
+
+                        var locationId = getLocation(id).Id;
+                        storeRenderSetting(matrix, maskNode.node.attributes['d'].value, locationId);
+                        sM.scale(1, -1);
+                        use_gray.node.setAttribute('x', 0);
+                        use_gray.node.setAttribute('y', 0);
+                        use_gray.node.setAttribute('id', 'useFor' + id);
+                        gray.node.setAttribute('id', 'imgFor' + id);
+                        symbol.node.setAttribute('id', 'symbolFor' + id);
+                        symbol.node.appendChild(gray.node);
+                        var shadow = snap.filter(Snap.filter.shadow(0, 0, 2, '#000000')),
+                            g = snap.group(
+                                    use_gray.transform(sM)).attr({
+                                        filter: shadow,
+                                        id: 'groupFor' + id
+                                    });
+                        if (mask) {
+                            // Mask must be manually added, if assigned through Snap, it can be assigned to the wrong SVG
+                            var m = snap.el('mask');
+                            m.node.setAttribute('id', m.id);
+                            m.append(mask).appendTo(snap.select('defs'));
+                            mask.node.setAttribute('fill', '#FFFFFF');
+                            g.node.setAttribute('mask', "url('#" + m.id + "')");
+                        }
+                        logos.add(symbol, g);
+                        LogoPlaceholders.add({ name: id });
+                    }
+                });
+            }
+
+            // Add Root attributes to SVG
+            var att = template.select('svg'),
+            vb = att.attr('viewBox'),
+            w = att.attr('width'),
+            h = att.attr('height'),
+            opt = {
+                width: 0,
+                height: 0
+            };
+            svgHeight = h.replace('px', '');
+            svgWidth = w.replace('px', '');
+            snap.root.attr({
+                viewBox: vb,
+                width: (opt.width === 0) ? w : ((typeof opt.width === 'string') ? opt.width.replace('px', '') + 'px' : opt.width.toString() + 'px'),
+                height: (opt.height === 0) ? w : ((typeof opt.height === 'string') ? opt.height.replace('px', '') + 'px' : opt.height.toString() + 'px')
+            });
+
+            // We now have a fully parsed SVG template in the DOM
+            window.notifier.info("Parse Complete");
+        });
+
+
+        // End Parse Function
+    }
+
+    function displaySummary() {
+        $("#upload").fadeOut();
+        var regionList = document.createElement('ul');
+        regionList.innerHTML += '<li><b>Found Regions</b><li>';
+        for (var i = 0; i < TemplateObj.Images.length; i++) {
+            regionList.innerHTML += '<li>' + TemplateObj.Images[i].Code + '<li>';
+        }
+        $('body').append(regionList);
+    }
+    function storeRenderSetting(matrix, svg, locId) {
+        RenderSettings.push({
+            LocationId:locId,
+            Matrix: matrix,
+            Svg: svg
+        });
+    }
+
+    $(function () {
+        kendo.bind($('.bindable'), TemplateObj);
+        $("#upload").kendoUpload({
+            async: {
+                saveUrl: "UploadFile"
+            },
+            multiple: false,
+            success: function (e) {
+                var h = e.response;
+                parse(h);
+            }
+        });
+        $('#RegionSummary').kendoListView({
+            dataSource: TemplateObj.Images,
+            template: '<li> #= Code # </li>'
+        });
+        $('#LogoSummary').kendoListView({
+            dataSource: LogoPlaceholders,
+            template: '<li> #= name # </li>'
+        });
+        $('#btnSave').on('click', function (e) {
+            var svg = $('svg')[0].outerHTML,
+                b64 = btoa(svg);
+            TemplateObj.set('SvgContent', b64);
+            TemplateObj.set('Active', true);
+            var template = $('#ddlTemplate').data('kendoDropDownList').dataItem();
+            var dto = { entity: TemplateObj.toJSON(), templateId: template.Id };
+            $.ajax({
+                type: "POST",
+                url: "Create",
+                data: kendo.stringify(dto),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (msg) {
+                    window.CreatedId = msg;
+                    alert("Saved");
+                }
+            });
+            return false;
+        });
+        $('#btnRendersetting').on('click',
+            function (e) {
+                var viewId = window.CreatedId;
+                for(var i = 0; i<RenderSettings.length; i++){
+                    sendRenderSetting(i, viewId);
+                }
+                return false;
+            });
+
+        $('#btnUpdateSvg').on('click',
+            function (e) {
+                var viewId = $('#ddlViews').val()
+                var svg = $('svg')[0].outerHTML,
+                    b64 = btoa(svg);
+                $.ajax({
+                    type: "POST",
+                    url: "UpdateSVG",
+                    data: kendo.stringify({viewId:viewId, svg: b64 }),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json"
+                });
+                return false;
+            });
+
+        var viewsddl = $('#ddlViews').kendoDropDownList({
+            dataSource: new kendo.data.DataSource(),
+            dataTextField: 'DisplayName',
+            dataValueField: 'Id',
+            optionLabel: '-- Select View --'
+        }).data('kendoDropDownList');
+
+        var ddl = $('#ddlTemplate').kendoDropDownList({
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: 'GET',
+                        url: window.SERVICE+"/api/producttemplates/list",
+                        dataType: "json"
+                    }
+                },
+                schema: {
+                    data: function (data) {
+                        return data;
+                    }
+                }
+            }),
+            dataTextField: 'DisplayName',
+            dataValueField: 'Id',
+            optionLabel: '-- Select Template --',
+            change: function (e) {
+                var d = this.dataItem();
+                $.get(window.SERVICE + '/api/masterdata/producttemplate/' + d.Id + '/views').done(function (response) {
+                    var arr = $.map(response,function(obj){
+                        return { Id: obj.Id, DisplayName: obj.DisplayName };
+                    })
+                    viewsddl.setDataSource(arr);
+                });
+            }
+        }).data('kendoDropDownList');
+
+        window.notifier = $('#notifications').kendoNotification({
+            position: {
+                // notification popup will scroll together with the other content
+                pinned: true,
+                // the first notification popup will appear 30px from the viewport's top and right edge
+                top: 30,
+                left: 30
+            },
+            // new notifications will appear below old ones
+            stacking: "down",
+            // set appropriate size
+            width: 300,
+            height: 50,
+            autoHideAfter: 5000,
+            // prevent accidental hiding for 1 second
+            allowHideAfter: 1000,
+            // show a hide button
+            button: true,
+            // prevent hiding by clicking on the notification content
+            hideOnClick: false
+        }).data('kendoNotification');
+
+
+
+        $('#contentFadeIn').fadeIn('slow');
+
+        
+    });
+</script>
+}

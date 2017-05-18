@@ -1,0 +1,88 @@
+﻿@model IEnumerable<nec.nexu.Models.Material>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table" id="kendoGrid">
+    <tr>
+        <th>
+            Color
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Hex)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DisplayName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Pms)
+        </th>
+@*        <th>
+            @Html.DisplayNameFor(model => model.Hue)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Saturation)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Brightness)
+        </th>*@
+        <th>
+            @Html.DisplayNameFor(model => model.Opacity)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.SortOrder)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.TextColor)
+        </th>
+        <th>Options</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td><div style="background-color: #@item.Hex; width:100%;height:20px;">&nbsp;</div></td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Hex)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DisplayName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Pms)
+        </td>
+@*        <td>
+            @Html.DisplayFor(modelItem => item.Hue)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Saturation)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Brightness)
+        </td>*@
+        <td>
+            @Html.DisplayFor(modelItem => item.Opacity)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SortOrder)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TextColor)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { item.Id }) |
+            @Html.ActionLink("Details", "Details", new { item.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { item.Id })
+        </td>
+    </tr>
+}
+
+</table>
+<script type="text/javascript">
+    $(function () { $('#kendoGrid').kendoGrid({ filterable: true, sortable: true }) });
+</script>

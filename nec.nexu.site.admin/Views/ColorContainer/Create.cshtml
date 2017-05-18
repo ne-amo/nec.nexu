@@ -1,0 +1,61 @@
+﻿@model nec.nexu.site.admin.Models.ColorContainerViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create</h2>
+
+@using (Html.BeginForm()) {
+    
+
+    <fieldset>
+        <legend>Color Container</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ColorContainer.ContainerName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ColorContainer.ContainerName)
+            @Html.ValidationMessageFor(model => model.ColorContainer.ContainerName)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ColorContainer.Active)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ColorContainer.Active)
+            @Html.ValidationMessageFor(model => model.ColorContainer.Active)
+        </div>
+
+        <div class="editor-label">
+            Materials To Include in List    
+        </div>
+        <div class="editor-field">
+            <ul>
+            @if(Model != null){
+                foreach (var item in Model.AllColors) {
+                    <li>
+                            <input type="checkbox" name="SelectedColors" value="@item.Id" />
+                        @item.DisplayName
+                    </li>
+                }
+            }
+            </ul>
+        </div>
+
+
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

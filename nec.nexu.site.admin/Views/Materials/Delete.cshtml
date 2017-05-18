@@ -1,0 +1,96 @@
+﻿@model nec.nexu.Models.Material
+
+@{
+    ViewBag.Title = "Delete";
+}
+
+<h2>Delete</h2>
+
+<h3>Are you sure you want to delete this?</h3>
+<div>
+    <h4>Material</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Hex)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hex)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DisplayName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DisplayName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pms)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pms)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Saturation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Saturation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Brightness)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Brightness)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Opacity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Opacity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SortOrder)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SortOrder)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TextColor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TextColor)
+        </dd>
+
+    </dl>
+
+    @using (Html.BeginForm()) {
+        @Html.AntiForgeryToken()
+
+        <div class="form-actions no-color">
+            <input type="submit" value="Delete" class="btn btn-default" /> |
+            @Html.ActionLink("Back to List", "Index")
+        </div>
+    }
+</div>

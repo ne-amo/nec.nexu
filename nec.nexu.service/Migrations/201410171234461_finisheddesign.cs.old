@@ -1,0 +1,20 @@
+namespace nec.nexu.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class finisheddesign : DbMigration
+    {
+        public override void Up()
+        {
+            RenameColumn(table: "dbo.FinishedDesigns", name: "FinishedProduct_Id", newName: "Product_Id");
+            RenameIndex(table: "dbo.FinishedDesigns", name: "IX_FinishedProduct_Id", newName: "IX_Product_Id");
+        }
+        
+        public override void Down()
+        {
+            RenameIndex(table: "dbo.FinishedDesigns", name: "IX_Product_Id", newName: "IX_FinishedProduct_Id");
+            RenameColumn(table: "dbo.FinishedDesigns", name: "Product_Id", newName: "FinishedProduct_Id");
+        }
+    }
+}

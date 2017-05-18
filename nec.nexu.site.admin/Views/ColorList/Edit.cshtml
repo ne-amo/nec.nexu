@@ -1,0 +1,65 @@
+﻿@model nec.nexu.site.admin.Models.ColorListAdminViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>ColorListAdminViewModel</legend>
+        <div class="editor-label">
+            @Html.HiddenFor(model => model.ColorList.Id)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ColorList.DisplayName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ColorList.DisplayName)
+            @Html.ValidationMessageFor(model => model.ColorList.DisplayName)
+        </div>
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ColorList.Active)
+        </div>
+        <div class="editor-field">
+            @*@Html.EditorFor(model => model.ColorList.Active.Value)*@
+            @Html.EditorFor(m => m.ColorList.Active)
+            @Html.ValidationMessageFor(model => model.ColorList.Active)
+        </div>
+        <div class="editor-label">
+            Materials To Include in List
+        </div>
+        <div class="editor-field">
+            <ul>
+            @if(Model.AllMaterials != null){
+                foreach (var item in Model.AllMaterials) {
+                    <li>
+                        @if(Model.ColorList.Colors.Select(x=>x.Id).Contains(item.Id)){
+                            <input type="checkbox" checked="checked" name="SelectedMaterialIds" value="@item.Id" />
+                        }
+                        else{
+                            <input type="checkbox" name="SelectedMaterialIds" value="@item.Id" />
+                        }
+                        @item.DisplayName - @item.FabricContent.DisplayName</li>
+                }
+            }
+            </ul>
+        </div>
+
+       @* <input type="checkbox" name="SelectedMaterialIds" value="@item.Id" /> *@
+
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

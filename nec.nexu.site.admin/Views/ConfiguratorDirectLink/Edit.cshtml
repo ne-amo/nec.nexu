@@ -1,0 +1,182 @@
+﻿@model nec.nexu.site.admin.Models.ConfiguratorDirectLinkAdminViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>ConfiguratorDirectLink</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.Guid, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Configurator.Guid, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Configurator.Guid, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+       
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.DisplayName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Configurator.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Configurator.DisplayName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Configurator.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Configurator.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.TemplateId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(cdl => cdl.Configurator.TemplateId , Model.ProductTemplateListItems, string.Empty)  
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.CompletedProductId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Html.DropDownListFor(cdl => cdl.Configurator.CompletedProductId, Model.FinishedProductsListItems , string.Empty)
+            
+            </div>
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.DesignHierarchyId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(cdl => cdl.Configurator.DesignHierarchyId, Model.HierarchyListItems, string.Empty)
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.ColorListId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(cdl => cdl.Configurator.ColorListId, Model.ColorListListItems, string.Empty)
+            </div>
+        </div>
+        
+        <div class="editor-field">
+            <label>Materials</label>
+            <ul>
+                @if (Model.AllMaterials != null && Model.AllMaterials.Count > 0)
+                {
+                    foreach (var mat in Model.AllMaterials)
+                    {
+                        <li>
+                            @if (Model.Configurator.Materials != null && Model.Configurator.Materials.Select(m => m.Id).Contains(mat.Id))
+                            {
+                                <input type="checkbox" checked="checked" name="SelectedMaterialIds"  value="@mat.Id" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="SelectedMaterialIds" value="@mat.Id" />
+                            }
+                            @mat.DisplayName 
+                        </li>
+                    }
+                } 
+            </ul>
+        </div>
+        
+        <div class="editor-field">
+            <label>Designs</label>
+            <ul>
+                @if (Model.AllDesigns != null && Model.AllDesigns.Count > 0)
+                {
+                    foreach (var des in Model.AllDesigns)
+                    {
+                        <li>
+                            @if (Model.Configurator.Designs != null && Model.Configurator.Designs.Select(m => m.Id).Contains(des.Id))
+                            {
+                                <input type="checkbox" checked="checked" name="SelectedDesignIds" value="@des.Id" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="SelectedDesignIds" value="@des.Id" />
+                            }
+                            @des.DisplayName
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+        
+        
+        <div class="editor-field">
+            <label>Product Region Groups</label>
+            <ul>
+                @if (Model.AllRegionGroups != null && Model.AllRegionGroups.Count > 0)
+                {
+                    foreach (var prg in Model.AllRegionGroups)
+                    {
+                        <li>
+                            @if (Model.Configurator.ProductRegionGroups != null && Model.Configurator.ProductRegionGroups.Contains(prg.Id))
+                            {
+                                <input type="checkbox" checked="checked" name="SelectedProductRegionGroups" value="@prg.Id" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="SelectedProductRegionGroups" value="@prg.Id" />
+                            }
+                            @prg.DisplayName
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+        
+        <div class="editor-field">
+            <label>Design Locations Groups</label>
+            <ul>
+                @if (Model.AllDesignLocations != null && Model.AllDesignLocations.Count > 0)
+                {
+                    foreach (var prg in Model.AllDesignLocations)
+                    {
+                        <li>
+                            @if (Model.Configurator.DesignLocations != null && Model.Configurator.DesignLocations.Contains(prg.Id))
+                            {
+                                <input type="checkbox" checked="checked" name="SelectedDesignLocationIds" value="@prg.Id" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="SelectedDesignLocationIds" value="@prg.Id" />
+                            }
+                            @prg.DisplayName
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,52 @@
+﻿@{
+    ViewBag.Title = "NEXU Data Admin";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>New Era by You Admin</h2>
+
+
+<h3>Product Content</h3>
+<ul>
+    <li>@Html.ActionLink("Manage Product Templates", "Index", "ProductTemplate")</li>
+    <li>@Html.ActionLink("Manage Product Views", "create", "TemplateView")</li>
+</ul>
+
+<h3>Master Content</h3>
+<ul>
+    <li>@Html.ActionLink("Manage ColorLists", "Index", "ColorList")</li>
+    <li>@Html.ActionLink("Manage Color Search Containers", "Index", "ColorContainer")</li>
+    <li>@Html.ActionLink("Manage CustomBackgrounds", "Index", "CustomBackgrounds")</li>
+    <li>@Html.ActionLink("Manage Designs", "Index", "Design")</li>
+    <li>@Html.ActionLink("Manage DesignColors", "Index", "DesignColor")</li>
+    <li>@Html.ActionLink("Manage Hierarchies", "Index", "Hierarchy")</li>
+    <li>@Html.ActionLink("Manage Materials", "Index", "Materials")</li>
+    <li>@Html.ActionLink("Manage Hierarchy", "Index", "Hierarchy")</li>
+    <li>@Html.ActionLink("Manage Fabric Content Types", "Index", "FabricContentTypes")</li>
+</ul>
+
+<h3>Restrictions</h3>
+<ul>
+    <li>@Html.ActionLink("Manage Required Logo Rules", "Index", "RequiredLogoRule")</li>
+    <li>@Html.ActionLink("Manage Design Color Rules", "Index", "DesignColorRule")</li>
+    <li>@Html.ActionLink("Manage Color Differentiation rules", "Index", "ColorDifferentiationRule")</li>
+    <li>@Html.ActionLink("Manage Colorway rules", "Index", "ColorwayRule")</li>
+</ul>
+
+<h3>Marketing Content</h3>
+<ul>
+    <li>@Html.ActionLink("Manage Faceoffs", "Index", "Faceoff")</li>
+    <li>@Html.ActionLink("Manage Direct Links", "Index", "ConfiguratorDirectLink")</li>
+</ul>
+
+<h3>Localization</h3>
+<ul>
+    <li>@Html.ActionLink("Manage Translated Fields", "Index", "Translation")</li>
+</ul>
+
+<h3>ROAL Mapping</h3>
+<ul>
+    <li>@Html.ActionLink("Map Design Colors", "Index", "RoalDesignColors")</li>
+    <li>@Html.ActionLink("Map Materials", "Index", "RoalMaterials")</li>
+    <li>@Html.ActionLink("Map Designs", "Index", "RoalDesigns")</li>
+</ul>

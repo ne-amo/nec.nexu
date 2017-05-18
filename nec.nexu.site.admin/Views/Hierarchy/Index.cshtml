@@ -1,0 +1,58 @@
+﻿@model IEnumerable<nec.nexu.Models.Hierarchy>
+
+@{
+    ViewBag.Title = "NEXu Hierarchies";
+}
+
+<h2>Hierarchies</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table" id="grid">
+    <tr>
+        <th>
+            Display Name
+        </th>
+        <th>
+            Parent Hierarchy
+        </th>
+        <th>
+            Is Active?
+        </th>
+        <th>
+            Sort Order
+        </th>
+        <th>Options</th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DisplayName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ParentHierarchy.DisplayName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Active)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SortOrder)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+            @Html.ActionLink("Details", "Details", new { id = item.Id }) @*|
+            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })*@
+        </td>
+    </tr>
+}
+
+</table>
+<script type="text/javascript">
+
+    $('#grid').kendoGrid({
+        sortable:true
+    });
+
+</script>

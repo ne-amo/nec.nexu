@@ -1,0 +1,356 @@
+﻿@model nec.nexu.Models.ProductTemplate
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+<h2>Create Product Template</h2>
+<div id="viewmodel">
+<div class="editor-label">
+    Configurator Display Name:
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.DisplayName, new { data_bind="value:DisplayName" } )
+</div>
+<div class="editor-label">
+   Price Description:
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.PriceDescription, new { data_bind="value:PriceDescription" } )
+</div>
+
+<div class="editor-label">
+    Order "Logos" option:
+</div>
+<div class="editor-field">
+    @Html.TextBoxFor(model => model.SortOrderLogo, new { data_bind="value:SortOrderLogo" } )
+</div>
+</div>
+<div class="editor-label">
+    Default Material:
+</div>
+<div class="editor-field">
+    <select id="ddl-Materials"></select>
+</div>
+
+<h3 class="editor-label">
+    Groups and Regions:
+</h3>
+<div class="editor-field">
+<a id="btn-AddRegionGroup" href="#" class="k-button">Add a new group</a>
+
+<div id="grid-RegionGroups" style="margin-top:10px;"></div>
+
+
+<h3>Design Locations:</h3>
+<a id="btn-AddDesignLocation" href="#" class="k-button">Add a new location</a>
+<div id="grid-DesignLocations" style="margin-top:10px;"></div>
+
+</div>
+
+<h2><a href="#" class="k-button" id="btn-Submit">Create Template</a></h2>
+
+<script type="text/x-kendo-template" id="tmpl-RegionGroup">
+<div>
+    <div class="editor-label">
+        Display Name:
+    </div>
+    <div class="editor-field">
+       <input type="text" data-bind="value: DisplayName" />
+    </div>
+    <div class="editor-label">
+        Label:
+    </div>
+    <div class="editor-field">
+       <input type="text" data-bind="value: Label" />
+    </div>
+    <div class="editor-label">
+        Sort Order:
+    </div>
+    <div class="editor-field">
+       <input type="number" data-bind="value: SortOrder" />
+    </div>
+    <div class="editor-label">
+        Force Group:
+    </div>
+    <div class="editor-field">
+       <input type="checkbox" data-bind="checked: ForceGroup" />
+    </div>
+    <div class="editor-label">
+        Allow "Match to Fabric" option:
+    </div>
+    <div class="editor-field">
+       <input type="checkbox" data-bind="checked: AllowMatching" />
+    </div>
+    <div class="editor-label">
+        All "Recolor All" option:
+    </div>
+    <div class="editor-field">
+       <input type="checkbox" data-bind="checked: AllRecolorAll" />
+    </div>
+</div>
+</script>
+
+<script type="text/x-kendo-template" id="tmpl-Region">
+<div>
+</div>
+</script>
+
+@section scripts{
+    <script type="text/javascript">
+        var data = [];
+        var model = kendo.observable({
+            DisplayName: "test",
+            PriceDescription: "test212",
+            SortOrderLogo : 1
+        });
+        kendo.bind($('#viewmodel'), model);
+        counter = data.length;
+        var dsRegionGroups = new kendo.data.DataSource({
+            data: [],
+            transport: {
+                read: function (o) {
+                    o.success(data);
+                },
+                create: function (o) {
+                    var item = o.data;
+                    counter++;
+                    item._id = counter;
+                    o.success(item);
+                },
+                update: function (o) {
+                    o.success();
+                },
+                destroy: function (o) {
+                    o.success();
+                }
+            },
+            schema: {
+                
+                model: {
+                    id: '_id',
+                    fields: {
+                        DisplayName: { type: 'string' },
+                        Label: { type: 'string' },
+                        SortOrder: { type: 'number' },
+                        ForceGroup: { type: 'boolean' },
+                        AllowMatching: { type: 'boolean' },
+                        AllRecolorAll: { type: 'boolean' },
+                        Regions: {}
+                    }
+                }
+            }
+        });
+        var dsDesignLocations = new kendo.data.DataSource({
+            data: [],
+            transport: {
+                read: function (o) {
+                    o.success(data);
+                },
+                create: function (o) {
+                    var item = o.data;
+                    counter++;
+                    item._id = counter;
+                    o.success(item);
+                },
+                update: function (o) {
+                    o.success();
+                },
+                destroy: function (o) {
+                    o.success();
+                }
+            },
+            schema: {
+
+                model: {
+                    id: '_id',
+                    fields: {
+                        DisplayName: { type: 'string' },
+                        Description: { type: 'string' },
+                        SortOrder: { type: 'number' },
+                        Code: { type: 'string' },
+                        SharedLocations: { defaultValue: [] }
+                    }
+                }
+            }
+        });
+        function click_Region(e) {
+            var r = {
+                DisplayName: 'New Region',
+                Code: 'REGION',
+                EnableClick: true,
+                ShowFabricContent: true
+            },
+                widget = this,
+                row = $(e.target).closest('tr'),
+                item = widget.dataItem(row);
+            item._Regions.add(r);
+            return false;
+        }
+        function click_AddGroup(e) {
+            var g = {
+                DisplayName: 'New Group',
+                Label: 'New Group Label',
+                SortOrder: dsRegionGroups.total() + 1,
+                ForceGroup: false,
+                AllowMatching: false,
+                AllRecolorAll: false,
+                _Regions: new kendo.data.DataSource({
+                    data:[]
+                })
+            };
+            dsRegionGroups.add(g);
+            dsRegionGroups.sync();
+            return false;
+        }
+        function click_AddLocation(e) {
+            var g = {
+                DisplayName: 'New Location',
+                Description: 'New Location Description',
+                SortOrder: dsDesignLocations.total() + 1,
+                Code:'LOCATION'
+            };
+            dsDesignLocations.add(g);
+            dsDesignLocations.sync();
+            return false;
+        }
+        $('#btn-AddRegionGroup').on('click', click_AddGroup);
+        $('#btn-AddDesignLocation').on('click', click_AddLocation);
+
+
+        function detailInit(e) {
+            var dataItem = e.data,
+                grid = e.sender,
+                row = e.detailRow;
+            row.find("div").kendoGrid({
+                dataSource: dataItem._Regions,
+                editable: true,
+                dataBound: function (e) {
+                    grid.expandRow(row);
+                },
+                columns: [
+                { field: 'DisplayName', title: ' Display Name' },
+                { field: 'Code', title: ' Template Code' },
+                { field: 'EnableClick', title: ' Clickable?' },
+                { field: 'ShowFabricContent', title: ' Treated as Fabric?' },
+                {
+                    command: [
+                      { name: "destroy" }
+                    ]
+                }
+                ]
+
+            });
+        }
+
+        $('#grid-RegionGroups').kendoGrid({
+            dataSource: dsRegionGroups,
+            columns:[
+                { field: 'DisplayName', title: ' Name' },
+                { command: [
+                    { name: 'edit' },
+                    { name: "destroy" },
+                    {
+                        name: "regions",
+                        text: 'Add Region',
+                        click: click_Region
+                    }
+                ]}
+            ],
+            detailTemplate: kendo.template('<h4>Regions</h4><div></div>'),
+            detailInit:detailInit,
+            editable: {
+                mode: "popup",
+                template: kendo.template($("#tmpl-RegionGroup").html())
+            },
+            dataBound: function () {
+                if (this.dataSource.total() == 0) {
+                    this.element.hide();
+                }
+                else {
+                    this.element.show();
+                    this.expandRow(this.tbody.find("tr.k-master-row").first());
+                }
+            }
+        });
+        $('#grid-DesignLocations').kendoGrid({
+            dataSource: dsDesignLocations,
+            editable: true,
+            columns: [
+                { field: 'DisplayName', title: ' Name' },
+                { field: 'Description', title: ' Description' },
+                { field: 'SortOrder', title: ' Order' },
+                { field: 'Code', title: ' Template Code' },
+                {
+                    command: [
+                      { name: "destroy" }
+                    ]
+                }
+            ],
+            dataBound: function (e) {
+                if (this.dataSource.total() == 0) {
+                    this.element.hide();
+                }
+                else {
+                    this.element.show();
+                }
+            }
+        });
+
+        var ddl = $('#ddl-Materials').kendoDropDownList({
+            dataSource: new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        type: 'GET',
+                        url: window.SERVICE+"/api/colorlists/?list=false",
+                        dataType: "json"
+                    }
+                },
+                schema: {
+                    data: function (data) {
+                        var items = [],
+                            ids = [];
+                        for (var i = 0; i < data.length; i++) {
+                            for (var a = 0; a < data[i].Colors.length; a++) {
+                                if (ids.indexOf(data[i].Colors[a].Id) == -1) {
+                                    items.push({ Id: data[i].Colors[a].Id, Label: data[i].Colors[a].DisplayName + " - " + data[i].Colors[a].FabricContent.DisplayName });
+                                    ids.push(data[i].Colors[a].Id);
+                                }
+                            }
+                        }
+                        return items;
+                    }
+                }
+            }),
+            dataTextField: 'Label',
+            dataValueField: 'Id',
+            optionLabel: '-- Select Material --'
+        }).data('kendoDropDownList');
+
+        $('#btn-Submit').on('click', function (e) {
+            var data = model.toJSON();
+            data.DefaultMaterial = ddl.dataItem().toJSON();
+            data.DesignLocations = dsDesignLocations.data().toJSON();
+            data.RegionGroups = $.map(dsRegionGroups.data().toJSON(), function (object, index) {
+                object.Regions = object._Regions.data().toJSON();
+                return object;
+            });
+            $.ajax({
+                type: "POST",
+                url: "Create",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: kendo.stringify({ data: data }),
+                success: function (msg) {
+
+                    var h = "h";
+                }
+            });
+            return false;
+        });
+
+    </script>
+}

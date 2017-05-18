@@ -1,0 +1,22 @@
+namespace nec.nexu.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class design : DbMigration
+    {
+        public override void Up()
+        {
+            AddColumn("dbo.DesignColorways", "Design_Id", c => c.Int());
+            CreateIndex("dbo.DesignColorways", "Design_Id");
+            AddForeignKey("dbo.DesignColorways", "Design_Id", "dbo.Designs", "Id");
+        }
+        
+        public override void Down()
+        {
+            DropForeignKey("dbo.DesignColorways", "Design_Id", "dbo.Designs");
+            DropIndex("dbo.DesignColorways", new[] { "Design_Id" });
+            DropColumn("dbo.DesignColorways", "Design_Id");
+        }
+    }
+}

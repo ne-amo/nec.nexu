@@ -1,0 +1,23 @@
+﻿#ShareDesigns {
+    text-align: left;
+}
+
+    #ShareDesigns .titleCol {
+        margin-bottom: 20px;
+    }
+
+#ShareDesigns .leftCol {
+    padding-right: 20px;
+}
+
+#sdPreview, #sdCopyUrl {
+    margin-top: 20px;
+}
+
+#ShareDesigns .rightCol {
+    padding-left: 20px;
+}
+
+    #ShareDesigns .socialTile {
+        padding-right: 20px;
+    }

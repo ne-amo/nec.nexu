@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/kendo.common.min.css" rel="stylesheet" />
+    <link href="~/Content/kendo.default.min.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jquery")
+    <script src="~/Scripts/kendo.all.min.js"></script>
+    <style>
+        .row {
+            margin-top: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+
+    <div class="row">
+        <div class="col-xs-12">@Html.ActionLink("Admin Dashboard", "Index", "Home")</div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">@RenderBody()</div>
+    </div>
+    </div>
+    <script type="text/javascript">window.SERVICE = '@System.Configuration.ConfigurationManager.AppSettings["api_url"].ToString()';</script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

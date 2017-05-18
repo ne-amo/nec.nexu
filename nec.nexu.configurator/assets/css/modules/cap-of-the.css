@@ -1,0 +1,51 @@
+﻿#cot {
+    position: relative;
+    color: white;
+    text-transform: uppercase;
+}
+
+    #cot #title {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+        #cot #title h2 {
+            font-weight: 700;
+            letter-spacing: 3px;
+            font-size: 2.5em;
+        }
+
+    #cot #detail {
+        position: absolute;
+        left: 0;
+        bottom: 40px;
+    }
+
+    #cot ul {
+        width: 100%;
+        background-color: black;
+    }
+
+        #cot ul li.detail {
+            padding: 8px 20px;
+        }
+
+            #cot ul li.detail img {
+                height: auto !important;
+                width: auto !important;
+            }
+
+
+        #cot ul li.yellow {
+            background-color: #FFF200;
+        }
+
+        #cot ul li.link a {
+            font-weight: bold;
+        }
+
+    #cot a {
+        color: black;
+        width: 100%;
+    }

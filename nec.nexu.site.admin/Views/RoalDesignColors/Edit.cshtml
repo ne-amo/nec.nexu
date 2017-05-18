@@ -1,0 +1,102 @@
+﻿@model nec.nexu.site.admin.Models.RoalMapViewModel<nec.nexu.Models.roal.DesignColorToRoal>
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div>@Html.ActionLink("Back","Index")</div>
+
+<h2>Edit</h2>
+
+<div>
+    New Era by You Color: <select id="dd_nexu"></select>
+</div>
+<div>
+    ROAL Color: <select id="dd_roal"></select>
+</div>
+
+<div>
+    <a href="#" id="btn_submit" class="k-button">Submit</a>
+</div>
+
+@section scripts{
+<script type="text/javascript">
+
+    var SVCURL = window.SERVICE + "/api/";
+
+    var nexuId = '@Model.Map.NexuDesignColorId';
+    var roalId = '@Model.Map.RoalDesignColorId';
+    var recordId = '@Model.Map.Id';
+
+    var nexu = $('#dd_nexu').kendoDropDownList({
+        dataSource:new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: SVCURL + 'masterdata/designcolors/',
+                    type: 'GET',
+                    contentType: "application/json",
+                    dataType: "json"
+                }
+            },
+            sort: {
+                field: 'DisplayName', dir:'asc'
+            }
+        }),
+        value: nexuId,
+        optionLabel: '-- Select --',
+        dataValueField: 'Id',
+        dataTextField: 'DisplayName'
+    }).data('kendoDropDownList');
+
+    var roal = $('#dd_roal').kendoDropDownList({
+        dataSource: new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: '../RoalColors',
+                    type: 'GET',
+                    contentType: "application/json",
+                    dataType: "json"
+                }
+            },
+            sort: {
+                field: 'Description', dir: 'asc'
+            }
+        }),
+        value: roalId,
+        optionLabel:'-- Select --',
+        dataValueField: 'Id',
+        dataTextField: 'Description'
+    }).data('kendoDropDownList');
+
+    function submit() {
+        var n = nexu.value(), r = roal.value();
+        if (!n || !n.trim() || !r || !r.trim()) {
+            alert('You must choose colors');
+            return;
+        }
+        var obj = { NexuDesignColorId: parseInt(n), RoalDesignColorId: parseInt(r) },
+            dto = kendo.stringify(obj);
+        $.ajax({
+            url: SVCURL + 'roal/designcolor/' + recordId,
+            type: 'PUT',
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: dto,
+            success: function () {
+                window.location.href = '@Url.Action("Index")'
+            },
+            error: function (a,b,c) {
+                alert("There was an error: " + a.responseJSON.Message);
+                $('#btn_submit').show();
+            }
+        });
+    }
+    $('#btn_submit').on('click', function (e) {
+        $(this).hide();
+        submit();
+        return false;
+    });
+
+</script>
+    }

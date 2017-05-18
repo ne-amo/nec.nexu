@@ -1,0 +1,77 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .nexu-img {
+        max-width:100px;
+max-height:120px;
+background-color:#999;
+    }
+    #lvResults {
+border:none;    
+}
+    #lvResults > div {
+        text-align:center;
+        width: 184px;
+        padding:8px;
+    }
+</style>
+<div>@Html.ActionLink("Back to Index","Index","Home")</div>
+<h2>Design Management</h2>
+<div>@Html.ActionLink("Create New Design","Create","Design")</div>
+<div>
+View designs by Hierarchy: <select id="ddlHierarchies"></select>
+</div>
+<div>
+    <div id="lvResults"></div>
+</div>
+@section scripts {
+<script src="~/Scripts/masonry.pkgd.3.2.2.js"></script>
+<script type="text/javascript">
+    function getTemplateHtml() {
+        var str = '<div><p>#: TapeNumber #</p><p><img class="nexu-img" src="' + siteUrl + '#: OfficialImage #" /></p><p> #: DisplayName #</p>';
+        str += '<p><a href="/Design/Edit/#: Id #">Edit</a> <a href="/Design/Delete/#: Id #">Delete</a></p></div>';
+        return str;
+    }
+    var siteUrl = "@System.Configuration.ConfigurationManager.AppSettings["site_url"].ToString()";
+    ds = new kendo.data.DataSource({
+        transport: {
+            read: {
+                type: 'GET',
+                url: SERVICE + '/api/designs/'
+            },
+            parameterMap: function () {
+                return { hierarchyId: ddl.value() };
+            }
+        }
+    });
+    ddl = $('#ddlHierarchies').kendoDropDownList({
+        dataSource: new kendo.data.DataSource({
+            transport: {
+                read: {
+                    type: 'GET',
+                    url: SERVICE + '/api/Hierarchies/?list=true'
+                }
+            }
+        }),
+        dataTextField: "DisplayName",
+        dataValueField: "Id",
+        optionLabel: '--Select--',
+        change: function (e) {
+           //ds.one('change', dsChange);
+           ds.read();
+        }
+    }).data('kendoDropDownList');
+    lv = $('#lvResults').kendoListView({
+        template: getTemplateHtml(),
+        autoBind:false,
+        dataSource: ds,
+        dataBound: function (e) {
+            e.sender.element.masonry(
+                { columnWidth: 200 }
+            );
+        }
+    }).data('kendoListView');
+</script>
+}

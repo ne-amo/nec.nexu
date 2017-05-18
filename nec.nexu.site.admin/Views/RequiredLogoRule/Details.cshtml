@@ -1,0 +1,72 @@
+﻿@model nec.nexu.site.admin.Models.RequiredLogoRuleAdminViewModel
+@{
+    ViewBag.Title = "Details";
+}
+<h2>Details</h2>
+
+<div>
+    <h4>RequiredLogoRule</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.DisplayName)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DisplayName)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.UserMessage)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.UserMessage)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Active)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Active)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.SourceLocationId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SourceLocationId)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.TargetDesignId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TargetDesignId)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.TargetLocationId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.TargetLocationId)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.DesignId)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.DesignId)
+        </dd>
+        
+        <dt>
+            @Html.DisplayNameFor(model => model.Type)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Type)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

@@ -1,0 +1,182 @@
+﻿/*body.vertical .mobile-configurator {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 80vw;
+    height: calc(100vh - 50px - 95px - 170px);
+}
+
+body.vertical .mobile-view-selector {
+    position: fixed;
+    left: 80vw;
+    top: 0;
+    width: 15vw;
+    height: 40%;
+    max-height: 40%;
+}
+
+    body.vertical .mobile-view-selector div.view-angle {
+        max-height: 40px;
+        max-width: 40px;
+    }
+
+body.vertical .the-main-menu {
+    width: 100vw;
+    max-height: calc(55vh - 50px);
+    position: fixed;
+    left: 0;
+    top: calc(100vh - 50px - 95px - 100px);
+    text-align: center;
+}
+
+    body.vertical .the-main-menu div {
+        display: inline-block;
+    }
+
+body.vertical .mobile-drawer {
+    width: 100vw;
+    top: 45vh;
+    max-height: calc(55vh - 50px);
+    position: absolute;
+}
+
+body.vertical .selector-menu {
+    top: 45vh;
+    height: calc(55vh - 50px);
+    max-height: calc(55vh - 50px);
+}
+
+body.vertical #region-picker {
+    width: 45vw;
+}
+
+body.vertical #colorpicker-menu {
+    width: 55vw;
+}
+
+body.vertical #close-selectors {
+    width: 0vw;
+    left: -33px;
+    margin-top: -20px;
+}
+
+body.vertical .background-tile {
+    width: calc(100vw * .35);
+    height: calc(100vw * .35 );
+}
+
+body.vertical .app-wrapper.h-scrolling .mobile-container {
+    display: block;
+}
+
+body.vertical .app-wrapper.h-scrolling #region-picker {
+    width: 100vw;
+    min-width: 185px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 170px;
+    position: fixed;
+    top: auto;
+    bottom: 85px;
+    left: 0;
+}
+
+body.vertical .app-wrapper.h-scrolling #colorpicker-menu {
+    width: 100vw;
+    max-width: 10000vw;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 85px;
+    position: fixed;
+    top: auto;
+    bottom: 00px;
+    left: 0;
+    padding-top: 0px;
+    text-align: center;
+}
+
+    body.vertical .app-wrapper.h-scrolling #colorpicker-menu .colorpicker-list {
+        white-space: nowrap;
+    }
+
+        body.vertical .app-wrapper.h-scrolling #colorpicker-menu .colorpicker-list .colorpicker-group,
+        body.vertical .app-wrapper.h-scrolling #colorpicker-menu .colorpicker-list .colorpicker-color-list {
+            display: inline;
+        }
+
+        body.vertical .app-wrapper.h-scrolling #colorpicker-menu .colorpicker-list .colorpicker-color {
+            height: 70px;
+            width: 70px;
+            margin: 0px 2px 2px 2px;
+        }
+
+        body.vertical .app-wrapper.h-scrolling #colorpicker-menu .colorpicker-list .colorpicker-group {
+            transform: rotate(180deg);
+            -webkit-writing-mode: tb-rl;
+            writing-mode: tb-rl;
+            white-space: normal;
+            line-height: normal;
+            text-align: center;
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+            z-index: 0;
+        }
+
+        body.vertical .app-wrapper.h-scrolling #colorpicker-menu .colorpicker-list .colorpicker-color-list {
+            height: 100%;
+            z-index: 1;
+            position: relative;
+            display: inline-block;
+        }
+
+body.vertical .app-wrapper.h-scrolling .mobile-configurator,
+body.vertical .app-wrapper.h-scrolling .mobile-view-selector {
+    position: absolute;
+}
+
+body.vertical .app-wrapper.h-scrolling .selectable-areas {
+    height: 25vh;
+    padding: 0px 10px;
+    white-space: nowrap;
+    top: 8px;
+    position: relative;
+}
+
+body.vertical .app-wrapper.h-scrolling .vertical-cap-img {
+    transform: rotate(-90deg) scale(.8);
+    display: inline-block;
+    position: relative;
+    top: -70px;
+    left: 24px;
+    margin-right: 100px;
+    margin-left: 0px;
+    overflow: hidden;
+}
+
+    body.vertical .app-wrapper.h-scrolling .vertical-cap-img img {
+        position: absolute;
+        top: 0px;
+    }
+
+body.vertical .app-wrapper.h-scrolling #close-selectors {
+    position: fixed;
+    height: auto;
+    width: auto;
+    left: auto;
+    background-color: transparent;
+    top: auto;
+    bottom: 250px;
+    margin: 0;
+    padding: 0;
+    right: 110%;
+}
+
+body.vertical .app-wrapper.h-scrolling #close-selectors.show
+{
+    right: 0;
+}
+
+body.vertical .app-wrapper.h-scrolling #close-selectors.show .selector-menu-closer {
+        transform: none;
+    }*/

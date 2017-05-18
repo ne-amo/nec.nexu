@@ -1,0 +1,316 @@
+﻿
+@media (min-width: 768px) {
+    .mobile-only {
+        display: none;
+    }
+}
+
+@media (max-width: 767px) {
+    html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+        font-size: 12px;
+    }
+
+    .container {
+        padding-right: 0;
+        padding-left: 0;
+        margin-right: 0;
+        margin-left: 0;
+    }
+
+    .desktop-only {
+        display: none !important;
+    }
+
+    .nexu-ui {
+        min-height: 0 !important;
+    }
+
+    #nexu-ui-left {
+        /*cm removed*/
+        /*position: absolute;*/
+    }
+
+    #nexu-ui-right {
+        float: right;
+    }
+
+    #nexu-ui-viewer-selector .viewer-mask li {
+        background: rgba(0,0,0,1);
+        height: 28px;
+        width: 28px;
+        -webkit-border-radius: 28px;
+        -moz-border-radius: 28px;
+        border-radius: 28px;
+        margin: 2px;
+        opacity: 1;
+    }
+
+    #nexu-ui-menu-bottom {
+        line-height: 0 !important;
+    }
+
+    #nexu-ui-viewer-selector .viewer-mask li::after {
+        content: "";
+    }
+
+    #nexu-ui-viewer-selector .viewer-mask li img {
+        /*cm removed*/
+        /*display: none;*/
+    }
+
+    #nexu-ui-viewer-selector li.viewer-mask .mCSB_horizontal.mCSB_inside > .mCSB_container {
+        margin-bottom: 5px;
+    }
+
+    .col-xs-1, .col-sm-1, .col-md-1, .col-lg-1, .col-xs-2, .col-sm-2, .col-md-2, .col-lg-2, .col-xs-3, .col-sm-3, .col-md-3, .col-lg-3, .col-xs-4, .col-sm-4, .col-md-4, .col-lg-4, .col-xs-5, .col-sm-5, .col-md-5, .col-lg-5, .col-xs-6, .col-sm-6, .col-md-6, .col-lg-6, .col-xs-7, .col-sm-7, .col-md-7, .col-lg-7, .col-xs-8, .col-sm-8, .col-md-8, .col-lg-8, .col-xs-9, .col-sm-9, .col-md-9, .col-lg-9, .col-xs-10, .col-sm-10, .col-md-10, .col-lg-10, .col-xs-11, .col-sm-11, .col-md-11, .col-lg-11, .col-xs-12, .col-sm-12, .col-md-12, .col-lg-12 {
+        padding-left: 0;
+        padding-right: 0;
+    }
+
+    #nexu-ui-left, #nexu-ui-right {
+        font-size: 0.875em;
+        /*margin-top: 20px;*/
+    }
+
+        #nexu-ui-left .menu-mobile-headline {
+            margin: 2px 0 2px;
+            background-color: rgba(0,0,0,.7);
+            padding: 8px 8px 6px 16px;
+        }
+
+    #nexu-ui-left {
+        max-width: 200px;
+    }
+
+        #nexu-ui-left ul {
+            display: block;
+        }
+
+            #nexu-ui-left ul li {
+                margin: 2px 0 0;
+                background-color: rgba(0,0,0,.7);
+                padding: 8px 8px 6px 16px;
+            }
+
+            #nexu-ui-left ul.menu-mobile li.nexu-mob-colortile {
+                display: inline-block;
+                padding: 0;
+                margin: 0;
+                border: 1px solid #000;
+            }
+
+    .menu-mobile li.nexu-mob-colortile:nth-child(3n) {
+        margin-right: 1px;
+    }
+
+    .menu-mobile li.nexu-mob-colortile:nth-child(3n+1) {
+        margin-left: 1px;
+    }
+
+    .menu-mobile li.nexu-mob-colortile > div {
+        width: 28px;
+        height: 28px;
+        background-size: 100%;
+    }
+
+    #nexu-ui-left .k-block, #nexu-ui-left .k-widget, #nexu-ui-left .k-popup, #nexu-ui-left .k-content, #nexu-ui-left .k-toolbar, #nexu-ui-left .k-dropdown #nexu-ui-left .k-input {
+        color: #ffffff;
+    }
+
+    #nexu-ui-viewer-selector .k-listview {
+        margin-bottom: 10px;
+    }
+
+        #nexu-ui-viewer-selector .k-listview li {
+            margin: 0 4px;
+        }
+
+
+
+    #nexu-logo-window {
+        background: rgba(50,50,50,1);
+    }
+
+
+
+    .nexu-mobile-menu-config {
+        padding-left: 8px;
+        padding-top:24px;
+        padding-bottom:24px;
+        text-align: center;
+        top:-20px; /* added 05-21*/
+    }
+        .nexu-mobile-menu-config h3 {
+            margin-top:15px;
+        }
+
+        .nexu-mobile-menu-config li {
+            padding: 14px;
+            font-weight: bold;
+            font-size: 1.2em;
+            text-transform: uppercase;
+            text-align: left;
+            background: #151515;
+            margin: 2px 0;
+        }
+
+            .nexu-mobile-menu-config li.nexu-mob-selected {
+                background-color: rgb(255,255,68);
+                color: rgb(0,0,0);
+            }
+
+                .nexu-mobile-menu-config li.nexu-mob-selected a {
+                    color: rgb(0,0,0);
+                }
+
+            .nexu-mobile-menu-config li a {
+                color: rgb(255,255,255);
+                display: block;
+            }
+
+        .nexu-mobile-menu-config h3 {
+            text-align: center;
+        }
+
+            .nexu-mobile-menu-config h3 a {
+                color: rgb(255,255,68);
+                text-decoration: none;
+            }
+
+        .nexu-mobile-menu-config .nexu-mob-colortile {
+            display: inline-block;
+            padding: 0;
+            margin: 0;
+            border: 1px solid #000;
+            width: 23%;
+        }
+
+            .nexu-mobile-menu-config .nexu-mob-colortile > div {
+                width: 100%;
+                height: 38px;
+                background-size: 100%;
+            }
+
+        .nexu-mobile-menu-config li a.mob-icon {
+            display: none;
+            margin-right: 8px;
+            float: left;
+        }
+
+        .nexu-mobile-menu-config li.nexu-mob-selected a.mob-icon {
+            display: initial;
+        }
+
+    .stage .k-upload .k-upload-button span {
+        background-color: rgb(51, 51, 51);
+        border-radius: 0px;
+        border-width: 1px;
+        border-color: rgb(51, 51, 51);
+        box-shadow: none;
+        box-sizing: border-box;
+        color: rgb(255, 255, 255);
+        cursor: pointer;
+        display: inline-block;
+        font-size: 14px;
+        font-stretch: normal;
+        font-style: normal;
+        font-variant: normal;
+        font-weight: normal;
+        height: 34px;
+        line-height: 23px;
+        margin: 0;
+        padding: 5px 14px 4px;
+        text-align: center;
+        text-decoration: none;
+        vertical-align: middle;
+        pointer-events: all;
+    }
+
+        .stage .k-upload .k-upload-button span:hover {
+            border-color: rgb(0, 0, 0);
+            background-color: rgb(255, 255, 68);
+            color: rgb(0, 0, 0);
+        }
+
+    #nexu-colorgrab .mobile-only .image-container img {
+        max-height: 300px;
+        opacity: .8;
+    }
+
+    #nexu-colorgrab .mobile-only .image-container {
+        position: static;
+        width: 100%;
+        text-align: center;
+    }
+
+    .nexu-mobile-menu-config li.nexu-mob-background-menu {
+        margin-left: 8px;
+        margin-bottom: 8px;
+        float: left;
+    }
+
+    .nexu-mob-background-menu img {
+        width: 80px;
+    }
+
+    #nexu-configurator.mobile {
+        /*cm removed*/
+        /*top: 20px;*/
+    }
+
+
+    .nexu-mob-btn {
+        position: absolute;
+        right: 20px;
+    }
+
+        .nexu-mob-btn.menu-config {
+            top: 10;
+        }
+
+        .nexu-mob-btn.menu-options {
+            bottom: 40px;
+        }
+    .nav-menu li.nx-selected > div > .icon {
+        display:inline-block;
+    }
+    li.nx-selected > div {
+        line-height: 24px;
+    }
+    li.nx-selected {
+        padding-right: 0px;
+    }
+    .nx-sub li {
+        padding-left: 0;
+    }
+    .nx-label {
+        clear: both; color:rgb(255,255,68); margin:4px 0;
+    }
+    li.nx-logo-tn {
+        background: rgb(150,150,150);
+        text-align: center;
+        padding: 12px;
+        width: 90%;
+    }
+    li.nx-logo-tn img {
+        max-width:160px;
+        max-height: 100px;
+    }
+    li.nx-logo-tn.nx-selected {
+        padding: 0;
+    }
+    li.nx-logo-tn.nx-selected > div{
+        display:none;
+    }
+    #nexu-background-bottom {
+        height:150px;
+    }
+
+    #nexu-colorgrab-window .mobile-only .glyphicon-camera {
+        font-size: 48pt;
+    }
+
+    #nexu-colorgrab-window .mobile-only .stage > div {
+        margin: 10px auto;
+    }
+}

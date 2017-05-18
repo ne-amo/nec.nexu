@@ -1,0 +1,185 @@
+﻿@using System.Configuration
+@model nec.nexu.site.admin.Models.DesignColorRulesAdminViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+<script type="text/javascript" src="~/Scripts/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery-ui-1.11.1.js"></script>
+<script type="text/javascript">
+    $(document).ready(function ($) {
+        var raw = @Html.Raw(Json.Encode(Model.NewValues));;
+        var valuePairsArr = $.parseJSON(raw);
+        populateValues(valuePairsArr);
+
+        $('#addValue').click(function () {
+            var designId = $('#newDesignId').val();
+            var operator = $('#newOperator').val();
+            var exists = false;
+
+            valuePairsArr.forEach(function (obj) {
+                if (obj.DesignColorId.toString() === designId && obj.Operator === operator) {
+                    exists = true;
+                }
+            });
+
+            if (designId.length && operator.length && !exists) {
+                var vpObject = new Object();
+                vpObject.DesignColorId = designId;
+                vpObject.Operator = operator;
+                valuePairsArr.push(vpObject);
+
+                $('#newDesignId').val("");
+                $('#newOperator').val("==");
+
+                populateValues(valuePairsArr);
+                $('#DesignColorRuleValue').val(JSON.stringify(valuePairsArr));
+            }
+        });
+
+        function populateValues(valuesArray) {
+            $('#valueList').empty();
+            var newArray = new Array();
+
+            valuesArray.forEach(function(obj) {
+
+                var designId = obj.DesignColorId;
+                var operator = obj.Operator;
+                
+                $('<li />', { html: designId + " : " + operator, id: designId, value: operator }).click().addClass("valuePairItem").appendTo($('#valueList'));
+
+                $('<input />', { id: 'remove-' + designId, type: 'button', value: "Remove" }).click(function() {
+                    $(this).parent().remove();
+
+                    var removeDesignId = $(this).parent().attr('id');
+                    var removeOperator = $(this).parent().attr('value');
+
+                    valuesArray.forEach(function (pair) {
+                        if (pair.DesignColorId != removeDesignId || pair.Operator != removeOperator) {
+                            newArray.push(pair);
+                        }
+                    });
+                    populateValues(newArray);
+                    valuePairsArr = newArray;
+                    $('#DesignColorRuleValue').val(JSON.stringify(newArray));
+                }).appendTo($('#' + designId));
+            });
+        }
+
+        $('#DesignColorRule_DesignId').change(function () {
+            var url = '@ConfigurationManager.AppSettings["api_url"]' + 'api/Designs/' + $(this).val();
+
+            $.ajax({
+                cache: true,
+                type: 'GET',
+                url: url,
+                dataType: 'json',
+                crossDomain: true,
+                success: function (data) {
+                    $('#LayerId').html('');
+
+                    if (data.DefaultColorway != null) {
+                        $.each(data.DefaultColorway.Layers, function (id, option) {
+                            $('#LayerId').append($('<option></option>').val(option.Id).html(option.DisplayName));
+                        });
+                    }
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert('failed to retrieve product template views. ' + ' . ' + thrownError);
+                }
+            });
+        });
+
+        if ($('#DesignColorRule_DesignId').val() != '') {
+            $('#DesignColorRule_DesignId').trigger('change');
+        }
+    });
+</script>
+<h2>Edit</h2>
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>DesignColorRule</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.DesignColorRule.DisplayName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DesignColorRule.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DesignColorRule.DisplayName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DesignColorRule.Active, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DesignColorRule.Active, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DesignColorRule.Active, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DesignColorRule.UserMessage, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.DesignColorRule.UserMessage, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.DesignColorRule.UserMessage, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DesignColorRule.DesignId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(m => m.DesignColorRule.DesignId, Model.DesignsListItems, string.Empty)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DesignColorRule.LayerId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <select name="DesignColorRule.LayerId" id="LayerId"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.DesignColorRule.Combination, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(m => m.DesignColorRule.Combination, new { htmlAttributes = new { @class = "form-control" } })*@
+                <select name="DesignColorRule.Combination">
+                    <option value="and">and</option>
+                    <option value="or">or</option>
+                </select>
+            </div>
+        </div>
+        
+        <input type="hidden" id="DesignColorRuleValue" name="NewValues" />
+
+        <div class="form-group" class="col-md-10">
+            Design Color Rule Values
+            <div id="values" >
+                <ul id="valueList"></ul>
+            </div>
+            <div id="newValue" class="col-md-10">
+                Design @Html.DropDownList("newDesignId", Model.DesignsListItems, string.Empty)
+                Operator <select name="operator" id="newOperator">
+                    <option value="==">==</option>
+                    <option value="!=">!=</option>
+                </select>
+            </div>
+            <input type="button" id="addValue" value="Add Value" />
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

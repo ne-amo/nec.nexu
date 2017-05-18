@@ -1,0 +1,38 @@
+﻿@model nec.nexu.site.admin.Models.ColorContainerViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Color Container</legend>
+
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.ColorContainer.ContainerName)
+        </div>
+        <div class="editor-field">
+            @Html.DisplayFor(model => model.ColorContainer.Active)
+        </div>
+
+        <div class="editor-label">
+            Materials To Include in List    
+        </div>
+        <div class="editor-field">
+            <ul>
+            @if(Model != null){
+                foreach (var item in Model.ColorContainer.Colors) {
+                    <li>
+                        @item.DisplayName
+                    </li>
+                }
+            }
+            </ul>
+        </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new {  id=Model.ColorContainer.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

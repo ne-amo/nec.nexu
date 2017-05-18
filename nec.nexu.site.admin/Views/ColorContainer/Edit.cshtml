@@ -1,0 +1,70 @@
+﻿@model nec.nexu.site.admin.Models.ColorContainerViewModel
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit</h2>
+
+@using (Html.BeginForm()) {
+    @Html.ValidationSummary(true)
+
+    <fieldset>
+        <legend>ColorContainer</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ColorContainer.ContainerName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ColorContainer.ContainerName)
+            @Html.ValidationMessageFor(model => model.ColorContainer.ContainerName)
+        </div>
+
+        @Html.HiddenFor(model => model.ColorContainer.Id)
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.ColorContainer.Active)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.ColorContainer.Active)
+            @Html.ValidationMessageFor(model => model.ColorContainer.Active)
+        </div>
+
+        <div class="editor-label">
+            Materials To Include in List    
+        </div>
+        <div class="editor-field">
+            <ul>
+            @if(Model != null){
+                foreach (var item in Model.AllColors) {
+                    <li>
+                        @if (Model.ColorContainer.Colors.Select(x => x.Id).Contains(item.Id))
+                        {
+                            <input type="checkbox" checked="checked" name="SelectedColors" value="@item.Id" />
+                        }
+                        else{
+                            <input type="checkbox" name="SelectedColors" value="@item.Id" />
+                        }
+                        @item.DisplayName
+                    </li>
+                }
+            }
+            </ul>
+        </div>
+
+
+
+        <p>
+            <input type="submit" value="Save" />
+        </p>
+    </fieldset>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

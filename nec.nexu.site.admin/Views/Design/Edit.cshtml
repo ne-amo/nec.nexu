@@ -1,0 +1,177 @@
+﻿@model nec.nexu.JsonModels.Design
+
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style type="text/css">
+    .n-image {
+        background: #999;
+    }
+
+</style>
+<h2>Edit</h2>
+
+
+<div id="editForm">
+    <ul>
+        <li>Display Name: <input type="text" class="k-input" data-bind="value: DisplayName" /></li>
+        <li>Description: <input type="text" class="k-input" data-bind="value: Description" /></li>
+        <li>Tape Number: <input type="text" class="k-input" data-bind="value: TapeNumber" /></li>
+        <li>Sort Order: <input type="text" data-role="numerictextbox" data-bind="value: SortOrder" /></li>
+        <li>Hierarchy:
+            <select 
+                data-role="dropdownlist"
+                data-text-field="DisplayName"
+                data-value-field="Id"
+                data-option-label="Select Hierarchy"
+                data-value-primitive="true"
+                data-bind="value: HierarchyId, source:AllHierarchies"></select>
+
+        </li>
+    </ul>
+    <div>
+    Allowed Locations: <a id="btnreset" href="#">Reset</a>
+    <div data-role="grid" id="grid_Locations"
+        data-columns="[{title:'Description',field:'Description'}]"
+        data-selectable="multiple"
+        data-scrollable="true"
+        data-height:"180px"
+        data-bind="source: AllLocations, events: { dataBound: Events.LocationsBound }"></div>
+</div>
+
+<div>
+    Official Image:<br />
+    <img class="n-image" data-bind="attr: { src: OfficialImage.FilePath }" />
+    <div><input type="file" id="file_Official" name="files" /></div>
+</div>
+
+<div>
+    Layers:<br />
+    <div id="grid_Layers"
+        data-role="grid"
+        data-editable="true"
+        data-columns="[
+            {field:'DisplayName'},
+            {field:'Code'},
+            {field:'SortOrder'},
+            {field:'Recolorable'},
+            {field:'Color', editor: colorDropDownEditor, template: '#= Color.DisplayName #'},
+        ]"
+        data-bind="source: DefaultColorway.Layers"></div>
+</div>
+
+
+    <div style="margin-top:20px;"><a href="#" id="submit" class="k-button" style="font-size:200%;">Submit</a></div>
+
+
+
+
+@section scripts{
+    <script type="text/javascript">
+        var siteUrl = "@System.Configuration.ConfigurationManager.AppSettings["site_url"].ToString()";
+        var model = kendo.observable(@Html.Raw(Json.Encode(Model)));
+
+        model.DefaultColorway.Layers = $.map(model.DefaultColorway.Layers, function (obj) {
+            if(!obj.Color)
+                obj.Color = {}
+            return obj;
+        });
+
+        model.OfficialImage.FilePath = siteUrl + model.OfficialImage.FilePath;
+
+        function selectGrid(grid) {
+            var data = grid._data;
+            var locations = model.LocationIds;
+            $('tr', grid.tbody).each(function (index, row) {
+                if (locations.indexOf(data[index].Id) != -1) {
+                    grid.select(row);
+                }
+            });
+        }
+
+        function _LocationsBound(e) {
+            var grid = e.sender;
+            selectGrid(grid);
+        }
+        function colorDropDownEditor(container, options) {
+            $('<input data-text-field="DisplayName" data-value-field="Id" data-bind="value:' + options.field + '"/>')
+                .appendTo(container)
+                .kendoDropDownList({
+                    autoBind: false,
+                    dataSource: dsDesignColors
+                });
+        }
+        var ds_Default = {
+            transport: {
+                read: {
+                    type: 'GET',
+                    contentType: "application/json",
+                    dataType: "json"
+                },
+                schema: {
+                    parse: function (data) {
+                        return data;
+                    },
+                    data: function (data) {
+                        return data;
+                    }
+                }
+            },
+            sort: { field: "Description", dir: "asc" }
+        };
+
+        var dsDesignColors = 
+            new kendo.data.DataSource($.extend({}, ds_Default, { transport: { read: { url: window.SERVICE + '/api/masterdata/designcolors/' } } }));
+
+
+        $.extend(model, {
+            AllHierarchies: new kendo.data.DataSource($.extend({}, ds_Default, { transport: { read: { url: window.SERVICE + '/api/hierarchies/' } } }))
+        });
+        $.extend(model, {
+            AllLocations: new kendo.data.DataSource($.extend({}, ds_Default, { transport: { read: { url: window.SERVICE + '/api/masterdata/designlocations/' } } })),
+            Events: {
+                LocationsBound: _LocationsBound
+            }
+        });
+        $('#file_Official').kendoUpload({
+            async: {
+                saveUrl: "../UploadFile"
+            },
+            multiple: false,
+            success: function (e) {
+                model.set('OfficialImage', { FilePath: e.response } );
+            }
+        })
+        $('#btnreset').on('click', function () {
+            var g = $('#grid_Locations').data('kendoGrid');
+            g.clearSelection();
+            selectGrid(g);
+            return false;
+        });
+
+
+        $('#submit').on('click', function (E) {
+
+            var dto = model.toJSON();
+            dto.AllHierarchies = null;
+            dto.AllLocations = null;
+            dto.Events = null;
+            dto.Locations = $.map(dto.LocationIds, function (obj) {
+                return { Id: obj };
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/Design/Edit",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: kendo.stringify(dto)
+            });
+
+            return false;
+        });
+
+        kendo.bind($('#editForm'),model);
+    </script>
+}

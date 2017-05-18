@@ -1,0 +1,2292 @@
+﻿/*
+
+~~~~~ Contents ~~~~~~
+@@0 : General / Sections / Icons
+@@1 : Background / Wall Module
+@@2 : View Carousel
+@@3 : Configurator Menu
+@@4 : Top Display & Right side
+@@5 : Region Color Picker
+@@6 : Logo Carousel
+@@7 : Logo Recolor Window
+@@8 : Logo Search Window
+@@9 : Hierarchy Menu
+@@10 : Colorgrabber
+@@11 : 360 View
+@@12 : Summary
+@@13 : Prompts & Download Window
+@@14 : Logo Recolor 2
+@@15 : User Account
+@@16 : Tutorial
+
+
+Black : rgb(0,0,0);
+Transparent Black: rgba(0,0,0,.7);
+Yellow : rgb(255,255,68)
+
+*/
+
+/* @@0 : General / Sections ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+@import url("/assets/font/proxima-nova-webfont.css");
+
+body {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+#nexu-configurator-module {
+    font-family: "proxima-nova" !important;
+    font-size: 16px;
+}
+/* Testing Only, do not deploy!!! */
+body, .container {
+    background-color: #f2f2f2;
+    /* width: 100% !important; */
+    /*max-width: 1272px;*/
+    padding-left: 0px;
+    padding-right: 0px;
+}
+/*
+#nexu-configurator-module ul {
+list-style: none;
+}*/
+
+#devTools button {
+    padding: 6px;
+    border: 1px solid black;
+    margin: 0 4px;
+}
+
+.row {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.nexu-ui {
+    position: relative;
+}
+
+.nexu-configurator {
+    position: relative;
+    width: 100%;
+    /*height: 610px;*/
+}
+
+#nexu-configurator {
+    position: relative;
+    width: 100%;
+    /*cm added*/
+    height: 100%;
+    /*height: 610px;*/
+}
+
+#configurator-container {
+    /*cm removed*/
+    /*position: absolute;*/
+    /*width: 100%;*/
+}
+
+#nexu-configurator-viewer {
+    position: relative;
+    /*margin-top: 48%;
+    transform: translateY(-50%);*/
+    text-align: center;
+}
+
+.initialHide {
+    visibility: hidden !important;
+}
+
+@media (min-width: 1200px) {
+    .container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 992px) {
+    .container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+    }
+}
+
+#nexu-ui-menu-bottom {
+    position: absolute;
+    bottom: 15px;
+    left: 0px;
+    width: 100%;
+    vertical-align: middle;
+    line-height: 6.429em;
+}
+#nexu-configurator svg, .mobile-configurator svg {
+    /*-webkit-filter: drop-shadow(4px 16px 8px rgba(0,0,0,0.5));
+    filter: drop-shadow(4px 16px 8px rgba(0,0,0,0.5));
+    -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=4, OffY=16, Color='#444')";*/
+}
+
+@media (min-width: 768px) {
+    #nexu-configurator svg {
+        display: block;
+        margin: auto;
+        -webkit-filter: drop-shadow(4px 16px 8px rgba(0,0,0,0.5));
+        filter: drop-shadow(4px 16px 8px rgba(0,0,0,0.5));
+        -ms-filter: "progid:DXImageTransform.Microsoft.Dropshadow(OffX=4, OffY=16, Color='#444')";
+    }
+
+    #nexu-ui-menu-bottom {
+        bottom: 0px;
+    }
+}
+
+
+.draggable {
+    cursor: pointer;
+}
+
+.drag-hide {
+    display: none !important;
+}
+
+.drag-clone {
+}
+
+.horizontal {
+    display: inline-block;
+}
+
+.vCenter {
+    vertical-align: middle;
+}
+
+.nexu-anchored {
+    position: absolute;
+}
+
+.nexu-anchored-fixed {
+    position: fixed;
+}
+
+.icon {
+    display: inline-block;
+    text-indent: 9999px;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.icon-10 {
+    zoom: .5;
+    -moz-transform: scale(.5);
+    -moz-transform-origin: 0 0;
+    width: 10px;
+    height: 10px;
+}
+
+.icon-20b-list1 {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -20px -40px no-repeat;
+}
+
+.icon-20b-dropper {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -60px 0 no-repeat;
+}
+
+.icon-20b-save {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -80px 0 no-repeat;
+}
+
+.icon-20b-share {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -60px -40px no-repeat;
+}
+
+.icon-20b-order {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) 0 -60px no-repeat;
+}
+
+.icon-20b-reset {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -20px 0 no-repeat;
+}
+
+.icon-20w-right {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -40px -100px no-repeat;
+}
+
+.icon-20w-left {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -60px -100px no-repeat;
+}
+
+.icon-20b-right {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -40px -20px no-repeat;
+}
+
+.icon-20b-left {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -60px -20px no-repeat;
+}
+
+.icon-20w-save {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -80px -80px no-repeat;
+}
+
+
+.icon-20b-close {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -80px -20px no-repeat;
+}
+
+.icon-20w-close {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -80px -100px no-repeat;
+}
+
+.icon-20b-menu {
+    height: 20px;
+    width: 20px;
+    background: url(/assets/img/sprite-icons-20.png) -40px -40px no-repeat;
+}
+
+.icon-40w-right {
+    height: 40px;
+    width: 40px;
+    background: url(/assets/img/sprite-icons-40.png) -80px -200px no-repeat;
+}
+
+.icon-40w-left {
+    height: 40px;
+    width: 40px;
+    background: url(/assets/img/sprite-icons-40.png) -120px -200px no-repeat;
+}
+
+.icon-40b-right {
+    height: 40px;
+    width: 40px;
+    background: url(/assets/img/sprite-icons-40.png) -80px -40px no-repeat;
+}
+
+.icon-40b-left {
+    height: 40px;
+    width: 40px;
+    background: url(/assets/img/sprite-icons-40.png) -120px -40px no-repeat;
+}
+
+.icon-40b-refresh {
+    height: 40px;
+    width: 40px;
+    background: url(/assets/img/sprite-icons-40.png) 0 0 no-repeat;
+}
+
+.icon-40b-menu {
+    height: 40px;
+    width: 40px;
+    background: url(/assets/img/sprite-icons-40.png) -80px -80px no-repeat;
+}
+
+.icon-40b-order {
+    height: 40px;
+    width: 40px;
+    background: url(/assets/img/sprite-icons-40.png) 0 -120px no-repeat;
+}
+
+.icon-40b-preview {
+    height: 40px;
+    width: 40px;
+    background: url(/assets/img/sprite-icons-40.png) -80px 0 no-repeat;
+}
+
+.icon-40b-close {
+    height: 40px;
+    width: 40px;
+    background: url(/assets/img/sprite-icons-40.png) -160px -40px no-repeat;
+}
+
+.icon-40b-check {
+    height: 40px;
+    width: 40px;
+    background: url(/assets/img/sprite-icons-40.png) 0 -80px no-repeat;
+}
+
+.icon-80b-refresh {
+    height: 80px;
+    width: 80px;
+    background: url(/assets/img/sprite-icons-80.png) 0 0 no-repeat;
+}
+
+.icon-80b-preview {
+    height: 80px;
+    width: 80px;
+    background: url(/assets/img/sprite-icons-80.png) -160px 0 no-repeat;
+}
+
+.nexu-ui {
+    min-height: 610px;
+}
+
+#nexu-buttons-order {
+    margin-right: -15px;
+    text-align: center;
+}
+
+#nexu-buttons-order a {
+    padding: 8px 14px;
+    display: inline-block;
+    background: rgba(0,0,0,.7);
+    color: #fff;
+    font-size: 1.25em;
+    border: 1px solid rgb(255,255,255);
+    text-transform: uppercase;
+}
+
+#nexu-buttons-order a:hover {
+    text-decoration: none;
+    border-color: rgb(255,255,68);
+}
+
+.k-Prompt {
+    background: #fff;
+}
+
+.k-PromptButtons {
+    text-align: center;
+    margin-top: 2px;
+    border-top: 1px solid #000;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.k-PromptButtons a {
+    margin-right: 4px;
+}
+
+.nexu-prompt-message {
+    margin-bottom: 12px;
+}
+
+.nexu-viewer-logo-btn {
+    height: 40px;
+    width: 40px;
+}
+
+#nexu-intitialize {
+    text-transform: uppercase;
+    color: rgb(180,180,180);
+    font-family: "proxima-nova";
+    font-size: 14px;
+    height: 100vh;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    text-align:center;
+}
+
+#nexu-intitialize .nx-init-msg {
+}
+
+#main .nx-user-desc img {
+    width: auto;
+    width: initial;
+    vertical-align: middle;
+}
+
+.force-border {
+    border: 4px solid #000 !important;
+}
+/*  End @@0 /*
+
+/* @@1 : Background / Wall Module ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+#nexu-background {
+    position: absolute;
+    width: 100%;
+    height: 610px;
+}
+
+#nexu-background-top {
+    position: absolute;
+    top: 0;
+    height: 415px;
+    width: 100%;
+    max-width: 1272px;
+    background-color: #000;
+    background-image: url(/assets/img/wall-default.jpg);
+    background-position: center;
+    background-repeat: none;
+}
+
+#nexu-background-bottom {
+    position: absolute;
+    bottom: 0;
+    height: 195px;
+    width: 100%;
+    max-width: 1272px;
+    background-image: url(/assets/img/wall-bottom.jpg);
+    background-position: center;
+    background-repeat: none;
+}
+
+#nexu-ui-wall-selector {
+    vertical-align: middle;
+    padding-left: 15px;
+}
+
+#nexu-ui-wall-selector .k-dropdown {
+    width: 82px;
+    height: 64px;
+    border-radius: 0px;
+    border: 2px solid #FFF !important;
+    background: none;
+}
+
+#nexu-ui-wall-selector .k-input {
+    padding: 0;
+    margin: 0;
+    text-indent: 0;
+    height: 64px;
+    width: 64px;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
+#nexu-ui-wall-selector .k-dropdown-wrap {
+    border: none;
+    border-radius: 0px;
+    padding: 0;
+}
+
+#nexu-ui-wall-selector .k-state-focused {
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+#nexu-ui-wall-selector .k-dropdown-wrap .k-select {
+    width: 16px;
+    line-height: 64px;
+}
+
+#nexu-wall-list {
+    width: 86px;
+    background: none;
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+}
+
+#nexu-wall-list .k-item {
+    height: 64px;
+    width: 64px;
+    padding: 0;
+    border-radius: 0px;
+    border: 2px solid #FFF;
+    margin: 2px;
+}
+
+#nexu-wall-list .k-item:hover {
+    border: 2px solid rgb(255,255,68);
+}
+
+/*  End @@1 /*
+
+/* @@2 : View Carousel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#nexu-ui-viewer-selector {
+    text-align: center;
+}
+
+#nexu-ui-viewer-selector ul {
+}
+
+#nexu-ui-viewer-selector > ul {
+    margin-bottom: 0;
+}
+
+#nexu-ui-viewer-selector li {
+    /*display: inline-block;*/
+    vertical-align: middle;
+    padding: 0.143em;
+    background: none;
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    cursor: pointer;
+}
+
+#nexu-ui-viewer-selector .k-listview li {
+    opacity: .7;
+}
+
+#nexu-ui-viewer-selector .k-listview li:hover {
+    opacity: 1;
+}
+
+#nexu-ui-viewer-selector .k-listview li.selected {
+    opacity: 1;
+}
+
+#nexu-ui-viewer-selector li img {
+    max-height: 6.429em;
+}
+
+#nexu-ui-viewer-selector li.viewer-mask {
+    /*cm removed*/
+    /*max-width: 80%; /*39.143em;*/*/
+    overflow: hidden;
+}
+
+#nexu-ui-viewer-selector li.viewer-mask .mCSB_horizontal.mCSB_inside > .mCSB_container {
+    margin-bottom: 12px;
+}
+
+#nexu-ui-viewer-selector .k-listview {
+    width: auto;
+    background: none;
+    border: none;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    white-space: nowrap;
+}
+
+.nexu-panel-static {
+    opacity: 1;
+    fill: #000000;
+    fill-opacity: 0;
+    stroke-opacity: 0;
+    visibility: visible;
+    stroke: rgba(0,0,0,.8);
+    stroke-width: 4;
+}
+
+
+.nexu-panel-active {
+    fill-opacity: 0;
+    stroke-opacity: .75;
+}
+
+
+.nexu-panel-hover {
+    fill-opacity: 0.5;
+}
+
+/*  End @@2 /*
+
+/* @@3 : Configurator Menu ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#nexu-ui-left, #nexu-ui-right {
+    color: #fff;
+    font-weight: bold;
+    text-shadow: 1px 1px #555;
+}
+
+#nexu-ui-left ul, #nexu-ui-right ul {
+    width: 100%;
+    margin-right: 15px;
+}
+
+#nexu-ui-left ul > li, #nexu-ui-right ul > li {
+    padding: 12px 0 12px 16px;
+    cursor: pointer;
+}
+
+#nexu-ui-left ul > li:hover, #nexu-ui-left ul li.active {
+    background: rgba(0,0,0,.7);
+    color: rgba(255,255,255,1);
+}
+
+/*  End @@3 /*
+
+/* @@4 : Top Display & Right Side ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+#nexu-ui-top {
+    padding-top: 15px;
+}
+
+#nexu-live-description {
+    font-size: 1.571em;
+    color: #FFF;
+    font-weight: bold;
+    text-transform: uppercase;
+    padding: 15px;
+}
+
+#nexu-product-description {
+    background-color: rgba(0,0,0,.7);
+    padding: 10px 10px 8px 10px;
+}
+
+#nexu-product-description > div {
+    padding: 5x 0;
+}
+
+#nexu-product-description p {
+    margin: 0;
+    color: #FFF;
+}
+
+#nexu-product-description .main {
+    margin: 0;
+    color: #FFF;
+    /*cm removed*/
+    /*font-size: 2em;*/
+    font-weight: bold;
+    line-height: 80%;
+}
+
+#nexu-product-description .sub {
+    margin: 0;
+    color: #FFF;
+    line-height: 100%;
+}
+
+#nexu-ui-right ul {
+    margin: 0px;
+    font-weight: normal;
+    color: rgba(51,51,51,1);
+    text-shadow: none;
+    font-size: .813em;
+    text-transform: uppercase;
+}
+
+#nexu-ui-right ul > li {
+    text-align: left;
+    padding: 8px 16px 8px 16px;
+    background: rgba(204,204,204,1);
+    /*cm removed*/
+    /*margin-top: 2px;*/
+}
+
+#nexu-ui-right ul > li > div {
+    display: table-row;
+}
+
+#nexu-ui-right ul > li:hover, #nexu-ui-right ul li.active {
+    background: rgba(18,211,248,1);
+    color: rgba(0,0,0,1);
+}
+
+#nexu-ui-right {
+    padding-right: 0px;
+    font-size: 13px;
+    overflow: hidden;
+}
+
+@media (min-width: 1029px) {
+    #nexu-ui-right {
+        font-size: 16px;
+    }
+}
+
+
+#nexu-ui-functions .icon {
+    /*margin-right:16px;*/
+    /*display:table-cell;*/
+}
+
+#nexu-ui-functions .nexu-label {
+    display: table-cell;
+    padding-left: 16px;
+}
+
+
+
+
+/*  End @@4 /*
+
+/* @@5 : Region Color Picker ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+#nexuColorWheel {
+    position: relative;
+    float: left;
+}
+
+#nexuWheelMenu {
+    color: white;
+    /* had to take this out, it was causing IE issues 
+pointer-events: none;
+*/
+}
+
+#nexuWheelMenu .icon {
+}
+
+#nexuWheelMenu .menu, #nexuWheelMenu .title {
+    pointer-events: auto;
+}
+
+#nexuWheelMenu .title {
+    text-transform: uppercase;
+    background: rgba(0,0,0,1);
+    color: rgba(18,211,248,1);
+    padding: 10px;
+    margin-bottom: 2px;
+}
+
+#nexuWheelMenu .title a, #nexuWheelMenu .title a:hover, #nexuWheelMenu .title a:visited {
+    text-decoration: none;
+    color: rgba(18,211,248,1);
+    font-weight: bold;
+}
+
+#nexuWheelMenu .menu li, #nexuColorPicker-ColorGrab, .nexu-logo-menu li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+#nexuWheelMenu .menu {
+    margin-bottom: 2px;
+}
+
+#nexuWheelMenu #nexuColorPicker-ChangeAll {
+    background: #FFF;
+    padding: 4px 8px;
+    color: rgb(30,30,30);
+    text-transform: uppercase;
+    font-style: italic;
+    pointer-events: auto;
+    font-size: .75em;
+    margin-bottom: 2px;
+}
+
+#nexuWheelPager, .nexu-menu-threads-pager {
+    padding: 4px;
+    background: rgba(0,0,0,.7);
+    color: white;
+}
+
+#nexuWheelMenu .k-listview, .nexu-logo-menu .k-listview {
+    background: none;
+    border: none;
+}
+
+#nexuWheelMenu .k-listview li, #nexuColorPicker-ColorGrab, .nexu-logo-menu li {
+    background: rgba(0,0,0,.7);
+    color: #c1c1c1;
+    margin-bottom: 2px;
+}
+
+#nexuWheelMenu .k-listview li.k-state-selected, .nexu-logo-menu .k-listview li.k-state-selected {
+    background: rgba(18,211,248,1);
+    color: #000;
+}
+
+#nexuWheelMenu .option, .nexu-logo-menu .option {
+    background: rgba(0,0,0,.7);
+    color: #c1c1c1;
+    padding: 10px;
+    margin-bottom: 2px;
+    pointer-events: auto;
+    cursor: pointer;
+}
+
+#nexuWheelMenu .k-pager-wrap > .k-link, .nexu-logo-menu .k-pager-wrap > .k-link {
+    float: none;
+}
+
+#nexuWheelMenu .k-pager-wrap, .nexu-logo-menu .k-pager-wrap {
+    background: none;
+    border: none;
+    color: #fff;
+    pointer-events: auto;
+}
+
+#nexuWheelMenu .pager.k-pager-wrap.k-widget:before,
+#nexuWheelMenu .pager.k-pager-wrap.k-widget:after,
+.nexu-logo-menu .pager.k-pager-wrap.k-widget:before,
+.nexu-logo-menu .pager.k-pager-wrap.k-widget:after {
+    content: none;
+}
+
+#nexuWheelMenu .pager .k-pager-info, .nexu-logo-menu .pager .k-pager-info {
+    font-size: .75em;
+}
+
+
+#nexuWheelMenu .k-listview li:hover, #nexuWheelMenu .option:hover, .nexu-logo-menu .k-listview li:hover {
+    color: rgba(18,211,248,1);
+}
+
+#nexuWheelMenu .k-listview li.k-state-selected:hover, #nexuWheelMenu .option.k-state-selected:hover, .nexu-logo-menu .k-listview li.k-state-selected:hover {
+    color: rgba(0,0,0,1);
+}
+
+
+#nexuColorWheel .nexu-wheel-wrap {
+    border: 2px solid #fff;
+    border-radius: 100%;
+    padding: 8px;
+}
+
+; .nexuColorPicker {
+    margin: 0 auto;
+    position: fixed;
+    pointer-events: none;
+}
+
+.nexuColorPicker_header {
+    max-width: 200px;
+    text-align: center;
+}
+
+.nexuColorPicker_pager, .nexuColorPicker_close {
+    pointer-events: auto;
+}
+
+.nexuColorPicker_pager a {
+    color: #fff;
+}
+
+.nexuColorPicker svg g {
+    pointer-events: visiblePainted;
+}
+
+.nexuColorPicker_container {
+    width: 200px;
+    height: 200px;
+}
+
+.nexuColorPicker_list {
+    width: 150px;
+    position: absolute;
+    right: 0;
+    padding: 5px;
+    background: white;
+    font-size: .875em;
+    pointer-events: auto;
+}
+
+.nexuColorPicker_list ul {
+    margin: 5px 0;
+}
+
+.nexuColorPicker_list li {
+    padding: 2px;
+}
+
+.nexuColorPicker_list li.active {
+    background: #a3a3a3;
+}
+
+#nexuWheelMenu .nx-colorlist-buttons {
+    float: right;
+}
+
+.nexuColorPicker_close {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 6px;
+    border: 1px solid #999;
+    background: white;
+    font-weight: bolder;
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 16px;
+    line-height: 10px;
+    font-family: Arial;
+    text-align: center;
+    cursor: pointer;
+}
+
+.nexuColorPicker_same {
+    font-size: .75em;
+}
+
+.nexuColorPicker_pager {
+    padding: 6px;
+    background: rgba(0,0,0,.7);
+    font-weight: bolder;
+    display: inline-block;
+    line-height: 12px;
+    font-family: Arial;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    margin: auto auto -5px;
+}
+
+.doughnutTip {
+    font-family: "Arial";
+    position: absolute;
+    float: left;
+    min-width: 30px;
+    max-width: 300px;
+    padding: 5px 15px;
+    border-radius: 1px;
+    background: rgba(255,255,255,1);
+    color: #999;
+    font-size: 14px;
+    text-shadow: 0 1px 0 #000;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.3;
+    letter-spacing: .06em;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.5);
+    transform: all .3s;
+    pointer-events: none;
+}
+
+.doughnutTip:after {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    content: "";
+    height: 0;
+    margin: -6px 0 0 -6px; /*border-right: 5px solid transparent;       border-top: 5px solid transparent;       border-right: 6px solid rgba(255,255,255,1);       border-left: 6px solid rgba(255,255,255,1);*/
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-right: 6px solid rgba(255,255,255,1);
+    line-height: 0;
+}
+
+.doughnutSummary {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    color: #d5d5d5;
+    text-align: center;
+    text-shadow: 0 -1px 0 #111;
+    cursor: default;
+}
+
+.doughnutSummaryTitle {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -27%;
+    font-size: 22px;
+    letter-spacing: .06em;
+}
+
+.doughnutSummaryNumber {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    margin-top: -15%;
+    font-size: 55px;
+}
+
+.nexuColorPicker_container path:hover {
+    opacity: .65;
+}
+
+.wheel-container svg {
+    position: absolute;
+}
+
+.wheel-description {
+    position: absolute;
+    pointer-events: none;
+}
+
+.nexu-wheel-label {
+    text-align: center;
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.donutColorTip {
+    padding: 4px;
+    display: block;
+    background-color: rgba(0,0,0,1);
+    color: #FFF;
+}
+
+/*  End @@5 /*
+
+/* @@6 : Logo Carousel ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+#nexu-logo-wheel {
+    /*width: 400px;             height: 400px;*/
+    position: absolute;
+}
+
+#nexu-logo-wheel .nexu-border {
+    border: 2px solid #fff; /*border-radius: 400px;*/
+    width: 100%;
+    height: 100%;
+}
+
+#nexu-logo-wheel .nexu-mask {
+    position: absolute;
+    overflow: hidden;
+    width: 100%;
+    height: 100%;
+}
+
+#nexu-logo-wheel .nexu-list {
+    /*width:1600px;*/
+    position: relative;
+}
+
+#nexu-logo-wheel .nexu-list-item {
+    display: inline-block;
+    text-align: center; /*width:400px;             height:400px;             line-height:400px;*/
+}
+
+#nexu-logo-wheel .nexu-list-item img {
+    vertical-align: middle;
+}
+
+#nexu-logo-wheel .nexu-list-item .img-wrap {
+    display: inline-block;
+}
+
+#nexu-logo-wheel .nexu-left {
+    cursor: pointer;
+    height: 100%;
+    width: 40px; /*line-height:400px;*/
+    position: absolute;
+    top: 0;
+    left: 20px;
+}
+
+#nexu-logo-wheel .nexu-right {
+    cursor: pointer;
+    height: 100%;
+    width: 40px; /*line-height:400px;*/
+    position: absolute;
+    top: 0;
+    right: 20px;
+}
+/*#nexu-logo-wheel .nexu-close, #nexuColorWheel .nexu-close { */
+.nexu-close {
+    width: 20px;
+    height: 20px;
+    padding: 4px;
+    background: #fff;
+    border: 1px solid #fff;
+    border-radius: 26px;
+    cursor: pointer;
+    box-sizing: content-box;
+    line-height: 16px;
+}
+
+#nexu-logo-wheel .nexu-close, #nexuColorWheel .nexu-close {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#nexu-logo-wheel .nexu-info-box {
+    position: absolute;
+    bottom: 10px;
+    text-align: center;
+    width: 100%;
+    font-size: 0.875em;
+}
+
+#nexu-logo-wheel .nexu-info-box > div {
+    width: 140px;
+    padding: .5em 1.125em;
+    background: rgba(0,0,0,.7);
+    font-weight: bold;
+    margin: 2px auto;
+}
+
+#nexu-logo-wheel .nexu-counter {
+    color: rgb(255,255,68);
+}
+
+#nexu-logo-wheel a, #nexu-logo-wheel a:hover, #nexu-logo-wheel a:visited {
+    color: rgb(255,255,255);
+    text-decoration: none;
+}
+/*#nexu-logo-location-menu { 
+position: absolute;
+top: 20px;
+text-align: center;
+width: 100%;
+font-size: 0.875em;}
+#nexu-logo-location-menu > div { display:inline;
+background-color:rgba(0,0,0,.7); color:#fff; cursor:pointer; padding:.5em .5em;}*/
+
+
+.nexu-viewer-logo-btn {
+    position: absolute;
+    /*padding: 8px 6px 8px 10px;*/
+    padding: 10px 8px 8px 8px;
+    border-radius: 20px;
+    background: #FFFFFF;
+    cursor: pointer;
+}
+
+.nexu-logo-edit {
+}
+
+
+
+/* END @@6 */
+
+
+/* @@7 : Logo Recolor Window ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+#nexu-logo-recolor {
+    position: fixed;
+    /*background:rgba(0,0,0,.7);*/
+    width: 100%;
+    top: 20px;
+    left: 0;
+}
+
+#nexu-logo-recolor > div {
+    position: relative;
+    width: 500px;
+    /*height:580px;*/
+    background: rgba(0,0,0,.7);
+    margin: auto;
+}
+
+#nexu-logo-recolor .nexu-top {
+    /*
+position:absolute;
+top:0;
+left:0;
+*/
+    width: 100%;
+}
+
+#nexu-logo-recolor .nexu-bottom {
+    /*
+position:absolute;
+bottom:0;
+left:0;
+*/
+    width: 100%;
+}
+
+#nexu-logo-recolor .nexu-bottom .split-panel {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#nexu-logo-recolor .nexu-bottom .nexu-left {
+    width: 60%;
+}
+
+#nexu-logo-recolor .nexu-bottom .nexu-right {
+    width: 40%;
+}
+
+#nexu-logo-recolor .nexu-container {
+    padding: 12px;
+}
+
+#nexu-logo-recolor .nexu-left .k-grid td, #nexu-logo-recolor .nexu-left .k-grid tr.k-state-selected {
+    background: black;
+    color: White;
+    cursor: pointer;
+    border: 2px solid transparent !important;
+}
+
+#nexu-logo-recolor .nexu-left .nexu-recolor-button {
+    text-align: center;
+    padding: .4em;
+}
+
+#nexu-logo-recolor .nexu-left .nexu-recolor-button:hover, #nexu-logo-recolor .nexu-left .nexu-recolor-button.selected {
+    background: rgba(18,211,248,1);
+    color: Black;
+}
+/*Section: Overrides of the kendo grid widget to allow for transparent border */
+/*#nexu-logo-recolor-list
+{
+background:none;
+border:none;
+}
+#nexu-logo-recolor-list.k-grid table
+{
+border-collapse:collapse;
+}*/
+
+#nexu-logo-recolor .nexu-top .nexu-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    cursor: pointer;
+    background: none;
+    border: none;
+}
+
+.nexu-notification {
+    color: red;
+    text-align: center;
+}
+
+#nexu-logo-preview {
+    position: absolute;
+    top: 0;
+    width: 500px;
+}
+
+#nexu-logo-preview img {
+    position: absolute;
+    max-width: 320px;
+    max-height: 320px;
+    width: auto;
+}
+
+.nexu-logo-wheel {
+    position: relative;
+}
+
+#nexu-logo-recolor-window > * {
+    line-height: 1.4285em;
+}
+
+/* END @@7 */
+
+
+/* @@8 : Logo Search Window ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+#nexu-logo-window .k-window-titlebar {
+    background: rgba(0,0,0,1);
+    border: none;
+    color: rgba(18,211,248,1);
+    border-radius: 0;
+}
+#nexu-logo-window {
+    background-color: rgba(0,0,0,.5);
+}
+.nexu-window-list {
+    background-color:rgb(0,0,0);
+}
+
+@media (min-width: 768px){
+.nexuLogoWindow.k-window, .k-listview, .k-widget {
+    background: none;
+    border: 0; /* !important;*/
+    -webkit-box-shadow: none;
+}
+
+.nexuLogoWindow.k-window {
+    border-radius: 0;
+    border: rgb(0,0,0);
+}
+#nexu-logo-window div.k-window-content {
+    padding: 0;
+    background: transparent;
+}
+
+#nexu-logo-window {
+    max-height: 400px;
+}
+
+#nexu-logo-window .nexu-window-container {
+    max-height: 400px;
+}
+
+#nexu-logo-window .nexu-window-list {
+    max-width: 640px;
+}
+
+    #nexu-logo-window .nexu-window-list li {
+        display: inline-block;
+        height: 100px;
+        width: 25%;
+        margin: 8px 0;
+        vertical-align: top;
+    }
+
+    #nexu-logo-window .nexu-window-list li span {
+        background-color: rgba(0,0,0,.7);
+        line-height: 100px;
+        height: 100%;
+        display: block;
+        margin: 0 6px;
+        padding: 5px;
+        text-align: center;
+    }
+
+    #nexu-logo-window .nexu-window-list li span img {
+        max-height: 94%;
+        max-width: 94%;
+        vertical-align: middle;
+    }
+}
+
+/* END @@8 */
+
+/* @@9 : Hierarchy Menu ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+#nexu-hierarchy, #nexu-logo-location-menu {
+    width: 300px;
+    position: absolute;
+    text-transform: uppercase;
+    font-size: .875em;
+    font-weight: bold;
+}
+
+#nexu-hierarchy li, #nexu-logo-location-menu li, #nexu-logo-location-menu .nexu-location-title, .nexu-hierarchy-continue {
+    background: rgba(0,0,0,.7);
+    color: #FFF;
+    margin-bottom: 2px;
+    cursor: pointer;
+    padding: 4px 16px;
+}
+
+#nexu-logo-location-menu .nexu-location-title {
+    color: rgb(255,255,68);
+}
+
+#nexu-hierarchy #nexu-hierarchy-parent {
+    margin: 0;
+}
+
+#nexu-hierarchy #nexu-hierarchy-parent li {
+    color: rgb(255,255,68);
+    background-color: rgba(0,0,0);
+}
+
+#nexu-hierarchy #nexu-hierarchy-parent span.btn-reset {
+    color: rgb(255,255,68);
+    margin-right: 8px;
+}
+
+#nexu-hierarchy .mask {
+    max-height: 250px;
+}
+
+#nexu-hierarchy #nexu-hierarchy-children li {
+}
+
+#nexu-hierarchy .nexu-close {
+    position: absolute;
+    top: -20px;
+    right: -20px;
+}
+/* END @@9 */
+
+/* @@10 : Colorgrabber ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+
+#nexuColorPicker-ColorGrab {
+    font-weight: bold;
+}
+
+#nexuColorPicker-ColorGrab a {
+    color: #FFF;
+    text-decoration: none;
+}
+
+.nexu-colorgrabber-window-container {
+    width: 100%;
+}
+
+#nexuColorPicker-ColorGrab {
+    pointer-events: all;
+}
+
+#nexu-colorgrab-window.k-window-content {
+    padding: 0;
+}
+
+#nexu-colorgrab-window .border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+#nexu-colorgrab-window .border > div {
+    border: 3px dashed rgb(255,255,68);
+    padding: 4px;
+}
+
+#nexu-colorgrab-window .border > div::after {
+    content: "";
+}
+
+#nexu-colorgrab-window .nexu-colorgrab-info {
+    text-transform: uppercase;
+    text-align: center;
+}
+
+#nexu-colorgrab-window .nexu-colorgrab-info .hd1 {
+    color: rgb(255,255,255);
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-top: 8px;
+}
+
+#nexu-colorgrab-window .nexu-colorgrab-info .hd2 {
+    color: rgb(255,255,68);
+    font-weight: bold;
+    font-size: 1.75em;
+    line-height: 40px;
+    vertical-align: top;
+}
+
+#nexu-colorgrab-window .nexu-colorgrab-info .hd2 img {
+    max-height: 40px;
+}
+
+#nexu-colorgrab-window .nexu-colorgrab-info .sb1 {
+    color: rgb(255,255,255);
+    font-size: .833em;
+    margin-top: 8px;
+}
+
+#nexu-colorgrab-window .nexu-colorgrab-info .sb2 {
+    color: rgb(204,204,204);
+    font-size: .75em;
+    bottom: 24px;
+}
+
+#nexu-colorgrab-window .k-upload-button {
+    color: rgb(255,255,68);
+    font-weight: bold;
+    font-size: 1.75em;
+}
+
+#nexu-colorgrab-window .k-upload-button:hover {
+    background: none;
+    border: none;
+}
+
+#nexu-colorgrab-window .k-upload-button.k-state-focused {
+    background: none;
+    border: none;
+    -webkit-box-shadow: none;
+}
+
+#nexu-colorgrab-window .k-dropzone {
+    height: 100%;
+    background: rgba(0,0,0,0);
+    padding: 0;
+}
+
+div.nexu-colorgrabber-window-container.k-window {
+    display: block;
+}
+
+#nexu-colorgrab-window .k-window, #nexu-colorgrab-window .k-listview, #nexu-colorgrab-window .k-widget {
+    background: none;
+    border: 0 !important;
+    -webkit-box-shadow: none;
+}
+
+#nexu-colorgrab-window .k-window {
+    border-radius: 0;
+    border: rgb(0,0,0);
+}
+
+#nexu-colorgrab-window .k-window-titlebar {
+    background: rgba(51,51,51,1);
+    border: none;
+    color: rgba(18,211,248,1);
+    border-radius: 0;
+}
+
+#nexu-colorgrab div.k-window-content {
+    padding: 0 0 36px 0;
+    background: rgba(51,51,51,1);
+}
+
+#nexu-colorgrab {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    /*background: rgba(51,51,51,1);*/
+    background: rgba(0,0,0,.9);
+}
+
+#nexu-colorgrab .image-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.dz-preview .dz-filename, .dz-preview .dz-size, .dz-preview .dz-progress, .dz-preview .dz-success-mark, .dz-preview .dz-error-mark, .dz-preview .dz-error-message {
+    display: none;
+}
+
+#nexu-colorgrab .image-container img {
+    max-width: 100%;
+    max-height: 100%;
+    opacity: .5;
+}
+
+#nexu-colorgrab div.content-sections {
+    display: table;
+    height: 100%;
+    width: 100%;
+    text-align: center;
+    color: #fff;
+    position: absolute;
+    /*margin: 10px;
+border: 3px dashed rgb(255,255,68);*/
+}
+
+#nexu-colorgrab div.table-row {
+    display: table-row;
+}
+
+#nexu-colorgrab .nexu-colorgrab-section {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+#nexu-colorgrab .nexu-colorgrab-top {
+    height: 25%;
+}
+
+#nexu-colorgrab .k-input {
+    padding: 4px;
+}
+
+#nexu-colorgrab .nexu-colorgrab-mid .nexu-colorgrab-section {
+}
+
+.vertical-top {
+    vertical-align: top;
+}
+
+.vertical-middle {
+    vertical-align: middle;
+}
+
+#nexu-colorgrab .nexu-colorgrab-bottom {
+    height: 25%;
+}
+
+.k-dropzone {
+    display: block;
+}
+
+.k-upload-button.k-button {
+    width: 100%;
+    background: none;
+    border: none;
+}
+
+.nexuUploadDropzone1 {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+.nexu-colorgrab-results ul {
+    margin: auto;
+}
+
+.nexu-colorgrab-results ul li {
+    display: inline-block;
+    margin: 1px;
+    vertical-align: top;
+}
+
+.nexu-colorgrabber-swatch {
+    width: 40px;
+    height: 40px;
+    border: 1px solid #000;
+}
+
+.nexu-colorgrabber-swatch:after {
+    content: "";
+}
+
+.nexu-colorgrab-upload {
+    width: 100%;
+    height: 100%;
+    display: table;
+}
+
+.nexu-colorgrab-upload > div {
+    display: table-row;
+}
+
+.nexu-colorgrab-upload > div form {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+li.nexu-colorgrabber-button {
+    height: 40px;
+    background-color: rgba(18,211,248,1);
+}
+
+li.nexu-colorgrabber-button a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: none;
+    padding: 0 4px;
+    line-height: 40px;
+    text-transform: uppercase;
+}
+
+#nexu-colorgrab .nexu-colorgrab-upload .dz-preview {
+    display: none;
+}
+
+#nexu-colorgrab .nexu-colorgrab-error {
+    color: Red;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+}
+
+@media (min-width: 720px) {
+    /*.mobile-only
+{
+display: none !important;
+}*/
+
+    .nexu-colorgrabber-window-container {
+        width: 720px;
+        height: auto;
+    }
+}
+
+@media (min-width: 720px) {
+    .nexu-colorgrabber-window-container > .k-window-titlebar {
+        margin-top: -31px !important;
+    }
+}
+
+#nexu-colorgrab .dz-clickable {
+    cursor: pointer;
+}
+
+/* END @@10 */
+
+
+
+/* @@11 : 360 View ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+#nexu-360-view {
+    background-color: rgba(0,0,0,.9);
+}
+
+#nexu-360-view.k-window-content {
+    padding: 0 37px 37px 37px;
+}
+
+.nexu-360-window.k-header {
+    border: none;
+    background-color: rgba(0,0,0,.9);
+}
+
+#nexu-360-view .loading {
+    position: absolute;
+    line-height: 100%;
+    text-align: center;
+}
+
+/* END @@11 */
+
+/* @@12 : Summary ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+
+#nexu-summary {
+    /*background:rgb(100,100,100);*/
+}
+
+#nexu-summary .item {
+    padding: 8px;
+    background: rgb(255,255,255);
+}
+
+#nexu-summary .summary-region-item {
+    margin: 2px 0;
+}
+
+#nexu-summary .colorswatch {
+    width: 16px;
+    height: 16px;
+    border: 1px solid black;
+    display: inline-block;
+    margin-right: 8px;
+    vertical-align: middle;
+    margin-left: 8px;
+}
+
+#nexu-summary b {
+    font-weight: bold;
+}
+
+#nexu-summary-right {
+    max-height: 420px;
+    overflow-y: scroll;
+}
+
+#nexu-summary > div {
+    clear: both;
+    padding: 8px 10px 0;
+}
+
+.nexu-summary-list li {
+    float: left;
+    width: 50%;
+}
+.nexu-summary-list.logos li {
+    float: none;
+    width: initial;
+}
+
+
+.nexu-summary-list li .nexu-lft {
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+
+.nexu-summary-list li .nexu-right {
+    display: inline-block;
+    vertical-align: middle;
+    padding: 0 10px 0;
+}
+
+.nexu-summary-list li p {
+    margin-bottom: 8px;
+}
+
+.nexu-summary-list li p.nexu-summary-name {
+    margin-top: 8px;
+    font-weight: bold;
+}
+
+.nexu-summary-list .nexu-summary-swatch {
+    background-color: red;
+    border: 1px solid black;
+    width: 36px;
+    height: 36px;
+}
+
+.nexu-summary-tabs li {
+    text-align: center;
+    margin: 5px 0;
+}
+
+.nexu-summary-logo-preview {
+    text-align: center;
+    width: 100%;
+    height: 100px;
+vertical-align:middle;
+    /*float: left;*/
+    position: relative;
+    background-color: #c9c9c9;
+    text-align: center;
+}
+
+.nexu-summary-logo-preview > .nexu-logo-preview {
+    display: inline-block;
+}
+
+.nexu-summary-logo-preview img {
+    max-width: 100px;
+    max-height: 100px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+
+
+
+
+/* END @@12 */
+
+
+/* @@13 : Download Window ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ */
+.nexu-modal-window, .nexu-window {
+    background: rgba(0,0,0,.8);
+    color: #ffffff;
+}
+
+div.k-window-content.nexu-modal-window {
+    padding: 2px 30px 28px;
+    border-width: 0;
+}
+
+div.nexu-window {
+    padding: 0.625em;
+}
+
+.nexu-window > div {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.nexu-modal-window h2, .nexu-window h2 {
+    margin-top: 0;
+    font-size: 30px;
+}
+
+.nexu-modal-window h3 {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 24px;
+}
+
+.nexu-modal-window ul {
+    margin-top: 0;
+    margin-bottom: 10px;
+}
+
+.nexu-download-title, .nexu-prompt-title {
+    background: rgba(0,0,0,.8);
+    border: none;
+}
+
+.nexu-modal-window .fLeft {
+    float: left;
+    padding: 10px;
+}
+
+.nexu-modal-window .tCenter {
+    text-align: center;
+}
+
+.nexu-modal-window .clearBoth {
+    clear: both;
+}
+
+.nexu-modal-window .clearBoth::before {
+    content: "";
+}
+
+.nexu-prompt-buttons {
+    text-align: center;
+}
+
+.nexu-window input {
+    color: #000;
+}
+
+#nexu-download-modes li {
+    display: inline-block;
+}
+
+#nexu-download-modes li a.selected {
+    -webkit-box-shadow: 0 0 2px 2px rgba(18,211,248,1);
+    box-shadow: 0 0 2px 2px rgba(18,211,248,1);
+}
+
+.nexu-modal-window input {
+    padding: 8px;
+    margin-right: 8px;
+}
+
+.nexu-list-tags {
+    color: #fff;
+    font-weight: bold;
+}
+
+.nexu-list-tags li {
+    float: left;
+    margin: 0 6px 6px 0;
+}
+
+.nexu-btn-remove-tag {
+    padding: 0 6px;
+}
+
+#nexu-colorgrab-window {
+    background: none;
+}
+
+.colorgrab-label {
+    color: rgba(18,211,248,1);
+    font-weight: bold;
+    font-size: 1.25em;
+}
+
+
+/* END @@13 */
+
+/* @@14 : Logo Recolor v2 */
+.nexu-menu-layers .nexu-recolor-button {
+    color: #c1c1c1;
+}
+
+.nexu-menu-layers tr.k-state-selected .nexu-recolor-button {
+    color: #000000;
+}
+
+#nexu-logo-recolor-window {
+    position: fixed;
+    z-index: 9999;
+}
+
+#nexu-logo-recolor-window img {
+    width: auto;
+}
+
+.nexu-logo-recolor-window > div {
+    height: 100%;
+    float: left;
+    text-align: center;
+}
+
+.nexu-logo-recolor-window div.nexu-logorecolor-left, div.nexu-logorecolor-right {
+    font-size: 13px;
+    width: 180px;
+    position: relative;
+}
+
+.nexu-logo-recolor-window div.nexu-logorecolor-right {
+    text-align: left;
+}
+
+@media (min-width: 769px) {
+    .nexu-logo-recolor-window div.nexu-logorecolor-left, div.nexu-logorecolor-right {
+        width: 210px;
+    }
+}
+
+@media (min-width: 1029px) {
+    .nexu-logo-recolor-window div.nexu-logorecolor-left, div.nexu-logorecolor-right {
+        width: 250px;
+        font-size: 16px;
+    }
+}
+
+
+
+
+
+
+div.nexu-logorecolor-left .wrapper, div.nexu-logorecolor-right .wrapper {
+    position: absolute;
+}
+
+div.nexu-logorecolor-left .wrapper {
+    right: 0;
+}
+
+div.nexu-logorecolor-right .wrapper {
+    left: 0;
+}
+
+.nexu-logo-recolor-window div.nexu-middle {
+    vertical-align: middle;
+}
+
+.nexu-logo-recolor-window div.nexu-logorecolor-left > *, div.nexu-logorecolor-right > * {
+    display: inline-block;
+    line-height: initial;
+    padding: 4px;
+    margin-right: 5px;
+    vertical-align: middle;
+    width: 100%;
+}
+
+.nexu-logo-recolor-window div.nexu-logorecolor-left .nexu-menu-layers {
+    background-color: rgba(0,0,0,.7);
+}
+
+.nexu-logo-recolor-window div.wheel-panel {
+    float: left;
+    background: green;
+    /*margin: 8px;*/
+}
+
+.nexu-logo-recolor-window div.wheel-left {
+    border-radius: 600px 0 0 600px;
+    -moz-border-radius: 600px 0 0 600px;
+    -webkit-border-radius: 600px 0 0 600px;
+    background-color: maroon;
+    margin-right: 0 !important;
+}
+
+.nexu-logo-recolor-window div.wheel-right {
+    border-radius: 0 600px 600px 0;
+    -moz-border-radius: 0 600px 600px 0;
+    -webkit-border-radius: 0 600px 600px 0;
+    margin-left: 0 !important;
+}
+
+.nexu-logo-recolor-window .nexu-middle > div {
+    position: absolute;
+}
+
+.nexu-logo-recolor-window .nexu-logo-preview img {
+    position: absolute;
+}
+
+.nexu-logo-recolor-window .nexu-logo-preview {
+    position: absolute;
+}
+
+.nexu-logo-recolor-window .nexu-logo-menu .k-listview {
+    margin-bottom: 0;
+}
+
+.nexu-logo-recolor-window .nexu-logo-layers .title, .nexu-logo-menu .title {
+    padding: 10px;
+    background-color: rgb(0,0,0);
+    color: rgb(255,255,68);
+    text-align: left;
+    margin-bottom: 2px;
+}
+
+.nexu-logo-recolor-window .nexu-logo-layers tr {
+    cursor: pointer;
+}
+
+.nexu-logo-recolor-window .nexu-middle .buttons {
+    line-height: initial;
+}
+
+.nexu-logo-recolor-window .nexu-middle .buttons > div {
+    background-color: #fff;
+    border-radius: 80px;
+    padding: 10px;
+    cursor: pointer;
+    position: absolute;
+}
+
+.nexu-logo-recolor-window .nexu-middle .buttons .nexu-btn-confirm {
+}
+
+.nexu-logo-recolor-window .nexu-middle .buttons .nexu-btn-cancel {
+    right: 0;
+}
+
+#nexu-logo-overlay {
+    background-color: rgba(0,0,0,.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.nexu-logo-recolor-window .logo-colorwheel-container svg path {
+    cursor: pointer;
+}
+
+#nexu-loader img {
+    opacity: 0.8;
+    margin-right: 8px;
+    width: 30px;
+}
+
+#nexu-loader {
+    font-weight: bold;
+    color: #fff;
+    font-size: 1.25em;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+    top: 0;
+    left: 0;
+    line-height: 30px;
+    vertical-align: middle;
+    padding-top: 12px;
+}
+
+/* END @@14 */
+
+/* @@15 : User Manager */
+
+
+.nexu-user-panel {
+    width: 380px;
+}
+
+.nx-lg-row {
+    margin-bottom: 4px;
+}
+
+.nexu-login, .nexu-register, .nexu-logout {
+    padding: 10px;
+}
+@media (min-width:768px){
+    .nexu-login, .nexu-register, .nexu-logout {
+        padding: 40px;
+    }
+}
+.nexu-login {
+}
+
+.nexu-login-bottom {
+    margin-top: 12px;
+    text-align: center;
+}
+
+.nexu-login-label {
+}
+
+.nexu-login-input {
+}
+
+.nexu-login-input input {
+    padding: 8px;
+    width: 100%;
+}
+
+.nexu-register {
+}
+
+.nexu-login-fail {
+    color: red;
+    display: none;
+}
+
+#nexu-user-panel {
+    background-color: #FFF;
+    /*border:4px solid #000;*/
+    /*position:absolute;*/
+    font-size: 10pt;
+    margin: 20px auto;
+    /*top: 10px; left:10px;*/
+}
+
+.nexu-user-panel a:not(.k-button) {
+    color: #000;
+}
+
+.nexu-user-panel a:not(.k-button) {
+    text-decoration: underline;
+}
+
+.nx-user-desc a {
+    font-weight: bold;
+    color: #fff;
+}
+
+.nx-user-desc a:hover {
+    text-decoration: none;
+}
+
+.nexu-tutorial-tip {
+    background-color: #FFF;
+    padding: 8px;
+    color: rgb(100,100,100);
+    max-width: 200px;
+    position: fixed;
+    pointer-events: none;
+}
+
+.nexu-tutorial-tip.k-widget.k-tooltip .k-tooltip-content {
+    white-space: normal;
+}
+
+/* END @@15 */
+
+
+/* @@16 : Tutorial */
+.nx-tutorial {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background: rgba(0,0,0,.5);
+}
+
+.nx-tutorial-item {
+    position: absolute;
+    font-size: .8333em;
+    max-width: 200px;
+}
+
+.nx-tutorial-text {
+    background-color: #FFF;
+    padding: 12px;
+}
+
+.nx-tutorial-callout {
+    border-width: 20px;
+}
+
+.nx-tutorial-callout.k-callout-n {
+    border-bottom-color: #FFFFFF;
+    top: -40px;
+    left: 44%;
+}
+
+.nx-tutorial-callout.k-callout-w {
+    border-right-color: #FFFFFF;
+    left: -40px;
+    top: 44%;
+}
+
+.nx-tutorial-callout.k-callout-s {
+    border-top-color: #FFFFFF;
+    bottom: -40px;
+    left: 44%;
+}
+
+.nx-tutorial-callout.k-callout-e {
+    border-left-color: #FFFFFF;
+    right: -40px;
+    top: 44%;
+}
+
+.nx-tutorial-controls {
+    background: rgb(255,255,255);
+    position: absolute;
+    padding: 28px 40px;
+    text-align: center;
+    border: 4px solid #000;
+}
+
+a.nx-tutorial-close {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+/* END @@16 */
+
+.no-events{
+	pointer-events:none !important;
+}
+
+.nx-colorlist-buttons a { color:#FFF; }
+
+
+.nexu-summary-list.logos {
+}
+#nexu-summary {
+    overflow-x: hidden;
+}
+#nexu-summary .row {
+    margin-right: -15px;
+    margin-left: -15px;
+    box-sizing:border-box;
+    padding:0;
+}
+#nexu-summary * {
+    box-sizing:border-box;
+}
+.show-scroll-content {
+    overflow:visible !important;
+}
+#nexu-summary-temp {
+}

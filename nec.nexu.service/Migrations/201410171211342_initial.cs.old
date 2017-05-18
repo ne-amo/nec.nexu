@@ -1,0 +1,775 @@
+namespace nec.nexu.Migrations
+{
+    using System;
+    using System.Data.Entity.Migrations;
+    
+    public partial class initial : DbMigration
+    {
+        public override void Up()
+        {
+           // this.Down();
+            CreateTable(
+                "dbo.ApiAuthorizeKeys",
+                c => new
+                    {
+                        ApplicationName = c.String(nullable: false, maxLength: 128),
+                        IPAddress = c.String(nullable: false, maxLength: 128),
+                        Key = c.String(nullable: false, maxLength: 128),
+                    })
+                .PrimaryKey(t => new { t.ApplicationName, t.IPAddress, t.Key });
+            
+            CreateTable(
+                "dbo.ColorLists",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        DisplayName = c.String(),
+                        Active = c.Boolean(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.Materials",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Hex = c.String(),
+                        DisplayName = c.String(),
+                        Pms = c.String(),
+                        Hue = c.Double(nullable: false),
+                        Saturation = c.Double(nullable: false),
+                        Brightness = c.Double(nullable: false),
+                        Opacity = c.Double(nullable: false),
+                        SortOrder = c.Int(),
+                        BlendMode = c.Int(nullable: false),
+                        TextColor = c.String(),
+                        Active = c.Boolean(),
+                        FabricContent_Id = c.Int(),
+                        Pattern_Id = c.Int(),
+                        TrueView_Id = c.Int(),
+                        ColorList_Id = c.Int(),
+                        ConfiguratorDirectLink_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.FabricContentTypes", t => t.FabricContent_Id)
+                .ForeignKey("dbo.Patterns", t => t.Pattern_Id)
+                .ForeignKey("dbo.ImageFiles", t => t.TrueView_Id)
+                .ForeignKey("dbo.ColorLists", t => t.ColorList_Id)
+                .ForeignKey("dbo.ConfiguratorDirectLinks", t => t.ConfiguratorDirectLink_Id)
+                .Index(t => t.FabricContent_Id)
+                .Index(t => t.Pattern_Id)
+                .Index(t => t.TrueView_Id)
+                .Index(t => t.ColorList_Id)
+                .Index(t => t.ConfiguratorDirectLink_Id);
+            
+            CreateTable(
+                "dbo.FabricContentTypes",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        FccCode = c.String(),
+                        DisplayName = c.String(),
+                        Active = c.Boolean(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.DesignColors",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Hex = c.String(),
+                        DisplayName = c.String(),
+                        Pms = c.String(),
+                        Hue = c.Double(nullable: false),
+                        Saturation = c.Double(nullable: false),
+                        Brightness = c.Double(nullable: false),
+                        Opacity = c.Double(nullable: false),
+                        SortOrder = c.Int(),
+                        BlendMode = c.Int(nullable: false),
+                        TextColor = c.String(),
+                        Active = c.Boolean(),
+                        Material_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Materials", t => t.Material_Id)
+                .Index(t => t.Material_Id);
+            
+            CreateTable(
+                "dbo.Patterns",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Active = c.Boolean(),
+                        Thumbnail_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ImageFiles", t => t.Thumbnail_Id)
+                .Index(t => t.Thumbnail_Id);
+            
+            CreateTable(
+                "dbo.ImageFiles",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        DisplayName = c.String(),
+                        FilePath = c.String(),
+                        ThumbnailPath = c.String(),
+                        HeightPx = c.Int(nullable: false),
+                        WidthPx = c.Int(nullable: false),
+                        Active = c.Boolean(),
+                        ImageType_Id = c.Int(),
+                        Pattern_Id = c.Int(),
+                        ProductTemplate_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ImageTypes", t => t.ImageType_Id)
+                .ForeignKey("dbo.Patterns", t => t.Pattern_Id)
+                .ForeignKey("dbo.ProductTemplates", t => t.ProductTemplate_Id)
+                .Index(t => t.ImageType_Id)
+                .Index(t => t.Pattern_Id)
+                .Index(t => t.ProductTemplate_Id);
+            
+            CreateTable(
+                "dbo.ImageTypes",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        DisplayName = c.String(),
+                        Suffix = c.String(),
+                        Default = c.Boolean(nullable: false),
+                        SortOrder = c.Int(),
+                        ConfiguratorTemplate = c.Boolean(nullable: false),
+                        Active = c.Boolean(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.ConfiguratorDirectLinks",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Guid = c.Guid(nullable: false),
+                        CreateDate = c.DateTime(nullable: false),
+                        DisplayName = c.String(),
+                        Description = c.String(),
+                        TemplateId = c.Int(),
+                        ProductId = c.Int(),
+                        ColorListId = c.Int(),
+                        Active = c.Boolean(),
+                        CompletedProduct_Id = c.Int(),
+                        Creator_Id = c.String(maxLength: 128),
+                        DesignHierarchy_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ColorLists", t => t.ColorListId)
+                .ForeignKey("dbo.FinishedProducts", t => t.CompletedProduct_Id)
+                .ForeignKey("dbo.ApplicationUsers", t => t.Creator_Id)
+                .ForeignKey("dbo.Hierarchies", t => t.DesignHierarchy_Id)
+                .ForeignKey("dbo.ProductTemplates", t => t.TemplateId)
+                .Index(t => t.TemplateId)
+                .Index(t => t.ColorListId)
+                .Index(t => t.CompletedProduct_Id)
+                .Index(t => t.Creator_Id)
+                .Index(t => t.DesignHierarchy_Id);
+            
+            CreateTable(
+                "dbo.FinishedProducts",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        DisplayName = c.String(),
+                        MaterialId = c.Int(),
+                        Guid = c.Guid(nullable: false),
+                        DateCreated = c.DateTime(nullable: false),
+                        DateModified = c.DateTime(nullable: false),
+                        Published = c.Boolean(nullable: false),
+                        Featured = c.Boolean(nullable: false),
+                        Active = c.Boolean(),
+                        BackgroundImage_Id = c.Int(),
+                        Creator_Id = c.String(maxLength: 128),
+                        Template_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ImageFiles", t => t.BackgroundImage_Id)
+                .ForeignKey("dbo.ApplicationUsers", t => t.Creator_Id)
+                .ForeignKey("dbo.ProductTemplates", t => t.Template_Id)
+                .Index(t => t.BackgroundImage_Id)
+                .Index(t => t.Creator_Id)
+                .Index(t => t.Template_Id);
+            
+            CreateTable(
+                "dbo.ApplicationUsers",
+                c => new
+                    {
+                        Id = c.String(nullable: false, maxLength: 128),
+                        FirstName = c.String(),
+                        LastName = c.String(),
+                        Nickname = c.String(),
+                        Email = c.String(),
+                        EmailConfirmed = c.Boolean(nullable: false),
+                        PasswordHash = c.String(),
+                        SecurityStamp = c.String(),
+                        PhoneNumber = c.String(),
+                        PhoneNumberConfirmed = c.Boolean(nullable: false),
+                        TwoFactorEnabled = c.Boolean(nullable: false),
+                        LockoutEndDateUtc = c.DateTime(),
+                        LockoutEnabled = c.Boolean(nullable: false),
+                        AccessFailedCount = c.Int(nullable: false),
+                        UserName = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.IdentityUserClaims",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        UserId = c.String(),
+                        ClaimType = c.String(),
+                        ClaimValue = c.String(),
+                        ApplicationUser_Id = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ApplicationUsers", t => t.ApplicationUser_Id)
+                .Index(t => t.ApplicationUser_Id);
+            
+            CreateTable(
+                "dbo.IdentityUserLogins",
+                c => new
+                    {
+                        UserId = c.String(nullable: false, maxLength: 128),
+                        LoginProvider = c.String(),
+                        ProviderKey = c.String(),
+                        ApplicationUser_Id = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => t.UserId)
+                .ForeignKey("dbo.ApplicationUsers", t => t.ApplicationUser_Id)
+                .Index(t => t.ApplicationUser_Id);
+            
+            CreateTable(
+                "dbo.IdentityUserRoles",
+                c => new
+                    {
+                        RoleId = c.String(nullable: false, maxLength: 128),
+                        UserId = c.String(nullable: false, maxLength: 128),
+                        ApplicationUser_Id = c.String(maxLength: 128),
+                        IdentityRole_Id = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => new { t.RoleId, t.UserId })
+                .ForeignKey("dbo.ApplicationUsers", t => t.ApplicationUser_Id)
+                .ForeignKey("dbo.IdentityRoles", t => t.IdentityRole_Id)
+                .Index(t => t.ApplicationUser_Id)
+                .Index(t => t.IdentityRole_Id);
+            
+            CreateTable(
+                "dbo.FinishedDesigns",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Active = c.Boolean(),
+                        DesignColorway_Id = c.Int(),
+                        Location_Id = c.Int(),
+                        FinishedProduct_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.DesignColorways", t => t.DesignColorway_Id)
+                .ForeignKey("dbo.DesignLocations", t => t.Location_Id)
+                .ForeignKey("dbo.FinishedProducts", t => t.FinishedProduct_Id)
+                .Index(t => t.DesignColorway_Id)
+                .Index(t => t.Location_Id)
+                .Index(t => t.FinishedProduct_Id);
+            
+            CreateTable(
+                "dbo.DesignColorways",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Active = c.Boolean(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.DesignLayers",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        DisplayName = c.String(),
+                        Code = c.String(),
+                        SortOrder = c.Int(nullable: false),
+                        Recolorable = c.Boolean(nullable: false),
+                        ImageDataId = c.Int(nullable: false),
+                        Rule = c.String(),
+                        Active = c.Boolean(),
+                        Color_Id = c.Int(),
+                        LayerFile_Id = c.Int(),
+                        DesignColorway_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.DesignColors", t => t.Color_Id)
+                .ForeignKey("dbo.ImageFiles", t => t.LayerFile_Id)
+                .ForeignKey("dbo.DesignColorways", t => t.DesignColorway_Id)
+                .Index(t => t.Color_Id)
+                .Index(t => t.LayerFile_Id)
+                .Index(t => t.DesignColorway_Id);
+            
+            CreateTable(
+                "dbo.LayerRules",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Field = c.String(),
+                        Operator = c.String(),
+                        Value = c.String(),
+                        Active = c.Boolean(),
+                        DesignLayer_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.DesignLayers", t => t.DesignLayer_Id)
+                .Index(t => t.DesignLayer_Id);
+            
+            CreateTable(
+                "dbo.DesignLocations",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        TemplateViewId = c.Int(nullable: false),
+                        Description = c.String(),
+                        DisplayName = c.String(),
+                        Code = c.String(),
+                        SortOrder = c.Int(),
+                        Active = c.Boolean(),
+                        ProductTemplate_Id = c.Int(),
+                        Design_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ProductTemplates", t => t.ProductTemplate_Id)
+                .ForeignKey("dbo.Designs", t => t.Design_Id)
+                .Index(t => t.ProductTemplate_Id)
+                .Index(t => t.Design_Id);
+            
+            CreateTable(
+                "dbo.FinishedProductImages",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        DisplayName = c.String(),
+                        FilePath = c.String(),
+                        Active = c.Boolean(),
+                        ImageType_Id = c.Int(),
+                        FinishedProduct_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ImageTypes", t => t.ImageType_Id)
+                .ForeignKey("dbo.FinishedProducts", t => t.FinishedProduct_Id)
+                .Index(t => t.ImageType_Id)
+                .Index(t => t.FinishedProduct_Id);
+            
+            CreateTable(
+                "dbo.Inspirations",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        IpAddress = c.String(),
+                        Active = c.Boolean(),
+                        FinishedProduct_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.FinishedProducts", t => t.FinishedProduct_Id)
+                .Index(t => t.FinishedProduct_Id);
+            
+            CreateTable(
+                "dbo.FinishedRegions",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Active = c.Boolean(),
+                        Material_Id = c.Int(),
+                        Region_Id = c.Int(),
+                        FinishedProduct_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Materials", t => t.Material_Id)
+                .ForeignKey("dbo.ProductRegions", t => t.Region_Id)
+                .ForeignKey("dbo.FinishedProducts", t => t.FinishedProduct_Id)
+                .Index(t => t.Material_Id)
+                .Index(t => t.Region_Id)
+                .Index(t => t.FinishedProduct_Id);
+            
+            CreateTable(
+                "dbo.ProductRegions",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        DisplayName = c.String(),
+                        Code = c.String(),
+                        EnableClick = c.Boolean(nullable: false),
+                        Active = c.Boolean(),
+                        ProductRegionGroup_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ProductRegionGroups", t => t.ProductRegionGroup_Id)
+                .Index(t => t.ProductRegionGroup_Id);
+            
+            CreateTable(
+                "dbo.ProductTemplates",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Guid = c.Guid(nullable: false),
+                        DisplayName = c.String(),
+                        SortOrderLogo = c.Int(nullable: false),
+                        Active = c.Boolean(),
+                        DefaultMaterial_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Materials", t => t.DefaultMaterial_Id)
+                .Index(t => t.DefaultMaterial_Id);
+            
+            CreateTable(
+                "dbo.ProductRegionGroups",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        DisplayName = c.String(),
+                        Label = c.String(),
+                        SortOrder = c.Int(nullable: false),
+                        ForceGroup = c.Boolean(nullable: false),
+                        AllowMatching = c.Boolean(nullable: false),
+                        AllowRecolorAll = c.Boolean(nullable: false),
+                        TemplateViewId = c.Int(nullable: false),
+                        Active = c.Boolean(),
+                        ProductTemplate_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ProductTemplates", t => t.ProductTemplate_Id)
+                .Index(t => t.ProductTemplate_Id);
+            
+            CreateTable(
+                "dbo.TemplateViews",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        DisplayName = c.String(),
+                        SortOrder = c.Int(nullable: false),
+                        SvgContent = c.String(),
+                        Active = c.Boolean(),
+                        ProductTemplate_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ProductTemplates", t => t.ProductTemplate_Id)
+                .Index(t => t.ProductTemplate_Id);
+            
+            CreateTable(
+                "dbo.TemplateImages",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Code = c.String(),
+                        xPos = c.Single(nullable: false),
+                        yPos = c.Single(nullable: false),
+                        Width = c.Single(nullable: false),
+                        Height = c.Single(nullable: false),
+                        FilePath = c.String(),
+                        ImageDataId = c.Int(nullable: false),
+                        Active = c.Boolean(),
+                        TemplateView_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.TemplateViews", t => t.TemplateView_Id)
+                .Index(t => t.TemplateView_Id);
+            
+            CreateTable(
+                "dbo.UserProductLikes",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        IpAddress = c.String(),
+                        Active = c.Boolean(),
+                        FinishedProduct_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.FinishedProducts", t => t.FinishedProduct_Id)
+                .Index(t => t.FinishedProduct_Id);
+            
+            CreateTable(
+                "dbo.UserProductViews",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        IpAddress = c.String(),
+                        Active = c.Boolean(),
+                        FinishedProduct_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.FinishedProducts", t => t.FinishedProduct_Id)
+                .Index(t => t.FinishedProduct_Id);
+            
+            CreateTable(
+                "dbo.Hierarchies",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        DisplayName = c.String(),
+                        Active = c.Boolean(),
+                        ParentHierarchy_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Hierarchies", t => t.ParentHierarchy_Id)
+                .Index(t => t.ParentHierarchy_Id);
+            
+            CreateTable(
+                "dbo.Designs",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        DisplayName = c.String(),
+                        Description = c.String(),
+                        TapeNumber = c.String(),
+                        HierarchyId = c.Int(nullable: false),
+                        SortOrder = c.Int(nullable: false),
+                        HeightPixel = c.Int(nullable: false),
+                        WidthPixel = c.Int(nullable: false),
+                        Active = c.Boolean(),
+                        DefaultColorway_Id = c.Int(),
+                        OfficialColorway_Id = c.Int(),
+                        OfficialImage_Id = c.Int(),
+                        ConfiguratorDirectLink_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.DesignColorways", t => t.DefaultColorway_Id)
+                .ForeignKey("dbo.DesignColorways", t => t.OfficialColorway_Id)
+                .ForeignKey("dbo.ImageFiles", t => t.OfficialImage_Id)
+                .ForeignKey("dbo.ConfiguratorDirectLinks", t => t.ConfiguratorDirectLink_Id)
+                .Index(t => t.DefaultColorway_Id)
+                .Index(t => t.OfficialColorway_Id)
+                .Index(t => t.OfficialImage_Id)
+                .Index(t => t.ConfiguratorDirectLink_Id);
+            
+            CreateTable(
+                "dbo.CustomBackgrounds",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        FilePath = c.String(),
+                        ProductTemplateId = c.String(),
+                        HierarchyId = c.String(),
+                        Active = c.Boolean(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.FaceOffs",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Title = c.String(),
+                        Description = c.String(),
+                        DisplayName = c.String(),
+                        StartDate = c.DateTime(nullable: false),
+                        EndDate = c.DateTime(nullable: false),
+                        Creator = c.String(),
+                        CreateDate = c.DateTime(nullable: false),
+                        Active = c.Boolean(),
+                        FinishedProductA_Id = c.Int(),
+                        FinishedProductB_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.FinishedProducts", t => t.FinishedProductA_Id)
+                .ForeignKey("dbo.FinishedProducts", t => t.FinishedProductB_Id)
+                .Index(t => t.FinishedProductA_Id)
+                .Index(t => t.FinishedProductB_Id);
+            
+            CreateTable(
+                "dbo.FaceoffVotes",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        IpAddress = c.String(),
+                        Active = c.Boolean(),
+                        FaceOff_Id = c.Int(),
+                        FaceOff_Id1 = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.FaceOffs", t => t.FaceOff_Id)
+                .ForeignKey("dbo.FaceOffs", t => t.FaceOff_Id1)
+                .Index(t => t.FaceOff_Id)
+                .Index(t => t.FaceOff_Id1);
+            
+            CreateTable(
+                "dbo.IdentityRoles",
+                c => new
+                    {
+                        Id = c.String(nullable: false, maxLength: 128),
+                        Name = c.String(),
+                    })
+                .PrimaryKey(t => t.Id);
+            
+            CreateTable(
+                "dbo.UserColorLists",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Active = c.Boolean(),
+                        ColorList_Id = c.Int(),
+                        Creator_Id = c.String(maxLength: 128),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.ColorLists", t => t.ColorList_Id)
+                .ForeignKey("dbo.ApplicationUsers", t => t.Creator_Id)
+                .Index(t => t.ColorList_Id)
+                .Index(t => t.Creator_Id);
+            
+        }
+        
+        public override void Down()
+        {
+            DropForeignKey("dbo.UserColorLists", "Creator_Id", "dbo.ApplicationUsers");
+            DropForeignKey("dbo.UserColorLists", "ColorList_Id", "dbo.ColorLists");
+            DropForeignKey("dbo.IdentityUserRoles", "IdentityRole_Id", "dbo.IdentityRoles");
+            DropForeignKey("dbo.FaceoffVotes", "FaceOff_Id1", "dbo.FaceOffs");
+            DropForeignKey("dbo.FaceoffVotes", "FaceOff_Id", "dbo.FaceOffs");
+            DropForeignKey("dbo.FaceOffs", "FinishedProductB_Id", "dbo.FinishedProducts");
+            DropForeignKey("dbo.FaceOffs", "FinishedProductA_Id", "dbo.FinishedProducts");
+            DropForeignKey("dbo.ConfiguratorDirectLinks", "TemplateId", "dbo.ProductTemplates");
+            DropForeignKey("dbo.Materials", "ConfiguratorDirectLink_Id", "dbo.ConfiguratorDirectLinks");
+            DropForeignKey("dbo.Designs", "ConfiguratorDirectLink_Id", "dbo.ConfiguratorDirectLinks");
+            DropForeignKey("dbo.Designs", "OfficialImage_Id", "dbo.ImageFiles");
+            DropForeignKey("dbo.Designs", "OfficialColorway_Id", "dbo.DesignColorways");
+            DropForeignKey("dbo.DesignLocations", "Design_Id", "dbo.Designs");
+            DropForeignKey("dbo.Designs", "DefaultColorway_Id", "dbo.DesignColorways");
+            DropForeignKey("dbo.ConfiguratorDirectLinks", "DesignHierarchy_Id", "dbo.Hierarchies");
+            DropForeignKey("dbo.Hierarchies", "ParentHierarchy_Id", "dbo.Hierarchies");
+            DropForeignKey("dbo.ConfiguratorDirectLinks", "Creator_Id", "dbo.ApplicationUsers");
+            DropForeignKey("dbo.ConfiguratorDirectLinks", "CompletedProduct_Id", "dbo.FinishedProducts");
+            DropForeignKey("dbo.UserProductViews", "FinishedProduct_Id", "dbo.FinishedProducts");
+            DropForeignKey("dbo.UserProductLikes", "FinishedProduct_Id", "dbo.FinishedProducts");
+            DropForeignKey("dbo.FinishedProducts", "Template_Id", "dbo.ProductTemplates");
+            DropForeignKey("dbo.TemplateViews", "ProductTemplate_Id", "dbo.ProductTemplates");
+            DropForeignKey("dbo.TemplateImages", "TemplateView_Id", "dbo.TemplateViews");
+            DropForeignKey("dbo.ImageFiles", "ProductTemplate_Id", "dbo.ProductTemplates");
+            DropForeignKey("dbo.ProductRegionGroups", "ProductTemplate_Id", "dbo.ProductTemplates");
+            DropForeignKey("dbo.ProductRegions", "ProductRegionGroup_Id", "dbo.ProductRegionGroups");
+            DropForeignKey("dbo.DesignLocations", "ProductTemplate_Id", "dbo.ProductTemplates");
+            DropForeignKey("dbo.ProductTemplates", "DefaultMaterial_Id", "dbo.Materials");
+            DropForeignKey("dbo.FinishedRegions", "FinishedProduct_Id", "dbo.FinishedProducts");
+            DropForeignKey("dbo.FinishedRegions", "Region_Id", "dbo.ProductRegions");
+            DropForeignKey("dbo.FinishedRegions", "Material_Id", "dbo.Materials");
+            DropForeignKey("dbo.Inspirations", "FinishedProduct_Id", "dbo.FinishedProducts");
+            DropForeignKey("dbo.FinishedProductImages", "FinishedProduct_Id", "dbo.FinishedProducts");
+            DropForeignKey("dbo.FinishedProductImages", "ImageType_Id", "dbo.ImageTypes");
+            DropForeignKey("dbo.FinishedDesigns", "FinishedProduct_Id", "dbo.FinishedProducts");
+            DropForeignKey("dbo.FinishedDesigns", "Location_Id", "dbo.DesignLocations");
+            DropForeignKey("dbo.FinishedDesigns", "DesignColorway_Id", "dbo.DesignColorways");
+            DropForeignKey("dbo.DesignLayers", "DesignColorway_Id", "dbo.DesignColorways");
+            DropForeignKey("dbo.LayerRules", "DesignLayer_Id", "dbo.DesignLayers");
+            DropForeignKey("dbo.DesignLayers", "LayerFile_Id", "dbo.ImageFiles");
+            DropForeignKey("dbo.DesignLayers", "Color_Id", "dbo.DesignColors");
+            DropForeignKey("dbo.FinishedProducts", "Creator_Id", "dbo.ApplicationUsers");
+            DropForeignKey("dbo.IdentityUserRoles", "ApplicationUser_Id", "dbo.ApplicationUsers");
+            DropForeignKey("dbo.IdentityUserLogins", "ApplicationUser_Id", "dbo.ApplicationUsers");
+            DropForeignKey("dbo.IdentityUserClaims", "ApplicationUser_Id", "dbo.ApplicationUsers");
+            DropForeignKey("dbo.FinishedProducts", "BackgroundImage_Id", "dbo.ImageFiles");
+            DropForeignKey("dbo.ConfiguratorDirectLinks", "ColorListId", "dbo.ColorLists");
+            DropForeignKey("dbo.Materials", "ColorList_Id", "dbo.ColorLists");
+            DropForeignKey("dbo.Materials", "TrueView_Id", "dbo.ImageFiles");
+            DropForeignKey("dbo.Materials", "Pattern_Id", "dbo.Patterns");
+            DropForeignKey("dbo.ImageFiles", "Pattern_Id", "dbo.Patterns");
+            DropForeignKey("dbo.Patterns", "Thumbnail_Id", "dbo.ImageFiles");
+            DropForeignKey("dbo.ImageFiles", "ImageType_Id", "dbo.ImageTypes");
+            DropForeignKey("dbo.DesignColors", "Material_Id", "dbo.Materials");
+            DropForeignKey("dbo.Materials", "FabricContent_Id", "dbo.FabricContentTypes");
+            DropIndex("dbo.UserColorLists", new[] { "Creator_Id" });
+            DropIndex("dbo.UserColorLists", new[] { "ColorList_Id" });
+            DropIndex("dbo.FaceoffVotes", new[] { "FaceOff_Id1" });
+            DropIndex("dbo.FaceoffVotes", new[] { "FaceOff_Id" });
+            DropIndex("dbo.FaceOffs", new[] { "FinishedProductB_Id" });
+            DropIndex("dbo.FaceOffs", new[] { "FinishedProductA_Id" });
+            DropIndex("dbo.Designs", new[] { "ConfiguratorDirectLink_Id" });
+            DropIndex("dbo.Designs", new[] { "OfficialImage_Id" });
+            DropIndex("dbo.Designs", new[] { "OfficialColorway_Id" });
+            DropIndex("dbo.Designs", new[] { "DefaultColorway_Id" });
+            DropIndex("dbo.Hierarchies", new[] { "ParentHierarchy_Id" });
+            DropIndex("dbo.UserProductViews", new[] { "FinishedProduct_Id" });
+            DropIndex("dbo.UserProductLikes", new[] { "FinishedProduct_Id" });
+            DropIndex("dbo.TemplateImages", new[] { "TemplateView_Id" });
+            DropIndex("dbo.TemplateViews", new[] { "ProductTemplate_Id" });
+            DropIndex("dbo.ProductRegionGroups", new[] { "ProductTemplate_Id" });
+            DropIndex("dbo.ProductTemplates", new[] { "DefaultMaterial_Id" });
+            DropIndex("dbo.ProductRegions", new[] { "ProductRegionGroup_Id" });
+            DropIndex("dbo.FinishedRegions", new[] { "FinishedProduct_Id" });
+            DropIndex("dbo.FinishedRegions", new[] { "Region_Id" });
+            DropIndex("dbo.FinishedRegions", new[] { "Material_Id" });
+            DropIndex("dbo.Inspirations", new[] { "FinishedProduct_Id" });
+            DropIndex("dbo.FinishedProductImages", new[] { "FinishedProduct_Id" });
+            DropIndex("dbo.FinishedProductImages", new[] { "ImageType_Id" });
+            DropIndex("dbo.DesignLocations", new[] { "Design_Id" });
+            DropIndex("dbo.DesignLocations", new[] { "ProductTemplate_Id" });
+            DropIndex("dbo.LayerRules", new[] { "DesignLayer_Id" });
+            DropIndex("dbo.DesignLayers", new[] { "DesignColorway_Id" });
+            DropIndex("dbo.DesignLayers", new[] { "LayerFile_Id" });
+            DropIndex("dbo.DesignLayers", new[] { "Color_Id" });
+            DropIndex("dbo.FinishedDesigns", new[] { "FinishedProduct_Id" });
+            DropIndex("dbo.FinishedDesigns", new[] { "Location_Id" });
+            DropIndex("dbo.FinishedDesigns", new[] { "DesignColorway_Id" });
+            DropIndex("dbo.IdentityUserRoles", new[] { "IdentityRole_Id" });
+            DropIndex("dbo.IdentityUserRoles", new[] { "ApplicationUser_Id" });
+            DropIndex("dbo.IdentityUserLogins", new[] { "ApplicationUser_Id" });
+            DropIndex("dbo.IdentityUserClaims", new[] { "ApplicationUser_Id" });
+            DropIndex("dbo.FinishedProducts", new[] { "Template_Id" });
+            DropIndex("dbo.FinishedProducts", new[] { "Creator_Id" });
+            DropIndex("dbo.FinishedProducts", new[] { "BackgroundImage_Id" });
+            DropIndex("dbo.ConfiguratorDirectLinks", new[] { "DesignHierarchy_Id" });
+            DropIndex("dbo.ConfiguratorDirectLinks", new[] { "Creator_Id" });
+            DropIndex("dbo.ConfiguratorDirectLinks", new[] { "CompletedProduct_Id" });
+            DropIndex("dbo.ConfiguratorDirectLinks", new[] { "ColorListId" });
+            DropIndex("dbo.ConfiguratorDirectLinks", new[] { "TemplateId" });
+            DropIndex("dbo.ImageFiles", new[] { "ProductTemplate_Id" });
+            DropIndex("dbo.ImageFiles", new[] { "Pattern_Id" });
+            DropIndex("dbo.ImageFiles", new[] { "ImageType_Id" });
+            DropIndex("dbo.Patterns", new[] { "Thumbnail_Id" });
+            DropIndex("dbo.DesignColors", new[] { "Material_Id" });
+            DropIndex("dbo.Materials", new[] { "ConfiguratorDirectLink_Id" });
+            DropIndex("dbo.Materials", new[] { "ColorList_Id" });
+            DropIndex("dbo.Materials", new[] { "TrueView_Id" });
+            DropIndex("dbo.Materials", new[] { "Pattern_Id" });
+            DropIndex("dbo.Materials", new[] { "FabricContent_Id" });
+            DropTable("dbo.UserColorLists");
+            DropTable("dbo.IdentityRoles");
+            DropTable("dbo.FaceoffVotes");
+            DropTable("dbo.FaceOffs");
+            DropTable("dbo.CustomBackgrounds");
+            DropTable("dbo.Designs");
+            DropTable("dbo.Hierarchies");
+            DropTable("dbo.UserProductViews");
+            DropTable("dbo.UserProductLikes");
+            DropTable("dbo.TemplateImages");
+            DropTable("dbo.TemplateViews");
+            DropTable("dbo.ProductRegionGroups");
+            DropTable("dbo.ProductTemplates");
+            DropTable("dbo.ProductRegions");
+            DropTable("dbo.FinishedRegions");
+            DropTable("dbo.Inspirations");
+            DropTable("dbo.FinishedProductImages");
+            DropTable("dbo.DesignLocations");
+            DropTable("dbo.LayerRules");
+            DropTable("dbo.DesignLayers");
+            DropTable("dbo.DesignColorways");
+            DropTable("dbo.FinishedDesigns");
+            DropTable("dbo.IdentityUserRoles");
+            DropTable("dbo.IdentityUserLogins");
+            DropTable("dbo.IdentityUserClaims");
+            DropTable("dbo.ApplicationUsers");
+            DropTable("dbo.FinishedProducts");
+            DropTable("dbo.ConfiguratorDirectLinks");
+            DropTable("dbo.ImageTypes");
+            DropTable("dbo.ImageFiles");
+            DropTable("dbo.Patterns");
+            DropTable("dbo.DesignColors");
+            DropTable("dbo.FabricContentTypes");
+            DropTable("dbo.Materials");
+            DropTable("dbo.ColorLists");
+            DropTable("dbo.ApiAuthorizeKeys");
+        }
+    }
+}

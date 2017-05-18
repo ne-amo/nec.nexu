@@ -1,0 +1,282 @@
+﻿@{
+    ViewBag.Title = "Create NEXU Design";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<script id="template-location" type="text/x-kendo-template">
+    <li>#: Description #</li>
+</script>
+<style>
+    .basic-info input {
+        display: block;
+        width:100%;
+    }
+.basic-info select {
+        width:100%;
+    }
+</style>
+<div id="notifications"></div>
+
+<div>@Html.ActionLink("Back to Index","Index","Home")</div>
+
+<h2>Create Design</h2>
+
+<div id="nexu-create-design">
+    <div class="basic-info">
+<div class="row"><div class="col-xs-6">Display Name: <input type="text" data-bind="value:DisplayName" /></div></div>
+<div class="row"><div class="col-xs-6">Description: <input type="text" data-bind="value: Description" /></div></div>
+<div class="row"><div class="col-xs-6">Tape Number: <input type="text" data-bind="value: TapeNumber" /></div></div>
+<div class="row"><div class="col-xs-6">
+    Hierarchy: <select style="display:block; width:100%;"
+    data-role="dropdownlist"
+    data-text-field="DisplayName"
+    data-value-field="Id"
+    data-option-label="Select Hierarchy"
+    data-value-primitive="true"
+    data-bind="value: HierarchyId, source:AllHierarchies"></select></div></div>
+        </div
+        
+        >
+<div class="row"><div class="col-xs-6">
+    Allowed Locations:
+    <div data-role="grid" id="grid_Locations"
+     data-columns="[{title:'Description',field:'Description'}]"
+        data-selectable="multiple"
+        data-scrollable="true"
+        data-height:"180px"
+     data-bind="source: AllLocations, events: { change: Events.SelectLocation }"></div>
+</div></div>
+
+<div class="row">
+    <div class="col-xs-6">
+    Official Image:
+    <div><input type="file" id="file_Official" name="files" /></div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xs-12">
+    Default Colorway <a href="#" data-bind="events: { click: Events.AddLayer }">Add Layer</a>
+    <div id="grid_Layers"
+        data-role="grid"
+        data-editable="true"
+        data-columns="[
+        {field:'DisplayName'},
+        {field:'Code'},
+        {field:'SortOrder'},
+        {field:'Recolorable'},
+        {field:'Color', editor: colorDropDownEditor, template: '#= Color.DisplayName #'},
+        {field:'Image', editor: imageUploadEditor, template: '#= LayerFile.DisplayName #'},
+        ]"
+        data-bind="source:DefaultColorway.Layers"
+        ></div>
+    </div>
+</div>
+
+<div style="margin-top:30px;margin-bottom:30px; font-size:200%; text-align:center;"><a href="#" id="btnSubmit" class="k-button">Submit</a></div>
+</div>
+@section scripts {
+<script type="text/javascript">
+    var SVCURL = window.SERVICE+"/api/";
+    window.notifier = null;
+    window.notifier = $('#notifications').kendoNotification({
+        position: {
+            // notification popup will scroll together with the other content
+            pinned: true,
+            // the first notification popup will appear 30px from the viewport's top and right edge
+            top: 30,
+            left: 30
+        },
+        // new notifications will appear below old ones
+        stacking: "down",
+        // set appropriate size
+        width: 300,
+        height: 50,
+        autoHideAfter: 5000,
+        // prevent accidental hiding for 1 second
+        allowHideAfter: 1000,
+        // show a hide button
+        button: true,
+        // prevent hiding by clicking on the notification content
+        hideOnClick: false
+    }).data('kendoNotification');
+
+    var dsDesignColors = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: SVCURL + 'masterdata/designcolors/',
+                type: 'GET',
+                contentType: "application/json",
+                dataType: "json"
+            },
+            schema: {
+                parse: function (data) {
+                    return data;
+                },
+                data: function (data) {
+                    return data;
+                }
+            }
+        },
+        sort: { field: "DisplayName", dir: "asc" }
+    });
+    function colorDropDownEditor(container, options) {
+        $('<input data-text-field="DisplayName" data-value-field="Id" data-bind="value:' + options.field + '"/>')
+                        .appendTo(container)
+                        .kendoDropDownList({
+                            autoBind: false,
+                            dataSource: dsDesignColors
+                        });
+    }
+    function imageUploadEditor(container, options) {
+        $('<input type="file" name="files" />')
+            .appendTo(container)
+            .kendoUpload({
+                async: {
+                    saveUrl: "UploadFile"
+                },
+                multiple: false,
+                upload:function(e){
+                    options.model.LayerFile.DisplayName = e.files[0].name;
+                },
+                success: function (e) {
+                    options.model.LayerFile.FilePath = e.response;
+                }
+            })
+    }
+    
+    function _createLayer() {
+        return {
+            DisplayName: 'New Layer',
+            Code: '',
+            SortOrder: 0,
+            Recolorable: true,
+            ImageDataId: null,
+            Active: true,
+            Color: { Id: 0, DisplayName: '' },
+            LayerFile: { DisplayName:'',FilePath: '' }
+        }
+    }
+    function _SelectLocation (e) {
+        var h = "h";
+    }
+    function _AddLayer(e) {
+        var layer = _createLayer();
+        $('#grid_Layers').data('kendoGrid').dataSource.add(layer);
+        return false;
+    }
+
+    var model = kendo.observable({
+        DisplayName: null,
+        Description: null,
+        TapeNumber: null,
+        HierarchyId: null,
+        OfficialImage: {},
+        DefaultColorway:{
+            Layers:[]
+        },
+        Locations: [],
+        AllHierarchies: new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: SVCURL + 'hierarchies/search/',
+                    type: 'GET',
+                    contentType: "application/json",
+                    dataType: "json"
+                }
+            },
+            schema: {
+                parse: function (data) {
+                    return data ? data : [];
+                },
+                data: function (data) {
+                    return $.map(data, function (msg) {
+                        var dn = msg.DisplayName;
+                        if(msg.ParentHierarchy == null)
+                        {
+                            dn += " (No Parent)"
+                        }
+                        else{
+                            dn += " ("+msg.ParentHierarchy.DisplayName+")"
+                        }
+                        if(!msg.Active)
+                            dn += " (Inactive)";
+                            
+                        return $.extend({}, msg, {
+                            DisplayName: dn
+                        });
+                    });
+                }
+            },
+            sort: { field: "DisplayName", dir: "asc" }
+        }),
+        AllLocations: new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: SVCURL + 'masterdata/designlocations/',
+                    type: 'GET',
+                    contentType: "application/json",
+                    dataType: "json"
+                }
+                
+            },
+            schema: {
+                parse: function (data) {
+                    return data;
+                },
+                data: function (data) {
+                    return $.map(data, function (x) {
+                        if (x.Active)
+                            return x;
+                    });
+                }
+            },
+            sort: { field: "Description", dir: "asc" }
+        }),
+        Events: {
+            SelectLocation: _SelectLocation,
+            AddLayer:_AddLayer
+        }
+    });
+    kendo.bind($('#nexu-create-design'), model);
+
+    $('#btnSubmit').on('click', function (e) {
+        var obj = model.toJSON();
+        var grid = $('#grid_Locations').data('kendoGrid');
+        var locations = $.map(grid.select(), function(row){
+            return grid.dataItem(row);
+        });
+        var dto = {
+            DisplayName: obj.DisplayName,
+            Description: obj.Description,
+            TapeNumber: obj.TapeNumber,
+            HierarchyId: obj.HierarchyId,
+            OfficialImage: obj.OfficialImage,
+            DefaultColorway: obj.DefaultColorway,
+            Locations: locations,
+        }
+        $.ajax({
+            type: "POST",
+            url: "Create",
+            contentType: "application/json; charset=utf-8",
+            dataType: "json",
+            data: kendo.stringify(dto)
+        }).done(function (e) {
+            $(".k-upload-files.k-reset",officialUpload.element.closest('.k-upload')).find("li").remove();
+            window.notifier.info("Design Uploaded");
+            alert("Success");
+            window.location.reload();
+        });
+        return false;
+    });
+
+    var officialUpload = $('#file_Official').kendoUpload({
+        async: {
+            saveUrl: "UploadFile"
+        },
+        multiple: false,
+        success: function (e) {
+            model.set('OfficialImage', { FilePath: e.response });
+        }
+    }).data('kendoUpload');
+</script>
+    }

@@ -1,0 +1,32 @@
+﻿#DownloadDesigns {
+    text-align: left;
+}
+
+    #DownloadDesigns .titleCol {
+        margin-bottom: 20px;
+    }
+
+#DownloadDesigns .leftCol {
+    padding-right: 20px;
+}
+
+#sdPreview, #sdCopyUrl {
+    margin-top: 20px;
+}
+
+#DownloadDesigns .rightCol {
+    padding-left: 20px;
+}
+
+    #DownloadDesigns .socialTile {
+        padding-right: 20px;
+    }
+
+.ddButton {
+    margin-top: 20px;
+    background-color: yellow;
+    color: black;
+    margin-right: 20px;
+    text-align: center;
+    padding: 20px;
+}

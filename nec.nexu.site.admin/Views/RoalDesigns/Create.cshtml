@@ -1,0 +1,247 @@
+﻿@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+
+    bool isSearchPostBack = ViewBag.SearchPostBack != null ? (bool)ViewBag.SearchPostBack : false;
+    string tapeNumber = isSearchPostBack ? (string)ViewBag.TapeNumber : string.Empty;
+    var roalDesign = isSearchPostBack ? (Nec.Infrastructure.Messages.IllustrationMessage)ViewBag.RoalDesign : null;
+    var roalColorway = isSearchPostBack ? (Nec.Infrastructure.Messages.ColorwayMessage)ViewBag.RoalColorway : null;
+    var nexuDesign = isSearchPostBack ? (nec.nexu.Models.Design)ViewBag.NexuDesign : null;
+    var nexuColorway = isSearchPostBack ? (nec.nexu.Models.DesignColorway)ViewBag.NexuColorway : null;
+
+    var modelErrors = ViewData.ModelState.ContainsKey("error") ? ViewData.ModelState["error"].Errors.ToList() : new List<ModelError>();
+    
+}
+<link href="/Content/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+
+<div>@Html.ActionLink("Back","Index")</div>
+<h2>Create Design Map</h2>
+
+@Html.ValidationSummary(true)
+
+@foreach (var error in modelErrors)
+{
+    <p style="font-size:120%; color:red;">@error.ErrorMessage</p>
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12">
+        @using(Html.BeginForm("Create","RoalDesigns")){
+        <p>Tape Number: <input type="text" value="@tapeNumber" name="tapenumber" class="k-input k-autcomplete" id="inpTapeNumber" />@* <a href="#" class="k-button" id="btnFind">Find</a>*@
+            <button type="submit" name="command" value="search">Find</button>
+        </p>
+        }
+        </div>
+    </div>
+    
+        @using (Html.BeginForm("Create", "RoalDesigns", FormMethod.Post, new { id = "dataForm" }))
+        {
+
+
+            if (isSearchPostBack)
+            {
+                
+            <div class="row"> 
+            
+            <div class="col-xs-6">
+                <div class="row">
+                    <h4 class="col-xs-12">NEXU Design</h4>
+                    <div class="col-xs-3">ID: <br />@nexuDesign.Id <input type="hidden" value="@nexuDesign.Id" name="nexuId" /></div>
+                    <div class="col-xs-3">Tape Number: <br />@nexuDesign.TapeNumber</div>
+                    <div class="col-xs-6">Description: <br />@nexuDesign.DisplayName</div>
+                </div>
+            </div>
+                
+            <div class="col-xs-6">
+                <div class="row">
+                    <h4 class="col-xs-12">ROAL Design</h4>
+                    <div class="col-xs-3">ID: <br />@roalDesign.Id <input type="hidden" value="@roalDesign.Id" name="roalId" /></div>
+                    <div class="col-xs-3">Tape Number: <br />@roalDesign.ManualIllustrationNumber</div>
+                    <div class="col-xs-6">Description: <br />@roalDesign.IllustrationDescription</div>
+                </div>
+            </div>
+
+            
+            </div>
+
+            <div class="row" style="margin-top:15px;">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h4>NEXU LAYERS</h4>
+                            @foreach (var layer in nexuColorway.Layers.Where(x => x.Recolorable))
+                            {
+                                <div class="row layer-map">
+                                    <div class="col-xs-3">
+                                        <img style="max-height:200px; max-width:100%;"
+                                            src="@string.Format("{0}/assets/nexu/a.nexuimage?l={1}&b={1}&a=100&t=1&c=000000&m=0&r=96&it=d", "//byyou.neweracap.com", layer.ImageDataId)" />
+                                    </div>
+                                    <div class="col-xs-3">
+                                        <input type="hidden" value="@layer.ImageDataId" class="input-nexulayer" />
+                                        NExU Description:<br />@layer.DisplayName
+                                    </div>
+                                    <div class="col-xs-6">
+                                        ROAL Sequences (comma sep):<br /><input type="text" class="input-roalsequences" style="width:100%;" />
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row" style="margin-top:15px; margin-bottom:30px;">
+                <div style="text-align:center; font-size:150%;" class="col-xs-12">
+                    <input type="hidden" id="hdnMapping" value="" name="mapping" />
+                    <input type="hidden" value="create" name="command" />
+                    <input type="hidden" id="hdnRefresh" value="" name="REFRESH" />
+                    <a id="btnSubmit" class="k-button">Submit</a>
+                    <a id="btnSubmit2" class="k-button">Submit & Add Another</a>
+                </div>
+            </div>
+            
+            }
+            
+ @*           
+        <div class="col-50 float-left">
+                <h3 class="center-text">ROAL Design</h3>
+                <div id="gridRoalTape"></div>
+                <ul></ul>
+        </div> <!-- Close Left -->
+        <div class="col-50 float-left">
+                <h3 class="center-text">NExU Design</h3>
+                <div id="gridNexuTape"></div>
+                <ul></ul>
+        </div> <!-- Close Right -->*@
+            
+        }
+
+
+
+
+
+</div>
+@*<script id="template_tapeRoal" type="text/x-kendo-template">
+    <li>#: Id # - #: ManualIllustrationNumber # -  #: IllustrationDescription #</li>
+</script>
+<script id="template_tapeNexu" type="text/x-kendo-template">
+    <li>#: Id # - #: TapeNumber # -  #: DisplayName #</li>
+</script>*@
+
+@section scripts{
+    <script type="text/javascript">
+
+        function parseRoal(val) {
+            return val.replace(' ', '').split(',');
+        }
+
+        $('#btnSubmit,#btnSubmit2').click(function(e){
+            var vals = [];
+            $('.layer-map').each(function () {
+                var el = $(this);
+                var roalRaw = $('.input-roalsequences', el).val();
+                var nexu = $('.input-nexulayer', el).val();
+                $.each(parseRoal(roalRaw), function (index, obj) {
+                    vals.push(obj + '&' + nexu);
+                });
+            });
+            $('#hdnMapping').val(vals.join('|'));
+
+            if ($(this).attr('id') == 'btnSubmit2') {
+                $('#hdnRefresh').val('true');
+            }
+
+            $('#dataForm').submit();
+            return false;
+        });
+
+    </script>
+@*    <script type="text/javascript">
+        var input_Tape = $('#inpTapeNumber'),
+            dsBase = {
+                transport: {
+                    read: {
+                        type: 'GET',
+                        contentType: "application/json",
+                        dataType: "json"
+                    }
+                },
+                schema: {
+                    parse: function (msg) {
+                        return (msg) ? msg : [];
+                    },
+                    data: function (data) {
+                        return data;
+                    },
+                    total: function (data) {
+                        return (data && data.length) ? data.length : 0;
+                    }
+                }
+            },
+             
+            funcParameterMapSearch = function (m, o) {
+                return { tape: input_Tape.val() };
+            },
+            funcValParamTap = function (e) {
+                    var v = input_Tape.val();
+                    if(!v || !v.trim())
+                        e.preventDefault();
+            }
+        var dsRoalDesigns = new kendo.data.DataSource(
+                $.extend({}, dsBase, {
+                    transport: {
+                        read: {
+                            url: 'GetRoalByTape'
+                        },
+                        parameterMap: funcParameterMapSearch
+                    },
+                    requestStart: funcValParamTap
+                })
+            ),
+            dsNexuDesigns = new kendo.data.DataSource(
+                $.extend({}, dsBase, {
+                    transport: {
+                        read: {
+                            url: 'GetNexuByTape'
+                        },
+                        parameterMap: funcParameterMapSearch
+                    }
+                    ,
+                    requestStart: funcValParamTap
+                })
+            ),
+            dsRoalColorway = new kendo.data.DataSource({
+
+            }),
+            dsNexuColorway = new kendo.data.DataSource({
+
+            });
+        $('#gridRoalTape').kendoGrid({
+            dataSource: dsRoalDesigns,
+            columns:[
+                { title: 'ID', field: 'Id', width: 50 },
+                { title: 'Tape', field: 'ManualIllustrationNumber', width: 120 },
+                { title: 'Description', field: 'IllustrationDescription' }
+            ],
+            scrollable:false
+        });
+        $('#gridNexuTape').kendoGrid({
+            dataSource: dsNexuDesigns,
+            columns: [
+                { title: 'ID', field: 'Id', width: 50 },
+                { title: 'Tape', field: 'TapeNumber', width: 120 },
+                { title: 'Description', field: 'DisplauName' }
+            ],
+            scrollable: false
+        });
+        $('#btnFind').on('click', function (e) {
+            dsRoalDesigns.read();
+            dsNexuDesigns.read();
+            return false;
+        });
+        kendo.init('body');
+    </script>*@
+}

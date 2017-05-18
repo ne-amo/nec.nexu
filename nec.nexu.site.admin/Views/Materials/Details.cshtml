@@ -1,0 +1,90 @@
+﻿@model nec.nexu.Models.Material
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Material</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Hex)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hex)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DisplayName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DisplayName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Pms)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Pms)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Hue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Hue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Saturation)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Saturation)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Brightness)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Brightness)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Opacity)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Opacity)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.SortOrder)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.SortOrder)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TextColor)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TextColor)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

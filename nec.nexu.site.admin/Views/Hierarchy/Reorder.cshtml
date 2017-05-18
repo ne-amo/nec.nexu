@@ -1,0 +1,89 @@
+﻿@model IEnumerable<nec.nexu.Models.Hierarchy>
+
+@{
+    ViewBag.Title = "Reorder";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    var ddl = ViewBag.Hierarchies != null ? 
+        ((IEnumerable<Hierarchy>)ViewBag.Hierarchies).Select(x=>new SelectListItem { Value = x.Id.ToString(), Text = x.DisplayName }) : new List<SelectListItem>();
+}
+
+<h2>Reorder</h2>
+
+<p>
+    @Html.DropDownList("parents",ddl) <button type="submit" name="command" value="search">Load</button>
+</p>
+@if(Model != null){
+
+    @Html.BeginForm("Reorder","Hierarchy"){
+    
+        <table class="table">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.DisplayName)
+                </th>
+            </tr>
+
+        @foreach (var item in Model) {
+            <tr>
+                <td>
+                    @Html.HiddenFor(modelItem => item.LocalizedDisplayNameXml)
+                    @Html.HiddenFor(modelItem => item.ParentHierarchyId)
+                    @Html.HiddenFor(modelItem => item.SortOrder)
+                    @Html.DisplayFor(modelItem => item.DisplayName)
+                </td>
+            </tr>
+        }
+
+        </table>
+
+        <div style="margin-top:40px; font-size:200%; text-align:center;"><button type="submit" name="command" value="submit">Submit Ordering</button></div>
+    }
+}
+
+<script type="text/javascript">
+    ; (function () {
+
+        var grid = $("#table").kendoGrid({
+            scrollable: false,
+        }).data("kendoGrid");
+
+        grid.table.kendoDraggable({
+            filter: "tbody > tr",
+            group: "gridGroup",
+            threshold: 100,
+            hint: function (e) {
+                return $('<div class="k-grid k-widget"><table><tbody><tr>' + e.html() + '</tr></tbody></table></div>');
+            }
+        });
+
+        grid.table.kendoDropTarget({
+            group: "gridGroup",
+            drop: function (e) {
+
+                e.draggable.hint.hide();
+
+                var target = dataSource.getByUid($(e.draggable.currentTarget).data("uid")),
+                    dest = $(document.elementFromPoint(e.clientX, e.clientY));
+
+                if (dest.is("th")) {
+                    return;
+                }
+
+                dest = dataSource.getByUid(dest.parent().data("uid"));
+
+                //not on same item
+                if (target.get("id") !== dest.get("id")) {
+                    //reorder the items
+                    var tmp = target.get("position");
+                    target.set("position", dest.get("position"));
+                    dest.set("position", tmp);
+
+                    dataSource.sort({ field: "position", dir: "asc" });
+                }
+
+            }
+        });
+
+    })();
+</script>

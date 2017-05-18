@@ -1,0 +1,449 @@
+﻿@model nec.nexu.site.admin.Models.ConfiguratorDirectLinkAdminViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+<style type="text/css">    .previewImg {
+        background-color: #aaa; padding:4px; max-width:100px; max-height:100px;
+    }
+</style>
+<h2>Create Direct Marketing Link</h2>
+<div id="bind-model">
+    <div>Display Name: <input type="text" data-bind="value: DisplayName" /></div>
+    <div>Description: <input type="text" data-bind="value: Description" /></div>
+    <div>
+        <a href="#" class="btnView k-button" data-key="ColorList">ColorList</a>
+        <a href="#" class="btnView k-button" data-key="Team">Team</a>
+        <a href="#" class="btnView k-button" data-key="Style">Style</a>
+        <a href="#" class="btnView k-button" data-key="Design">Designs</a>
+        <a href="#" class="btnView k-button" data-key="Material">Cap Colors</a>
+    </div>
+    <br />
+
+    <div class="vis-Product">Product Id: <input type="text" data-bind="value: CompletedProductId" /></div>
+
+    <div class="vis-ColorList">Color List: <select data-role="dropdownlist" data-bind="source: AllColorLists, value: ColorListId" data-animation="false" data-value-primitive="true"
+        data-text-field="DisplayName" data-value-field="Id" data-option-label="Select..."></select> </div>
+
+    <div class="vis-Team">Hierarchy: <select data-role="dropdownlist" data-bind="source: AllHierarchy, value: DesignHierarchyId" data-animation="false" data-value-primitive="true"
+        data-text-field="DisplayName" data-value-field="Id" data-option-label="Select..."></select> </div>
+
+    <div class="vis-Style">Template: <select data-role="dropdownlist" data-bind="source: AllTemplates, value: TemplateId" data-animation="false" data-value-primitive="true"
+        data-text-field="DisplayName" data-value-field="Id" data-option-label="Select..."></select> </div>
+
+    <div class="vis-Design">
+        <h3>Designs</h3>
+        <div>
+            Name: <input id="filter_DisplayName" type="text" /> 
+            Tape: <input id="filter_TapeNumber" type="text" /> 
+            <a href="#" data-bind="events: { click: Events.DesignClick }" class="k-button">Search</a>
+            <a href="#" data-bind="events: { click: Events.DesignClear }" class="k-button">Clear</a>
+        </div>
+        <div id="gridDesign" data-role="grid"
+            data-columns="[
+            {title:'Preview', field:'OfficialImage', width:'120px', template:'#= getDesignPreview(OfficialImage) #'},
+            {title:'Tape Number', field:'TapeNumber', width:'160px'},
+            {title:'Display Name',field:'DisplayName'}
+            ]"
+            data-selectable="multiple"
+            data-scrollable="true"
+            data-filterable="true"
+            data-sortable="true"
+            data-auto-bind="false"
+            data-height="240px"
+            data-bind="source: AllDesigns, events: { change: Events.SelectDesign }"></div>
+    </div>
+    <div class="vis-Design vis-Team">
+            <h3>Allowed Locations:</h3>
+            <div data-role="grid" id="gridLocations"
+             data-columns="[{title:'Description',field:'Description'}]"
+                data-selectable="multiple"
+                data-scrollable="true"
+                data-height="180px"
+                data-bind="source: AllLocations, events: { change: Events.SelectLocation }"></div>
+    </div>
+
+    <div class="vis-Material">
+        <h3>Materials</h3>
+        <div><a href="#" data-bind="events: { click: Events.MaterialClear }" class="k-button">Clear</a></div>
+        <div data-role="grid" id="gridMaterials"
+            data-columns="[{title:'Display Name',field:'DisplayName'}]"
+            data-selectable="multiple"
+            data-scrollable="true"
+            data-filterable="true"
+            data-sortable="true"
+            data-height="240px"
+            data-bind="source: AllMaterials, events: { change: Events.SelectMaterial }"></div>
+    </div>
+    <div class="vis-Material vis-ColorList">
+        <h3>Allowed Region Groups:</h3>
+        <div data-role="grid" id="gridRegions"
+            data-columns="[{title:'Description',field:'DisplayName'}]"
+            data-selectable="multiple"
+            data-scrollable="true"
+            data-height="180px"
+            data-bind="source: AllGroups"></div>
+    </div>
+</div>
+<div style="margin-top:30px;">
+
+    <a href="#" id="btnSubmit" class="k-button" style="font-size:2em;">Submit</a>
+
+</div>
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        var SVCURL = window.SERVICE+'/api/',
+            SITEURL = 'http://neccmsdev.neweracap.com';
+        var filterName = $('#filter_DisplayName'), filterTape = $('#filter_TapeNumber');
+        var urls = 
+        {
+            TEMPLATES : SVCURL+'producttemplates/?active=true&list=true',
+            COLORLIST:SVCURL+'colorlists/?list=true',
+            DESIGNS:SVCURL+'designs/search/',
+            HIERARCHY: SVCURL+'hierarchies/?list=true',
+            MATERIALS: SVCURL + 'masterdata/materials/',
+            LOCATIONS: SVCURL + 'masterdata/designlocations/',
+            REGIONGROUP: SVCURL + 'masterdata/productregiongroups/?list=true'
+        };
+        var dsBasic = {
+            transport: {
+                read: {
+                    type: 'GET',
+                    contentType: "application/json",
+                    dataType: "json"
+                },
+                schema: {
+                    parse: function (data) {
+                        return data;
+                    },
+                    data: function (data) {
+                        return data;
+                    }
+                }
+            },
+            sort: { field: "DisplayName", dir: "asc" }
+        };
+        var dsDesign = {
+            transport: {
+                read: {
+                    type: 'GET',
+                    contentType: "application/json",
+                    url:SVCURL+'designs/search/',
+                    dataType: "json"
+                },
+                parameterMap: function (option, method) {
+                    var param = { message: true };
+                    if (filterName.val()) {
+                        param.name = filterName.val();
+                    }
+                    if (filterTape.val()) {
+                        param.tape = filterTape.val();
+                    }
+                    return param;
+                }
+            },
+             schema: {
+                parse: function (data) {
+                    return data;
+                },
+                data: function (data) {
+                    return data;
+                }
+            },
+            sort: { field: "DisplayName", dir: "asc" }
+        }
+        function getDs(url) {
+            return $.extend({}, dsBasic, { transport: { read: { url: url } } });
+        }
+        function getDesignPreview(img) {
+            return '<img src="'+SITEURL + img + '" title="thumbnail" class="previewImg"  />';
+        }
+        function visible(key) {
+            $('[class *= "vis-" ]').hide();
+            $('.vis-' + key).show();
+        }
+
+        var dsAllTemplates = new kendo.data.DataSource(getDs(urls.TEMPLATES));
+        var dsAllColorLists = new kendo.data.DataSource(getDs(urls.COLORLIST));
+        var dsAllMaterials = new kendo.data.DataSource(getDs(urls.MATERIALS));
+        var dsAllDesigns = new kendo.data.DataSource(dsDesign);
+        var dsAllHierarchy = new kendo.data.DataSource(getDs(urls.HIERARCHY));
+        var dsAllLocations = new kendo.data.DataSource(getDs(urls.LOCATIONS));
+        var dsAllGroups = new kendo.data.DataSource(getDs(urls.REGIONGROUP));
+
+
+        var model = kendo.observable({
+            DisplayName: '',
+            Description: '',
+            DesignHierarchyId: null,
+            TemplateId: null,
+            ColorListId: null,
+            CompletedProductId:null,
+            AllTemplates: dsAllTemplates,
+            AllHierarchy: dsAllHierarchy,
+            AllMaterials: dsAllMaterials,
+            AllColorLists: dsAllColorLists,
+            AllDesigns: dsAllDesigns,
+            AllLocations: dsAllLocations,
+            AllGroups : dsAllGroups,
+            Events: {
+                SelectMaterial:function(e){},
+                SelectDesign: function (e) { },
+                SelectLocation: function (e) { },
+                DesignClick: function (e) {
+                    model.AllDesigns.read();
+                    return false;
+                },
+                DesignClear: function (e) {
+                    $('#gridDesign').data('kendoGrid').clearSelection();
+                    return false;
+                },
+                MaterialClear: function (e) {
+                    $('#gridMaterials').data('kendoGrid').clearSelection();
+                    return false;
+                }
+            }
+        });
+        kendo.bind($('#bind-model'), model);
+        $('.btnView').on('click', function (e) {
+            var key = $(this).data('key');
+            visible(key);
+            return false;
+        });
+        $('#btnSubmit').on('click', function (e) {
+            var obj = model.toJSON();
+
+            var grid_Material = $('#gridMaterials').data('kendoGrid');
+            var materials = $.map(grid_Material.select(), function (row) {
+                return grid_Material.dataItem(row);
+            });
+
+            var grid_Design = $('#gridDesign').data('kendoGrid');
+            var designs = $.map(grid_Design.select(), function (row) {
+                return grid_Design.dataItem(row);
+            });
+
+            var grid_Locations = $('#gridLocations').data('kendoGrid');
+            var locations = $.map(grid_Locations.select(), function (row) {
+                return grid_Locations.dataItem(row);
+            });
+
+            var grid_Groups = $('#gridRegions').data('kendoGrid');
+            var groups = $.map(grid_Groups.select(), function (row) {
+                return grid_Groups.dataItem(row);
+            });
+
+
+            var dto = {
+                DisplayName: obj.DisplayName,
+                Description: obj.Description,
+                DesignHierarchyId: obj.DesignHierarchyId,
+                TemplateId: obj.TemplateId,
+                ColorListId: obj.ColorListId,
+                Active:true,
+                CompletedProductId: obj.CompletedProductId,
+                Materials: materials,
+                ProductRegionGroups: $.map(groups, function (obj) { return obj.Id }),
+                Designs: designs,
+                DesignLocations: $.map(locations, function (obj) { return obj.Id })
+            }
+            $.ajax({
+                type: "POST",
+                url: "Create",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: kendo.stringify(dto)
+            });
+            return false;
+        });
+        visible();
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>ConfiguratorDirectLink</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.Guid, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Configurator.Guid, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Configurator.Guid, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.CreateDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Configurator.CreateDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Configurator.CreateDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.DisplayName, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Configurator.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Configurator.DisplayName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.Description, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Configurator.Description, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Configurator.Description, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.TemplateId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(cdl => cdl.Configurator.TemplateId , Model.ProductTemplateListItems, string.Empty)
+                
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.CompletedProductId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Html.DropDownListFor(cdl => cdl.Configurator.CompletedProductId, Model.FinishedProductsListItems, string.Empty)
+            
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.ColorListId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+               @Html.DropDownListFor(cdl => cdl.Configurator.ColorListId, Model.ColorListListItems, string.Empty)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Configurator.DesignHierarchyId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(cdl => cdl.Configurator.DesignHierarchyId, Model.HierarchyListItems, string.Empty)
+        </div></div>
+        
+        <div class="editor-field">
+            <label>Materials</label>
+            <ul>
+                @if (Model.AllMaterials != null && Model.AllMaterials.Count > 0)
+                {
+                    foreach (var mat in Model.AllMaterials)
+                    {
+                        <li>
+                            @if (Model.Configurator.Materials != null && Model.Configurator.Materials.Select(m => m.Id).Contains(mat.Id))
+                            {
+                                <input type="checkbox" checked="checked" name="SelectedMaterialIds" value="@mat.Id" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="SelectedMaterialIds" value="@mat.Id" />
+                            }
+                            @mat.DisplayName
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+
+        <div class="editor-field">
+            <label>Designs</label>
+            <ul>
+                @if (Model.AllDesigns != null && Model.AllDesigns.Count > 0)
+                {
+                    foreach (var des in Model.AllDesigns)
+                    {
+                        <li>
+                            @if (Model.Configurator.Designs != null && Model.Configurator.Designs.Select(m => m.Id).Contains(des.Id))
+                            {
+                                <input type="checkbox" checked="checked" name="SelectedDesignIds" value="@des.Id" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="SelectedDesignIds" value="@des.Id" />
+                            }
+                            @des.DisplayName
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+        
+        <div class="editor-field">
+            <label>Product Region Groups</label>
+            <ul>
+                @if (Model.AllRegionGroups != null && Model.AllRegionGroups.Count > 0)
+                {
+                    foreach (var prg in Model.AllRegionGroups)
+                    {
+                        <li>
+                            @if (Model.Configurator.ProductRegionGroups != null && Model.Configurator.ProductRegionGroups.Contains(prg.Id))
+                            {
+                                <input type="checkbox" checked="checked" name="SelectedProductRegionGroups" value="@prg.Id" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="SelectedProductRegionGroups" value="@prg.Id" />
+                            }
+                            @prg.DisplayName
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+        
+        <div class="editor-field">
+            <label>Design Locations Groups</label>
+            <ul>
+                @if (Model.AllDesignLocations != null && Model.AllDesignLocations.Count > 0)
+                {
+                    foreach (var prg in Model.AllDesignLocations)
+                    {
+                        <li>
+                            @if (Model.Configurator.DesignLocations != null && Model.Configurator.DesignLocations.Contains(prg.Id))
+                            {
+                                <input type="checkbox" checked="checked" name="SelectedDesignLocationIds" value="@prg.Id" />
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="SelectedDesignLocationIds" value="@prg.Id" />
+                            }
+                            @prg.DisplayName
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}*@

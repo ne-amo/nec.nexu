@@ -1,0 +1,148 @@
+﻿@model nec.nexu.site.admin.Models.MaterialAdminViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+<script type="text/javascript" src="~/Scripts/jquery-2.1.1.js"></script>
+<script type="text/javascript" src="~/Scripts/jquery-ui-1.11.1.js"></script>
+<script type="text/javascript" src="~/Scripts/iris.min.js"></script>
+<script type="text/javascript">
+    $(document).ready(function ($) {
+        $('#color-picker').iris();
+    });
+</script>
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm("Edit", "Materials", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    
+    
+    <div class="form-horizontal">
+        <h4>Material</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Material.DisplayName, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Material.DisplayName, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Material.DisplayName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Material.Pms, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Material.Pms, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Material.Pms, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Material.TextColor, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Material.TextColor, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Material.TextColor, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Material.Opacity, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Material.Opacity, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+                    @Html.ValidationMessageFor(model => model.Material.Opacity, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Material.SortOrder, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Material.SortOrder, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.Material.SortOrder, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Material.Hex, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" id="color-picker" name="Material.Hex" value="@Model.Material.Hex" />
+                </div>
+            </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Material.Pattern, htmlAttributes: new { @class = "control-label col-md-2" })
+        </div>
+        @Html.DropDownListFor(m => m.Material.Pattern.Id, Model.PatternListItems, string.Empty)
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Material.FabricContent, htmlAttributes: new { @class = "control-label col-md-2" })
+        </div>
+        @Html.DropDownListFor(m => m.Material.FabricContent.Id, Model.FabricContentListItems, string.Empty)
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Material.BlendMode, htmlAttributes: new { @class = "control-label col-md-2" })
+            </div>
+            <div class="editor-field">
+                @Html.EnumDropDownListFor(model => model.Material.BlendMode)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Material.MatchingDesignColors, htmlAttributes: new { @class = "control-label col-md-2" })
+            </div>
+            <div class="editor-field">
+                @if (Model.AllDesignColors != null)
+                {
+                    <ul style="max-height:200px; overflow-y:scroll; overflow-x:hidden; width:300px;">
+                        @foreach (var item in Model.AllDesignColors)
+                    {
+                        <li>
+
+                            @if (Model.AllDesignColors.Any(dc => Model.Material.MatchingDesignColors.Any(mdc => mdc.Id == item.Id)))
+                            {
+                                <input type="checkbox" name="SelectedDesignColorIds" checked="checked" value="@item.Id" />@item.DisplayName
+                            }
+                            else
+                            {
+                                    
+                            <input type="checkbox" name="SelectedDesignColorIds" value="@item.Id" />@item.DisplayName
+                            }
+                        </li>
+                    }
+                    </ul>
+            }
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2">True View</label>
+                <br/>
+                @if(ViewBag.imgPath != null)
+                {
+                  <img src="@Url.Content(ViewBag.imgPath)" width="250" />
+                }
+            </div>
+            <div class="editor-field">
+                <input type="file" name="TrueView" value="" />
+            </div>
+
+@*            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Save" class="btn btn-default" />
+                </div>
+            </div>*@
+        <div>
+            <input type="submit" value="Save" />
+            </div>
+
+        </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

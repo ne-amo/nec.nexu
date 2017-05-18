@@ -1,0 +1,102 @@
+﻿@model nec.nexu.site.admin.Models.CustomBackgroundAdminViewModel
+
+@{
+    ViewBag.Title = "Edit";
+}
+
+<h2>Edit</h2>
+
+
+@using (Html.BeginForm("Edit", "CustomBackgrounds", FormMethod.Post, new { enctype = "multipart/form-data"}))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>CustomBackground</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomBackground.FilePath, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.CustomBackground.FilePath, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.CustomBackground.FilePath, "", new { @class = "text-danger" })
+            </div>
+            <input type="file" name="FilePath" />
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomBackground.ThumbnailPath, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @*@Html.EditorFor(model => model.CustomBackground.ThumbnailPath, new { htmlAttributes = new { @class = "form-control" } })*@
+                @Html.ValidationMessageFor(model => model.CustomBackground.ThumbnailPath, "", new { @class = "text-danger" })
+            </div>
+            <input type="file" name="ThumbnailPath" />
+        </div>
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomBackground.ProductTemplateId, htmlAttributes: new { @class = "control-label col-md-2" })
+        </div>
+        <div class="editor-field">
+            @if (Model.AllProductTemplates != null)
+            {
+                <select name="ProductTemplateId">
+                    @foreach (var item in Model.AllProductTemplates)
+                    {
+
+                        if (Model.AllProductTemplates.Any(pt => pt.Id == Model.CustomBackground.ProductTemplateId))
+                        {
+                            <option selected="selected" value="@item.Id">@item.Id - @item.DisplayName</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Id">@item.Id - @item.DisplayName</option>
+                        }
+
+                    }
+                </select>
+            }
+        </div>
+
+
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CustomBackground.HierarchyId, htmlAttributes: new { @class = "control-label col-md-2" })
+            
+        </div>
+        <div class="editor-field">
+                @if (Model.AllHierarchies != null)
+                {
+                    <select name="HierarchyId">
+                        @foreach (var item in Model.AllHierarchies)
+                        {
+
+                        if (Model.AllHierarchies.Any(h => h.Id == Model.CustomBackground.HierarchyId))
+                        {
+                            <option selected="selected" value="@item.Id">@item.Id - @item.DisplayName</option>
+                        }
+                        else
+                        {
+                            <option value="@item.Id">@item.Id - @item.DisplayName</option>
+                        }
+
+                        }
+                    </select>
+                }
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

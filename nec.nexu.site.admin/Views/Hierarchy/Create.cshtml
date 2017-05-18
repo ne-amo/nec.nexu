@@ -1,0 +1,115 @@
+﻿@model nec.nexu.site.admin.Models.HierarchyAdminViewModel
+
+@{
+    ViewBag.Title = "Create NEXU Hierarchy";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    
+    var templates = ViewBag.ProductTemplate != null ? ViewBag.ProductTemplate :  new List<ProductTemplate>();
+}
+<style>
+    .create-form input {
+        display: block;
+        width:100%;
+    }
+</style>
+<h2>Create Hierarchy</h2>
+
+@using (Html.BeginForm()) {
+    @Html.AntiForgeryToken()
+    @Html.ValidationSummary(true)
+
+    
+    <div class="row create-form">
+        <div class="col-xs-6">
+            <div class="row">
+                <div class="col-sm-3">Display Name</div>
+                <div class="col-sm-9">
+                    @Html.EditorFor(model => model.Hierarchy.DisplayName)
+                    @Html.ValidationMessageFor(model => model.Hierarchy.DisplayName)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Parent Hierarchy</div>
+                <div class="col-sm-9">
+                    @Html.DropDownListFor(model => model.Hierarchy.ParentHierarchyId, Model.HierarchyListItems, string.Empty)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Active</div>
+                <div class="col-sm-9">
+                    @Html.EditorFor(model => model.Hierarchy.Active)
+                    @Html.ValidationMessageFor(model => model.Hierarchy.Active)
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-3">Sort Order</div>
+                <div class="col-sm-9">
+                    @Html.EditorFor(model => model.Hierarchy.SortOrder)
+                    @Html.ValidationMessageFor(model => model.Hierarchy.SortOrder)
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-3">Allowed Templates</div>
+                <div class="col-sm-9">
+                    @foreach (var template in templates)
+                    {
+
+                    }
+                </div>
+            </div>
+
+
+            <div class="row" style="margin-top:15px;">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-9"><input type="submit" value="Create" /></div>
+            </div>
+
+        </div>
+    </div>@*
+    
+    <fieldset>
+        <legend>Hierarchy</legend>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Hierarchy.DisplayName)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Hierarchy.DisplayName)
+            @Html.ValidationMessageFor(model => model.Hierarchy.DisplayName)
+        </div>
+        
+        <div class="form-group">
+            @Html.LabelFor(model => model.Hierarchy.ParentHierarchyId, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.Hierarchy.ParentHierarchyId, Model.HierarchyListItems, string.Empty)
+            </div>
+        </div>
+        
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Hierarchy.SortOrder)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Hierarchy.SortOrder)
+            @Html.ValidationMessageFor(model => model.Hierarchy.SortOrder)
+        </div>
+
+        <div class="editor-label">
+            @Html.LabelFor(model => model.Hierarchy.Active)
+        </div>
+        <div class="editor-field">
+            @Html.EditorFor(model => model.Hierarchy.Active)
+            @Html.ValidationMessageFor(model => model.Hierarchy.Active)
+        </div>
+
+        <p>
+            <input type="submit" value="Create" />
+        </p>
+    </fieldset>*@
+}
+
+<div>
+    @Html.ActionLink("Back to List", "Index")
+</div>

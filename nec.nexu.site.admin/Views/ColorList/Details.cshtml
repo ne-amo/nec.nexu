@@ -1,0 +1,29 @@
+﻿@model nec.nexu.Models.ColorList
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>Color List</legend>
+        <div>
+            @Html.DisplayFor(model => model.DisplayName)
+        </div>
+        <div>
+            <ul>
+            @if(Model.Colors != null){
+                foreach (var item in Model.Colors)
+                {
+                    <li>@item.DisplayName</li>
+                }
+            }
+            </ul>
+        </div>
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id}) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

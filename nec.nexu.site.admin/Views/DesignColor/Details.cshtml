@@ -1,0 +1,87 @@
+﻿@model nec.nexu.Models.DesignColor
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Details</h2>
+
+<fieldset>
+    <legend>DesignColor</legend>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Hex)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Hex)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.DisplayName)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.DisplayName)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Pms)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Pms)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Hue)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Hue)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Saturation)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Saturation)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Brightness)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Brightness)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.Opacity)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Opacity)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.SortOrder)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.SortOrder)
+    </div>
+
+    <div class="display-label">
+         @Html.DisplayNameFor(model => model.TextColor)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.TextColor)
+    </div>
+    
+    <div class="display-label">
+        @Html.DisplayNameFor(model => model.Active)
+    </div>
+    <div class="display-field">
+        @Html.DisplayFor(model => model.Active)
+    </div>
+
+</fieldset>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

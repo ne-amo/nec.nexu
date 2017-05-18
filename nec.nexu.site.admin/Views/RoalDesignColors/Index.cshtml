@@ -1,0 +1,50 @@
+﻿@model List<nec.nexu.site.admin.Models.RoalMapViewModel<nec.nexu.Models.roal.DesignColorToRoal>>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table" id="kendoGrid">
+    <tr>
+        <th>
+            NExU Color Id
+        </th>
+        <th>
+            NExU Color Name
+        </th>
+        <th>
+            ROAL Color Id
+        </th>
+        <th>
+            ROAL Color Name
+        </th>
+        <th>Options</th>
+    </tr>
+    
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Map.NexuDesignColorId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.NexuDisplayName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Map.RoalDesignColorId)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RoalDisplayName)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { item.Map.Id }) |
+            @Html.ActionLink("Delete", "Delete", new { item.Map.Id })
+        </td>
+    </tr>
+}
+</table>
